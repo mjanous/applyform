@@ -115,14 +115,14 @@ class ReferenceRating(models.Model):
     
 class SponsorContact(models.Model):
     company = models.ForeignKey(Sponsor, related_name='contact_set')
-    first_name = models.CharField(max_length=40)
-    last_name = models.CharField(max_length=40)
-    title = models.CharField(max_length=40)
-    address1 = models.CharField(max_length=40)
-    address2 = models.CharField(max_length=40)
-    city = models.CharField(max_length=40)
-    state = models.CharField(max_length=2)
-    zipcode = models.IntegerField(max_length=5)
+    first_name = models.CharField(max_length=40, blank=True)
+    last_name = models.CharField(max_length=40, blank=True)
+    title = models.CharField(max_length=40, blank=True)
+    address1 = models.CharField(max_length=40, blank=True)
+    address2 = models.CharField(max_length=40, blank=True)
+    city = models.CharField(max_length=40, blank=True)
+    state = models.CharField(max_length=2, blank=True)
+    zipcode = models.IntegerField(max_length=5, blank=True, null=True)
     
 class Keycard(models.Model):
     owner = models.ForeignKey(UserProfile, related_name='keycard_set')
