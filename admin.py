@@ -6,7 +6,7 @@ class BlankAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(UserProfile, BlankAdmin)
-admin.site.register(StudentProfile, BlankAdmin)
+admin.site.register(ConsultantProfile, BlankAdmin)
 admin.site.register(AssistantCoachProfile, BlankAdmin)
 admin.site.register(Application, BlankAdmin)
 admin.site.register(Semester, BlankAdmin)

@@ -2,20 +2,22 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, unique=True, related_name='profile')
+    user = models.ForeignKey(User, unique=True, related_name='profile')
     dob = models.DateField(blank=True, null=True)
-    address = models.CharField(max_length=80, blank=True)
+    address1 = models.CharField(max_length=40, blank=True)
+    address2 = models.CharField(max_length=40, blank=True)
     city = models.CharField(max_length=40, blank=True)
     state = models.CharField(max_length=2, blank=True)
     zipcode = models.IntegerField(max_length=5, blank=True, null=True)
     home_phone = models.CharField(max_length=14, blank=True)
     mobile_phone = models.CharField(max_length=14, blank=True)
+    bio = models.TextField(blank=True)
     
     def __unicode__(self):
         return self.user.username
     
-class StudentProfile(models.Model):
-    profile = models.OneToOneField(
+class ConsultantProfile(models.Model):
+    profile = models.ForeignKey(
         UserProfile, unique=True, related_name='student_profile')
     major = models.CharField(max_length=40, blank=True)
     grad_date = models.ForeignKey('Semester', blank=True, null=True)
@@ -41,15 +43,15 @@ class StudentProfile(models.Model):
         return self.profile.user.username
     
 class CoachProfile(models.Model):
-    profile = models.OneToOneField(
+    profile = models.ForeignKey(
         UserProfile, unique=True, related_name='coach_profile')
-    project = models.ManyToManyField('Project', related_name='coaches')    
+    project = models.ManyToManyField('Project', related_name='coaches')
 
     def __unicode__(self):
         return self.profile.user.username
 
 class AssistantCoachProfile(models.Model):
-    profile = models.OneToOneField(
+    profile = models.ForeignKey(
         UserProfile, unique=True, related_name='assistant_coach_profile')
     project = models.ManyToManyField(
         'Project', related_name='assistant_coaches')
@@ -58,13 +60,13 @@ class AssistantCoachProfile(models.Model):
         return self.profile.user.username
 
 class ReferenceProfile(models.Model):
-    profile = models.OneToOneField(
+    profile = models.ForeignKey(
         UserProfile, unique=True, related_name='reference_profile')
     students = models.ManyToManyField(
-        StudentProfile, through='ReferenceRating')
+        ConsultantProfile, through='ReferenceRating')
 
 class Application(models.Model):
-    student = models.ForeignKey(StudentProfile, related_name='applications')
+    student = models.ForeignKey(ConsultantProfile, related_name='applications')
     project_interests = models.ManyToManyField(
         'Project', through='ProjectInterest', related_name='applications')
     submitted = models.BooleanField('Application submitted?')
@@ -108,6 +110,21 @@ class ProjectInterest(models.Model):
     
 class ReferenceRating(models.Model):
     reference = models.ForeignKey(ReferenceProfile)
-    student = models.ForeignKey(StudentProfile)
+    student = models.ForeignKey(ConsultantProfile)
     rating = models.IntegerField(max_length=2)
     
+class SponsorContact(models.Model):
+    company = models.ForeignKey(Sponsor, related_name='contact_set')
+    first_name = models.CharField(max_length=40)
+    last_name = models.CharField(max_length=40)
+    title = models.CharField(max_length=40)
+    address1 = models.CharField(max_length=40)
+    address2 = models.CharField(max_length=40)
+    city = models.CharField(max_length=40)
+    state = models.CharField(max_length=2)
+    zipcode = models.IntegerField(max_length=5)
+    
+class Keycard(models.Model):
+    owner = models.ForeignKey(UserProfile, related_name='keycard_set')
+    number = models.IntegerField(max_length=20)
+    returned = models.BooleanField()
