@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.OneToOneField(User, unique=True, related_name='profile')
     dob = models.DateField(blank=True, null=True)
     address = models.CharField(max_length=80, blank=True)
     city = models.CharField(max_length=40, blank=True)
@@ -15,7 +15,7 @@ class UserProfile(models.Model):
         return self.user.username
     
 class StudentProfile(models.Model):
-    profile = models.ForeignKey(
+    profile = models.OneToOneField(
         UserProfile, unique=True, related_name='student_profile')
     major = models.CharField(max_length=40, blank=True)
     grad_date = models.ForeignKey('Semester', blank=True, null=True)
@@ -41,7 +41,7 @@ class StudentProfile(models.Model):
         return self.profile.user.username
     
 class CoachProfile(models.Model):
-    profile = models.ForeignKey(
+    profile = models.OneToOneField(
         UserProfile, unique=True, related_name='coach_profile')
     project = models.ManyToManyField('Project', related_name='coaches')    
 
@@ -49,7 +49,7 @@ class CoachProfile(models.Model):
         return self.profile.user.username
 
 class AssistantCoachProfile(models.Model):
-    profile = models.ForeignKey(
+    profile = models.OneToOneField(
         UserProfile, unique=True, related_name='assistant_coach_profile')
     project = models.ManyToManyField(
         'Project', related_name='assistant_coaches')
@@ -58,7 +58,7 @@ class AssistantCoachProfile(models.Model):
         return self.profile.user.username
 
 class ReferenceProfile(models.Model):
-    profile = models.ForeignKey(
+    profile = models.OneToOneField(
         UserProfile, unique=True, related_name='reference_profile')
     students = models.ManyToManyField(
         StudentProfile, through='ReferenceRating')
