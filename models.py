@@ -16,9 +16,8 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
     
-class ConsultantProfile(models.Model):
-    profile = models.ForeignKey(
-        UserProfile, unique=True, related_name='student_profile')
+class Student(models.Model):
+    profile = models.ForeignKey(User, unique=True, related_name='profile')
     major = models.CharField(max_length=40, blank=True)
     grad_date = models.ForeignKey('Semester', blank=True, null=True)
     grad_status = models.BooleanField(
@@ -36,13 +35,29 @@ class ConsultantProfile(models.Model):
         blank=True
     )
     hear_about_us = models.CharField(max_length=60, blank=True)
-    project = models.ManyToManyField(
-        'Project', related_name='students', blank=True)
     
     def __unicode__(self):
         return self.profile.user.username
     
-class CoachProfile(models.Model):
+class Consultant(models.Model):
+    student = models.ForeignKey(
+        Student, unique=True, related_name='student_profile')
+    project = models.ManyToManyField(
+        'Project', related_name='students', blank=True)
+    
+    def __unicode__(self):
+        return self.student.profile.user.username
+    
+class AssistantCoach(models.Model):
+    student = models.ForeignKey(
+        Student, unique=True, related_name='assistant_coach_profile')
+    project = models.ManyToManyField(
+        'Project', related_name='assistant_coaches')
+        
+    def __unicode__(self):
+        return self.student.profile.user.username
+    
+class Coach(models.Model):
     profile = models.ForeignKey(
         UserProfile, unique=True, related_name='coach_profile')
     project = models.ManyToManyField('Project', related_name='coaches')
@@ -50,23 +65,14 @@ class CoachProfile(models.Model):
     def __unicode__(self):
         return self.profile.user.username
 
-class AssistantCoachProfile(models.Model):
-    profile = models.ForeignKey(
-        UserProfile, unique=True, related_name='assistant_coach_profile')
-    project = models.ManyToManyField(
-        'Project', related_name='assistant_coaches')
-        
-    def __unicode__(self):
-        return self.profile.user.username
-
-class ReferenceProfile(models.Model):
+class Reference(models.Model):
     profile = models.ForeignKey(
         UserProfile, unique=True, related_name='reference_profile')
     students = models.ManyToManyField(
-        ConsultantProfile, through='ReferenceRating')
+        Student, through='ReferenceRating')
 
 class Application(models.Model):
-    student = models.ForeignKey(ConsultantProfile, related_name='applications')
+    student = models.ForeignKey(Student, related_name='applications')
     project_interests = models.ManyToManyField(
         'Project', through='ProjectInterest', related_name='applications')
     submitted = models.BooleanField('Application submitted?')
@@ -109,8 +115,8 @@ class ProjectInterest(models.Model):
         ))
     
 class ReferenceRating(models.Model):
-    reference = models.ForeignKey(ReferenceProfile)
-    student = models.ForeignKey(ConsultantProfile)
+    reference = models.ForeignKey(Reference)
+    student = models.ForeignKey(Student)
     rating = models.IntegerField(max_length=2)
     
 class SponsorContact(models.Model):
@@ -129,6 +135,12 @@ class Keycard(models.Model):
     number = models.IntegerField(max_length=20)
     returned = models.BooleanField()
     
+    def __unicode__(self):
+        return self.owner.user.username
+    
 class Resume(models.Model):
     application = models.ForeignKey(Application, related_name='resume')
     resume_file = models.FileField(upload_to='resumes')
+    
+    def __unicode__(self):
+        return self.application.student.profile.user.username
