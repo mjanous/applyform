@@ -18,6 +18,7 @@ class AssistantCoachInline(admin.StackedInline):
     
 class StudentInline(admin.StackedInline):
     model = Student
+    verbose_name_plural = "Student Profile"
     extra = 1
     
 class ProjectInterestInline(admin.StackedInline):
@@ -25,7 +26,8 @@ class ProjectInterestInline(admin.StackedInline):
     
 class CoachInline(admin.StackedInline):
     model = Coach
-
+    verbose_name_plural = "Coach Projects"
+    
 class BlankAdmin(admin.ModelAdmin):
     pass
 
@@ -60,3 +62,4 @@ admin.site.register(Sponsor, BlankAdmin)
 admin.site.register(SponsorContact, BlankAdmin)
 admin.site.register(ProjectInterest, BlankAdmin)
 admin.site.register(Reference, BlankAdmin)
+admin.site.register(Coach, BlankAdmin)

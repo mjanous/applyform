@@ -23,16 +23,16 @@ class Student(models.Model):
     grad_status = models.BooleanField(
         verbose_name='Graduate Student?',
         help_text='Check this box if you are a graduate student',
-        blank=True
+        blank=True,
     )
     enrollment_status = models.BooleanField(
         verbose_name='Enrolled in or have completed UBUS 311',
-        blank=True
+        blank=True,
     )
     honors_status = models.BooleanField(
         verbose_name='Honors Student?',
         help_text='Check this box if you are an honors student',
-        blank=True
+        blank=True,
     )
     hear_about_us = models.CharField(max_length=60, blank=True)
     
@@ -53,9 +53,12 @@ class AssistantCoach(models.Model):
         Student, related_name='assistant_coach_profile')
     project = models.ManyToManyField(
         'Project', related_name='assistant_coaches')
-        
+    
     def __unicode__(self):
         return self.student.profile.user.username
+    
+    class Meta:
+        verbose_name_plural = "Assistant coaches"
     
 class Coach(models.Model):
     profile = models.ForeignKey(
@@ -64,6 +67,9 @@ class Coach(models.Model):
 
     def __unicode__(self):
         return self.profile.user.username
+    
+    class Meta:
+        verbose_name_plural = "Coaches"
 
 class Reference(models.Model):
     profile = models.ForeignKey(
@@ -76,6 +82,7 @@ class Application(models.Model):
     project_interests = models.ManyToManyField(
         'Project', through='ProjectInterest', related_name='applications')
     submitted = models.BooleanField('Application submitted?')
+    date_submitted = models.DateField(blank=True)
     
     def __unicode__(self):
         return self.student.profile.user.username
