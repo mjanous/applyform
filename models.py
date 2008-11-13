@@ -17,7 +17,7 @@ class UserProfile(models.Model):
         return self.user.username
     
 class Student(models.Model):
-    profile = models.ForeignKey(User, unique=True, related_name='profile')
+    profile = models.ForeignKey(UserProfile, unique=True, related_name='profile')
     major = models.CharField(max_length=40, blank=True)
     grad_date = models.ForeignKey('Semester', blank=True, null=True)
     grad_status = models.BooleanField(
