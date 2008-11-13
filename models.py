@@ -131,4 +131,4 @@ class Keycard(models.Model):
     
 class Resume(models.Model):
     application = models.ForeignKey(Application, related_name='resume')
-    resume_file = models.FileField(upload_to='/resumes')
+    resume_file = models.FileField(upload_to='resumes')
