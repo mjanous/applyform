@@ -128,3 +128,7 @@ class Keycard(models.Model):
     owner = models.ForeignKey(UserProfile, related_name='keycard_set')
     number = models.IntegerField(max_length=20)
     returned = models.BooleanField()
+    
+class Resume(models.Model):
+    application = models.ForeignKey(Application, related_name='resume')
+    resume_file = models.FileField(upload_to='/resumes')
