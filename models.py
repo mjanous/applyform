@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, unique=True, related_name='profile')
+    user = models.ForeignKey(User, unique=True)
     dob = models.DateField(blank=True, null=True)
     address1 = models.CharField(max_length=40, blank=True)
     address2 = models.CharField(max_length=40, blank=True)
