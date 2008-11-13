@@ -6,8 +6,9 @@ class BlankAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(UserProfile, BlankAdmin)
-admin.site.register(ConsultantProfile, BlankAdmin)
-admin.site.register(AssistantCoachProfile, BlankAdmin)
+admin.site.register(Student, BlankAdmin)
+admin.site.register(Consultant, BlankAdmin)
+admin.site.register(AssistantCoach, BlankAdmin)
 admin.site.register(Application, BlankAdmin)
 admin.site.register(Resume, BlankAdmin)
 admin.site.register(Keycard, BlankAdmin)
@@ -15,4 +16,4 @@ admin.site.register(Semester, BlankAdmin)
 admin.site.register(Project, BlankAdmin)
 admin.site.register(Sponsor, BlankAdmin)
 admin.site.register(ProjectInterest, BlankAdmin)
-admin.site.register(ReferenceProfile, BlankAdmin)
+admin.site.register(Reference, BlankAdmin)
