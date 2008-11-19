@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response
 from applyform.models import *
 from applyform.forms import *
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     return render_to_response(
@@ -26,6 +27,7 @@ def test(request):
         }
     )
 
+@login_required
 def apply(request):
     user = request.user
     try:
