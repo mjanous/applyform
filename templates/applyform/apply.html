@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Application</h1>
+<form action="/apply/" method="POST">
+<p>{{ form.first_name.label }}:<br />{{ form.first_name }}</p>
+<p>{{ form.last_name.label }}:<br />{{ form.last_name }}</p>
+<p>{{ form.address1.label }}:<br />{{ form.address1 }}</p>
+<p>{{ form.address2.label }}:<br />{{ form.address2 }}</p>
+<p>{{ form.city.label }}:<br />{{ form.city }}</p>
+<p>{{ form.dob.label }}:<br />{{ form.dob }}</p>
+<p><input type="submit" value="Update Info" /></p>
+{% endblock %}

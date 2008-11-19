@@ -43,7 +43,7 @@ class Consultant(models.Model):
     student = models.ForeignKey(
         Student, related_name='student_profile')
     project = models.ManyToManyField(
-        'Project', related_name='students', blank=True)
+        'Project', related_name='students')
     
     def __unicode__(self):
         return self.student.profile.user.username
@@ -100,7 +100,7 @@ class Project(models.Model):
     project_name = models.CharField(max_length=60)
     semester = models.ForeignKey(Semester)
     sponsor = models.ForeignKey('Sponsor')
-    sponsor_contacts = models.ManyToManyField('SponsorContact', related_name='projects')
+    sponsor_contacts = models.ManyToManyField('SponsorContact', related_name='projects', blank=True)
     
     def __unicode__(self):
         return self.project_name
