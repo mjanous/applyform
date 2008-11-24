@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.contrib.auth.models import User
 
-us.us_states
-
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     dob = models.DateField(blank=True, null=True)
@@ -12,8 +10,8 @@ class UserProfile(models.Model):
     city = models.CharField(max_length=40, blank=True)
     state = models.CharField(max_length=2, blank=True)
     zipcode = models.IntegerField(max_length=5, blank=True, null=True)
-    home_phone = us.models.PhoneNumberField(max_length=14, blank=True)
-    mobile_phone = us.models.PhoneNumberField(max_length=14, blank=True)
+    home_phone = PhoneNumberField(blank=True)
+    mobile_phone = PhoneNumberField(blank=True)
     bio = models.TextField(blank=True)
     
     def __unicode__(self):
