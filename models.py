@@ -1,5 +1,8 @@
 from django.db import models
+from django.contrib.localflavor.us.models import PhoneNumberField
 from django.contrib.auth.models import User
+
+us.us_states
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
@@ -9,8 +12,8 @@ class UserProfile(models.Model):
     city = models.CharField(max_length=40, blank=True)
     state = models.CharField(max_length=2, blank=True)
     zipcode = models.IntegerField(max_length=5, blank=True, null=True)
-    home_phone = models.CharField(max_length=14, blank=True)
-    mobile_phone = models.CharField(max_length=14, blank=True)
+    home_phone = us.models.PhoneNumberField(max_length=14, blank=True)
+    mobile_phone = us.models.PhoneNumberField(max_length=14, blank=True)
     bio = models.TextField(blank=True)
     
     def __unicode__(self):
@@ -92,9 +95,13 @@ class Semester(models.Model):
     season = models.CharField(max_length=6)
     start_date = models.DateField()
     end_date = models.DateField()
+    accepting_apps = models.BooleanField()
 
     def __unicode__(self):
         return ' '.join((self.season, str(self.year)))
+    
+    class Meta:
+        ordering = ['-start_date']
     
 class Project(models.Model):
     project_name = models.CharField(max_length=60)

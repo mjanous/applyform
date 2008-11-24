@@ -40,9 +40,9 @@
 
 <ul>
     {% if user.is_authenticated %}
-    <li><a href="/logout/">Logout</a></li>
+    <li><a href="{% url django.contrib.auth.views.logout %}">Logout</a></li>
     {% else %}
-    <li><a href="/login/">Login</a></li>
+    <li><a href="{% url django.contrib.auth.views.login %}">Login</a></li>
     {% endif %}
 </ul>
 </div>
@@ -50,7 +50,7 @@
 <div id="content_wrapper">
 <div id="sidebar">
 <ul>
-    <li><a href="/apply/">Apply</a></li>
+    <li><a href="{% url applyform.views.apply_page1 %}">Apply</a></li>
 </ul>
 {% if user.is_authenticated %}
 <p>Welcome,<br />{{ user.first_name }} {{ user.last_name }}.</p>
