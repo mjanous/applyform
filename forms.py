@@ -7,7 +7,7 @@ class ApplicationForm(forms.Form):
     first_name = forms.CharField(max_length=40, required=False)
     last_name = forms.CharField(max_length=40, required=False)
     dob = forms.DateField(
-        label='Date of Birth (YYYY-MM-DD)',
+        label='Date of Birth',
         required=False,
         widget=forms.TextInput({'size': 10}),
     )

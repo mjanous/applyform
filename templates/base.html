@@ -25,11 +25,11 @@
     <a href="http://www.niu.edu/maps/index.shtml">Maps</a> | 
     <a href="http://www.niu.edu">NIU Home</a>
 <form id="niu_search" name="SearchForm" action="http://www.niu.edu/niusearch.asp">
-<input type="hidden" value="015599932022858976637:nq6dbpwtmdi" name="cx">
-<input type="hidden" value="FORID:11" name="cof">
-<label for="searchNIU">NIU Website Search:</label>
-<input maxLength="255" name="q" id="SearchNIU" type="text" accesskey="S" tabindex="2" value="Search NIU" size="12" onFocus="this.value='';" />
-<input type="submit" value="GO!" name="go">
+<input type="hidden" value="015599932022858976637:nq6dbpwtmdi" name="cx" />
+<input type="hidden" value="FORID:11" name="cof" />
+<label for="search_niu">NIU Website Search:</label>
+<input name="q" id="search_niu" type="text" accesskey="S" tabindex="2" value="Search NIU" size="12" />
+<input type="submit" value="GO!" name="go" />
 <br />
 <a href="http://www.niu.edu/niusearch.asp">Advanced Search</a>
 </form>
@@ -37,7 +37,6 @@
 </div>
 
 <div id="top_navigation">
-
 <ul>
     {% if user.is_authenticated %}
     <li><a href="{% url django.contrib.auth.views.logout %}">Logout</a></li>
@@ -45,28 +44,28 @@
     <li><a href="{% url django.contrib.auth.views.login %}">Login</a></li>
     {% endif %}
 </ul>
+{% if user.is_authenticated %}
+<p>Welcome, {{ user.first_name }} {{ user.last_name }}.</p>
+{% else %}
+<p>Welcome, guest.</p>
+{% endif %}
 </div>
 
 <div id="content_wrapper">
 <div id="sidebar">
 <ul>
-    <li><a href="{% url applyform.views.apply_page1 %}">Apply</a></li>
+    <li><a href="{% url applyform.views.basic_info %}">Apply</a></li>
 </ul>
-{% if user.is_authenticated %}
-<p>Welcome,<br />{{ user.first_name }} {{ user.last_name }}.</p>
-{% else %}
-<p>Welcome,<br />guest.</p>
-{% endif %}
 </div>
-<div id="content">
+<div id="content">	
 {% block content %}{% endblock %}
 </div>
-<div id="content_wrapper">
+</div>
 
 <div id="footer">
 {% block footer %}
 <div id="copyright">&copy; 2008 Board of Trustees of <a href="http://www.niu.edu">Northern Illinois University</a>. All rights reserved.</div>
-<div id="address">DeKalb, Illinois&nbsp;&nbsp;60115 <span>|</span> <a href="http://www.niu.edu/contactinfo.shtml">Contact Information</a> <span>|</span> <a href="http://www.its.niu.edu/its/Policies/privacy_policy.shtml">Web Site Privacy Policy</a> 
+<div id="address">DeKalb, Illinois&nbsp;&nbsp;60115 <span>|</span> <a href="http://www.niu.edu/contactinfo.shtml">Contact Information</a> <span>|</span> <a href="http://www.its.niu.edu/its/Policies/privacy_policy.shtml">Web Site Privacy Policy</a> </div>
 {% endblock footer %}
 </div>
 </div>

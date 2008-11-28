@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.localflavor.us.models import PhoneNumberField
+from django.contrib.localflavor.us.models import PhoneNumberField, USStateField
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
@@ -8,7 +8,7 @@ class UserProfile(models.Model):
     address1 = models.CharField(max_length=40, blank=True)
     address2 = models.CharField(max_length=40, blank=True)
     city = models.CharField(max_length=40, blank=True)
-    state = models.CharField(max_length=2, blank=True)
+    state = USStateField(blank=True)
     zipcode = models.IntegerField(max_length=5, blank=True, null=True)
     home_phone = PhoneNumberField(blank=True)
     mobile_phone = PhoneNumberField(blank=True)
@@ -19,7 +19,7 @@ class UserProfile(models.Model):
     
 class Student(models.Model):
     profile = models.ForeignKey(UserProfile, unique=True, related_name='profile')
-    major = models.CharField(max_length=40, blank=True)
+    major = models.ForeignKey('Major', related_name="student_set")
     grad_date = models.ForeignKey('Semester', blank=True, null=True)
     grad_status = models.BooleanField(
         verbose_name='Graduate Student?',
@@ -140,7 +140,7 @@ class SponsorContact(models.Model):
     address1 = models.CharField(max_length=40, blank=True)
     address2 = models.CharField(max_length=40, blank=True)
     city = models.CharField(max_length=40, blank=True)
-    state = models.CharField(max_length=2, blank=True)
+    state = USStateField(blank=True)
     zipcode = models.IntegerField(max_length=5, blank=True, null=True)
     
 class Keycard(models.Model):
@@ -157,3 +157,16 @@ class Resume(models.Model):
     
     def __unicode__(self):
         return self.application.student.profile.user.username
+
+class Major(models.Model):
+    title = models.CharField(max_length=50)
+    college = models.ForeignKey('College', related_name='majors')
+    
+    def __unicode__(self):
+        return self.title
+        
+class College(models.Model):
+    name = models.CharField(max_length=40)
+    
+    def __unicode__(self):
+        return self.name

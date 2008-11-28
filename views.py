@@ -18,7 +18,7 @@ def index(request):
     )
 
 @login_required
-def apply_page1(request):
+def basic_info(request):
     user = request.user
     try:
         userprofile = user.get_profile()
@@ -39,6 +39,8 @@ def apply_page1(request):
             userprofile.dob = form.cleaned_data['dob']
             userprofile.city = form.cleaned_data['city']
             userprofile.state = form.cleaned_data['state']
+            userprofile.home_phone = form.cleaned_data['home_phone']
+            userprofile.mobile_phone = form.cleaned_data['mobile_phone']
             userprofile.save()
             return HttpResponseRedirect('/thanks/')
         
@@ -53,11 +55,13 @@ def apply_page1(request):
                 'city': userprofile.city,
                 'state': userprofile.state or 'IL',
                 'email': user.email,
+                'home_phone': userprofile.home_phone,
+                'mobile_phone': userprofile.mobile_phone,
             }
         )
         
     return render_to_response(
-        'applyform/apply_page1.html',
+        'applyform/basic_info.html',
         {
             'user': request.user,
             'form': form,

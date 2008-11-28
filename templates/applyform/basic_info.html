@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Part 1 - Basic Information</h1>
+<form action="{% url applyform.views.basic_info %}" method="post">
+<fieldset>
+<legend>Personal Info</legend>
+<div><label>{{ form.first_name.label }}</label> {{ form.first_name }}</div>
+<div><label>{{ form.last_name.label }}</label> {{ form.last_name }}</div>
+<div><label>{{ form.dob.label }}</label> {{ form.dob }}</div>
+</fieldset>
+<fieldset>
+<legend>Local Address</legend>
+<div><label>{{ form.address1.label }}</label> {{ form.address1 }}</div>
+<div><label>{{ form.address2.label }}</label> {{ form.address2 }}</div>
+<div><label>{{ form.city.label }}</label> {{ form.city }}</div>
+<div><label>{{ form.state.label }}</label> {{ form.state }}</div>
+</fieldset>
+<fieldset>
+<legend>Contact Info</legend>
+{% if form.email.errors %}
+{{ form.email.errors }}
+{% endif %}
+<div><label>{{ form.email.label }}</label> {{ form.email }}</div>
+{% if form.home_phone.errors %}
+{{ form.home_phone.errors }}
+{% endif %}
+<div><label>{{ form.home_phone.label }}</label> {{ form.home_phone }}</div>
+{% if form.mobile_phone.errors %}
+{{ form.mobile_phone.errors }}
+{% endif %}
+<div><label>{{ form.mobile_phone.label }}</label> {{ form.mobile_phone }}</div>
+</fieldset>
+<div><label>&bnsp</label><input type="submit" value="Update Info" /></div>
+</form>
+{% endblock %}

@@ -7,14 +7,10 @@
 {% endif %}
 
 <form method="post" action=".">
-<table>
-<tr><td>{{ form.username.label_tag }}</td><td>{{ form.username }}</td></tr>
-<tr><td>{{ form.password.label_tag }}</td><td>{{ form.password }}</td></tr>
-<tr><td colspan="2"><input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" /></td></tr>
-</table>
-
-
+<div><label>{{ form.username.label_tag }}</label>{{ form.username }}</div>
+<div><label>{{ form.password.label_tag }}</label>{{ form.password }}</div>
+<div><input type="submit" value="login" /></div>
+<input class="submit" type="hidden" name="next" value="{{ next }}" />
 </form>
 
 {% endblock %}
