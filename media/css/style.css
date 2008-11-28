@@ -523,8 +523,8 @@ table td {
 	line-height: 150%;
 }
 
-#content form input {
-	width: 200px;
+#content form input.text_field {
+	width: 170px;
 	padding: 1px 3px;
 }
 
@@ -542,6 +542,6 @@ table td {
 }
 
 input.submit {
-	width: auto;
+	width: 120px;
 	display: block;
 }

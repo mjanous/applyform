@@ -5,32 +5,32 @@
 <form action="{% url applyform.views.basic_info %}" method="post">
 <fieldset>
 <legend>Personal Info</legend>
-<div><label>{{ form.first_name.label }}</label> {{ form.first_name }}</div>
-<div><label>{{ form.last_name.label }}</label> {{ form.last_name }}</div>
-<div><label>{{ form.dob.label }}</label> {{ form.dob }}</div>
+<div>{{ form.first_name.label_tag }} {{ form.first_name.as_widget }}</div>
+<div>{{ form.last_name.label_tag }} {{ form.last_name.as_widget }}</div>
+<div>{{ form.dob.label_tag }} {{ form.dob.as_widget }}</div>
 </fieldset>
 <fieldset>
 <legend>Local Address</legend>
-<div><label>{{ form.address1.label }}</label> {{ form.address1 }}</div>
-<div><label>{{ form.address2.label }}</label> {{ form.address2 }}</div>
-<div><label>{{ form.city.label }}</label> {{ form.city }}</div>
-<div><label>{{ form.state.label }}</label> {{ form.state }}</div>
+<div>{{ form.address1.label_tag }} {{ form.address1.as_widget }}</div>
+<div>{{ form.address2.label_tag }} {{ form.address2.as_widget }}</div>
+<div>{{ form.city.label_tag }} {{ form.city.as_widget }}</div>
+<div>{{ form.state.label_tag }} {{ form.state.as_widget }}</div>
 </fieldset>
 <fieldset>
 <legend>Contact Info</legend>
 {% if form.email.errors %}
 {{ form.email.errors }}
 {% endif %}
-<div><label>{{ form.email.label }}</label> {{ form.email }}</div>
+<div>{{ form.email.label_tag }} {{ form.email.as_widget }}</div>
 {% if form.home_phone.errors %}
 {{ form.home_phone.errors }}
 {% endif %}
-<div><label>{{ form.home_phone.label }}</label> {{ form.home_phone }}</div>
+<div>{{ form.home_phone.label_tag }} {{ form.home_phone.as_widget }}</div>
 {% if form.mobile_phone.errors %}
 {{ form.mobile_phone.errors }}
 {% endif %}
-<div><label>{{ form.mobile_phone.label }}</label> {{ form.mobile_phone }}</div>
+<div>{{ form.mobile_phone.label_tag }} {{ form.mobile_phone.as_widget }}</div>
 </fieldset>
-<div><label>&bnsp</label><input type="submit" value="Update Info" /></div>
+<div><label>&nbsp;</label><input type="submit" value="Update Info" /></div>
 </form>
 {% endblock %}

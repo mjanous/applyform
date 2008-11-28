@@ -7,9 +7,9 @@
 {% endif %}
 
 <form method="post" action=".">
-<div><label>{{ form.username.label_tag }}</label>{{ form.username }}</div>
-<div><label>{{ form.password.label_tag }}</label>{{ form.password }}</div>
-<div><input type="submit" value="login" /></div>
+<div>{{ form.username.label_tag }}{{ form.username }}</div>
+<div>{{ form.password.label_tag }}{{ form.password }}</div>
+<div><label>&nbsp;</label><input type="submit" value="Login" /></div>
 <input class="submit" type="hidden" name="next" value="{{ next }}" />
 </form>
 

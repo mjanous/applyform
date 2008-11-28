@@ -22,7 +22,6 @@ def basic_info(request):
     user = request.user
     try:
         userprofile = user.get_profile()
-
     except: # TODO: What kind of exception!?
         userprofile = user.userprofile_set.create()
         
