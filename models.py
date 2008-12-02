@@ -17,9 +17,17 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
     
+    def basic_info_completed(self):
+        if (self.user and self.dob and self.address1 and self.city and
+            self.state and self.zipcode and (self.home_phone or self.mobile_phone)):
+            return True
+        else:
+            return False
+            
+        
 class Student(models.Model):
     profile = models.ForeignKey(UserProfile, unique=True, related_name='profile')
-    major = models.ForeignKey('Major', related_name="student_set")
+    major = models.ForeignKey('Major', related_name='student_set')
     grad_date = models.ForeignKey('Semester', blank=True, null=True)
     grad_status = models.BooleanField(
         verbose_name='Graduate Student?',

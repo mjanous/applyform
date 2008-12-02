@@ -6,6 +6,7 @@ from applyform.models import *
 from applyform.forms import *
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 
 def index(request):
     return render_to_response(
@@ -14,6 +15,26 @@ def index(request):
             'user': request.user,
             'request': request,
             'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
+
+@login_required
+def apply_menu(request):
+    user = request.user
+    basic_info = False
+    try:
+        userprofile = user.get_profile()
+    except: # TODO: What kind of exception!?
+        basic_info = False
+    if userprofile.basic_info_completed():
+        basic_info = True
+    return render_to_response(
+        'applyform/apply_menu.html',
+        {
+            'user': request.user,
+            'request': request,
+            'MEDIA_URL': settings.MEDIA_URL,
+            'basic_info': basic_info
         }
     )
 
@@ -38,10 +59,14 @@ def basic_info(request):
             userprofile.dob = form.cleaned_data['dob']
             userprofile.city = form.cleaned_data['city']
             userprofile.state = form.cleaned_data['state']
+            if form.cleaned_data['zipcode'] == u'':
+                userprofile.zipcode = None
+            else:
+                userprofile.zipcode = form.cleaned_data['zipcode'] 
             userprofile.home_phone = form.cleaned_data['home_phone']
             userprofile.mobile_phone = form.cleaned_data['mobile_phone']
             userprofile.save()
-            return HttpResponseRedirect('/thanks/')
+            return HttpResponseRedirect(reverse('apply_menu'))
         
     else:
         form = ApplicationForm(
@@ -53,6 +78,7 @@ def basic_info(request):
                 'dob': userprofile.dob,
                 'city': userprofile.city,
                 'state': userprofile.state or 'IL',
+                'zipcode': userprofile.zipcode,
                 'email': user.email,
                 'home_phone': userprofile.home_phone,
                 'mobile_phone': userprofile.mobile_phone,

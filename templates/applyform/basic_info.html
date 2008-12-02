@@ -2,35 +2,12 @@
 
 {% block content %}
 <h1>Part 1 - Basic Information</h1>
+{% if form.errors %}<p class="errorlist">Errors occured while saving your application.</p>{% endif %}
 <form action="{% url applyform.views.basic_info %}" method="post">
-<fieldset>
-<legend>Personal Info</legend>
-<div>{{ form.first_name.label_tag }} {{ form.first_name.as_widget }}</div>
-<div>{{ form.last_name.label_tag }} {{ form.last_name.as_widget }}</div>
-<div>{{ form.dob.label_tag }} {{ form.dob.as_widget }}</div>
-</fieldset>
-<fieldset>
-<legend>Local Address</legend>
-<div>{{ form.address1.label_tag }} {{ form.address1.as_widget }}</div>
-<div>{{ form.address2.label_tag }} {{ form.address2.as_widget }}</div>
-<div>{{ form.city.label_tag }} {{ form.city.as_widget }}</div>
-<div>{{ form.state.label_tag }} {{ form.state.as_widget }}</div>
-</fieldset>
-<fieldset>
-<legend>Contact Info</legend>
-{% if form.email.errors %}
-{{ form.email.errors }}
-{% endif %}
-<div>{{ form.email.label_tag }} {{ form.email.as_widget }}</div>
-{% if form.home_phone.errors %}
-{{ form.home_phone.errors }}
-{% endif %}
-<div>{{ form.home_phone.label_tag }} {{ form.home_phone.as_widget }}</div>
-{% if form.mobile_phone.errors %}
-{{ form.mobile_phone.errors }}
-{% endif %}
-<div>{{ form.mobile_phone.label_tag }} {{ form.mobile_phone.as_widget }}</div>
-</fieldset>
-<div><label>&nbsp;</label><input type="submit" value="Update Info" /></div>
+<ul>
+{{ form.as_ul }}
+<li><input type="submit" value="Update Info" class="submit_button" /></li>
+</ul>
 </form>
+
 {% endblock %}

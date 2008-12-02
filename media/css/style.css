@@ -293,6 +293,7 @@ body {
 #wrapper #content_wrapper #content ol li {
 	padding-bottom: 7px;
         padding-right:20px;
+	padding-left:10px;
 }
 
 #wrapper #content_wrapper #content li {
@@ -498,29 +499,27 @@ table td {
 
 #content .errorlist {
 	color: red;
-	margin: 0 0 0 10px;
 }
 
-#content form {
-	margin: 5px 5px 5px 5px;
+#content form ul {
+	margin: 5px auto 5px 5px;
+	width: 400px
 }
 
-#content form div {
+#content form ul li {
 	padding: 2px 2px 2px 2px;
 	clear: left;
 	display: block;
-	width: 354px;
 }
 
 #content form label {
-	font-size: 75%;
 	display: block;
 	float: left;
 	text-align: right;
 	width: 130px;
 	margin-right: 5px;
 	vertical-align: text-bottom;
-	line-height: 150%;
+	line-height: 170%;
 }
 
 #content form input.text_field {
@@ -528,20 +527,8 @@ table td {
 	padding: 1px 3px;
 }
 
-#content form fieldset legend {
-	line-height: 150%;
-	font-size: 150;
-	font-weight: bold;
-	margin: 0;
-	padding: 0 5px;
-}
-
-#content form fieldset {
-	border-style: solid none none;
-	border-width: 1px 0 0;
-}
-
-input.submit {
-	width: 120px;
+input.submit_button {
+	margin: 0px auto 0px auto;
+	width: 85px;
 	display: block;
 }
