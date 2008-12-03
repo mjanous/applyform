@@ -24,10 +24,11 @@ def apply_menu(request):
     basic_info = False
     try:
         userprofile = user.get_profile()
+        if userprofile.basic_info_completed():
+            basic_info = True
     except: # TODO: What kind of exception!?
         basic_info = False
-    if userprofile.basic_info_completed():
-        basic_info = True
+
     return render_to_response(
         'applyform/apply_menu.html',
         {
@@ -93,6 +94,32 @@ def basic_info(request):
             'MEDIA_URL': settings.MEDIA_URL,
         }
     )
+
+@login_required
+def academic_info(request):
+    user = request.user
+    try:
+        userprofile = user.get_profile()
+    except:
+        userprofile = user.userprofile_set.create()
+    
+    try:
+        student_profile = userprofile.student_profile.get()
+    except:
+        student_profile = userprofile.student_profile.create()
+        
+    userprofile.save()
+    student_profile.save()
+        
+    return render_to_response(
+        'applyform/academic_info.html',
+        {
+            'user': request.user,
+            'form': form,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
+        
 
 def thanks(request):
     return render_to_response(

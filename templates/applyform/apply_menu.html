@@ -5,6 +5,6 @@
 <ul>
 <h3>Choose an action:</h3>
 <li><a href="{% url basic_info %}">Enter Basic Information</a> - {% if basic_info %}Complete{% else %}Not complete{% endif %}</li>
-<li><a href="">Enter Academic Information</a> - Not complete</a></li>
+<li><a href="{% url academic_info %}">Enter Academic Information</a> - Not complete</a></li>
 </ul>
 {% endblock %}

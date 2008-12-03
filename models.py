@@ -26,7 +26,7 @@ class UserProfile(models.Model):
             
         
 class Student(models.Model):
-    profile = models.ForeignKey(UserProfile, unique=True, related_name='profile')
+    profile = models.ForeignKey(UserProfile, unique=True, related_name='student_profile')
     major = models.ForeignKey('Major', related_name='student_set')
     grad_date = models.ForeignKey('Semester', blank=True, null=True)
     grad_status = models.BooleanField(
@@ -50,7 +50,7 @@ class Student(models.Model):
     
 class Consultant(models.Model):
     student = models.ForeignKey(
-        Student, related_name='student_profile')
+        Student, related_name='consultant_profile')
     project = models.ManyToManyField(
         'Project', related_name='students')
     
