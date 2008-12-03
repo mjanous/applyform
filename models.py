@@ -27,7 +27,7 @@ class UserProfile(models.Model):
         
 class Student(models.Model):
     profile = models.ForeignKey(UserProfile, unique=True, related_name='student_profile')
-    major = models.ForeignKey('Major', related_name='student_set')
+    major = models.ForeignKey('Major', related_name='student_set', null=True, blank=True)
     grad_date = models.ForeignKey('Semester', blank=True, null=True)
     grad_status = models.BooleanField(
         verbose_name='Graduate Student?',
