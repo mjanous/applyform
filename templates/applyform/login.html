@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style type="text/css">
+    #id_username, #id_password {
+	width: 170px;
+	padding: 1px 3px;
+    }
+</style>
+
 <h1>Login</h1>
 <p>Please login using your z-id and password</p>
 {% if form.errors %}
@@ -10,9 +17,9 @@
 <ul>
 <li>{{ form.username.label_tag }}{{ form.username.as_widget }}</li>
 <li>{{ form.password.label_tag }}{{ form.password.as_widget }}</li>
-<li><input type="submit" value="Login" /></li>
+<li><input class="submit_button" type="submit" value="Login" /></li>
 </ul>
-<input class="submit" type="hidden" name="next" value="{{ next }}" />
+<input type="hidden" name="next" value="{{ next }}" />
 </form>
 
 {% endblock %}

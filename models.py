@@ -17,11 +17,18 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
     
-    def basic_info_completed(self):
-        if (self.user and self.dob and self.address1 and self.city and
-            self.state and self.zipcode and (self.home_phone or self.mobile_phone)):
-            return True
-        else:
+    def profile_info_completed(self):
+        '''This method determines if all the required fields for a correct
+        application are filled out'''
+        try:
+            if (self.user.first_name and self.user.last_name and 
+                self.dob and self.address1 and self.city and self.state and
+                self.zipcode and (self.home_phone or self.mobile_phone) and
+                self.student_profile.get().grad_date):
+                return True
+            else:
+                return False
+        except:
             return False
             
         
@@ -150,6 +157,9 @@ class SponsorContact(models.Model):
     city = models.CharField(max_length=40, blank=True)
     state = USStateField(blank=True)
     zipcode = models.IntegerField(max_length=5, blank=True, null=True)
+    
+    def __unicode__(self):
+        return ' '.join((self.first_name, self.last_name))
     
 class Keycard(models.Model):
     owner = models.ForeignKey(UserProfile, related_name='keycard_set')

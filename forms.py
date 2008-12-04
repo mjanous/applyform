@@ -1,8 +1,10 @@
 from django import forms
 from django.contrib.localflavor.us.forms import USPhoneNumberField, USZipCodeField
 from django.contrib.localflavor.us.us_states import STATE_CHOICES
+from applyform.models import Semester
+from datetime import datetime
 
-class ApplicationForm(forms.Form):
+class BasicInfoForm(forms.Form):
     # Personal Info
     first_name = forms.CharField(
         max_length=40,
@@ -62,3 +64,14 @@ class ApplicationForm(forms.Form):
         widget=forms.TextInput(attrs={'class': 'text_field'}),
     )
     
+    # Academic (student) Info
+    grad_date = forms.ModelChoiceField(
+        required=False,
+        label="Anticipated Graduation Semester",
+        queryset=Semester.objects.filter(end_date__gte=datetime.now()),
+    )
+    grad_status = forms.BooleanField(
+        required=False,
+        label="Graduate Student",
+        help_text="",
+    )

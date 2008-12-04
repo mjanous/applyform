@@ -21,13 +21,13 @@ def index(request):
 @login_required
 def apply_menu(request):
     user = request.user
-    basic_info = False
-    try:
+    profile_complete = False
+    try:  
         userprofile = user.get_profile()
-        if userprofile.basic_info_completed():
-            basic_info = True
+        if userprofile.profile_info_completed():
+            profile_complete = True
     except: # TODO: What kind of exception!?
-        basic_info = False
+        profile_complete = False
 
     return render_to_response(
         'applyform/apply_menu.html',
@@ -35,7 +35,7 @@ def apply_menu(request):
             'user': request.user,
             'request': request,
             'MEDIA_URL': settings.MEDIA_URL,
-            'basic_info': basic_info
+            'profile_complete': profile_complete
         }
     )
 
@@ -46,9 +46,14 @@ def basic_info(request):
         userprofile = user.get_profile()
     except: # TODO: What kind of exception!?
         userprofile = user.userprofile_set.create()
+
+    try:
+        student_profile = userprofile.student_profile.get()
+    except:
+        student_profile = userprofile.student_profile.create()
         
     if request.method == 'POST':
-        form = ApplicationForm(request.POST)
+        form = BasicInfoForm(request.POST)
         if form.is_valid():
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
@@ -67,10 +72,17 @@ def basic_info(request):
             userprofile.home_phone = form.cleaned_data['home_phone']
             userprofile.mobile_phone = form.cleaned_data['mobile_phone']
             userprofile.save()
+            
+            student_profile.grad_date = form.cleaned_data['grad_date']
+            student_profile.save() 
             return HttpResponseRedirect(reverse('apply_menu'))
-        
     else:
-        form = ApplicationForm(
+        try:
+            grad_date_pk = student_profile.grad_date.pk
+        except AttributeError:
+            grad_date_pk = None
+            
+        form = BasicInfoForm(
             initial={
                 'first_name': user.first_name,
                 'last_name': user.last_name,
@@ -83,6 +95,7 @@ def basic_info(request):
                 'email': user.email,
                 'home_phone': userprofile.home_phone,
                 'mobile_phone': userprofile.mobile_phone,
+                'grad_date': grad_date_pk,
             }
         )
         
@@ -93,33 +106,7 @@ def basic_info(request):
             'form': form,
             'MEDIA_URL': settings.MEDIA_URL,
         }
-    )
-
-@login_required
-def academic_info(request):
-    user = request.user
-    try:
-        userprofile = user.get_profile()
-    except:
-        userprofile = user.userprofile_set.create()
-    
-    try:
-        student_profile = userprofile.student_profile.get()
-    except:
-        student_profile = userprofile.student_profile.create()
-        
-    userprofile.save()
-    student_profile.save()
-        
-    return render_to_response(
-        'applyform/academic_info.html',
-        {
-            'user': request.user,
-            'form': form,
-            'MEDIA_URL': settings.MEDIA_URL,
-        }
-    )
-        
+    )      
 
 def thanks(request):
     return render_to_response(

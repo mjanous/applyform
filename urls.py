@@ -15,10 +15,6 @@ urlpatterns = patterns('applyform.views',
         view='basic_info',
         name='basic_info',
     ),
-    url('^academic_info/$',
-        view='academic_info',
-        name='academic_info',
-    ),
     url('^thanks/$',
         view='thanks',
         name='thanks',
@@ -26,14 +22,16 @@ urlpatterns = patterns('applyform.views',
 )
 
 urlpatterns += patterns('',
-    (
+    url(
         r'^login/$',
-        'django.contrib.auth.views.login',
-        {'template_name': 'applyform/login.html'}
+        view='django.contrib.auth.views.login',
+        kwargs={'template_name': 'applyform/login.html'},
+        name='login',
     ),
-    (
+    url(
         r'^logout/$',
-        'django.contrib.auth.views.logout',
-        {'template_name': 'applyform/logged_out.html'}
+        view='django.contrib.auth.views.logout',
+        kwargs={'template_name': 'applyform/logged_out.html'},
+        name='logout',
     ),
 )
