@@ -40,15 +40,18 @@ class Student(models.Model):
         verbose_name='Graduate Student?',
         help_text='Check this box if you are a graduate student',
         blank=True,
+        null=True,
     )
     enrollment_status = models.BooleanField(
         verbose_name='Enrolled in or have completed UBUS 311',
         blank=True,
+        null=True,
     )
     honors_status = models.BooleanField(
         verbose_name='Honors Student?',
         help_text='Check this box if you are an honors student',
         blank=True,
+        null=True,
     )
     hear_about_us = models.CharField(max_length=60, blank=True)
     

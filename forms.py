@@ -70,11 +70,11 @@ class BasicInfoForm(forms.Form):
         label="Anticipated Graduation Semester",
         queryset=Semester.objects.filter(end_date__gte=datetime.now()),
     )
-    grad_status = forms.BooleanField(
+    grad_status = forms.NullBooleanField(
         required=False,
         label="Graduate Student",
     )
-    enrollment_status = forms.BooleanField(
+    enrollment_status = forms.NullBooleanField(
         required=False,
         label="I am enrolled in or have completed UBUS 311",
     )

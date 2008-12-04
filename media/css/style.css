@@ -502,14 +502,13 @@ table td {
 
 #content form ul {
 	margin: 5px auto 5px 5px;
-	width: 400px
+	width: 500px
 }
 
 #content form ul li {
 	padding: 2px 2px 2px 2px;
 	clear: left;
-	display: block;
-	float: left;
+
 }
 
 #content form label {
@@ -523,13 +522,8 @@ table td {
 }
 
 #content form input.text_field {
-	width: 170px;
+	width: 160px;
 	padding: 1px 3px;
-}
-
-#content form input {
-	display: inline;
-	vertical-align: middle;
 }
 
 input.submit_button {
