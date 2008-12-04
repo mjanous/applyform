@@ -26,7 +26,7 @@ def apply_menu(request):
         userprofile = user.get_profile()
         if userprofile.profile_info_completed():
             profile_complete = True
-    except: # TODO: What kind of exception!?
+    except:
         profile_complete = False
 
     return render_to_response(
@@ -44,7 +44,7 @@ def basic_info(request):
     user = request.user
     try:
         userprofile = user.get_profile()
-    except: # TODO: What kind of exception!?
+    except:
         userprofile = user.userprofile_set.create()
 
     try:
@@ -76,6 +76,7 @@ def basic_info(request):
             student_profile.grad_date = form.cleaned_data['grad_date']
             student_profile.grad_status = form.cleaned_data['grad_status']
             student_profile.enrollment_status = form.cleaned_data['enrollment_status']
+            student_profile.honors_status = form.cleaned_data['honors_status']
             student_profile.save() 
             return HttpResponseRedirect(reverse('apply_menu'))
     else:
@@ -100,6 +101,7 @@ def basic_info(request):
                 'grad_date': grad_date_pk,
                 'grad_status': student_profile.grad_status,
                 'enrollment_status': student_profile.enrollment_status,
+                'honors_status': student_profile.honors_status,
             }
         )
         
@@ -110,7 +112,44 @@ def basic_info(request):
             'form': form,
             'MEDIA_URL': settings.MEDIA_URL,
         }
-    )      
+    )
+
+@login_required
+def project_select(request):
+    user = request.user
+    try:
+        userprofile = user.get_profile()
+    except:
+        userprofile = user.userprofile_set.create()
+
+    try:
+        student_profile = userprofile.student_profile.get()
+    except:
+        student_profile = userprofile.student_profile.create()
+        
+    try:
+        semester = Semester.objects.get(accepting_apps=True)
+    except:
+        return HttpResponseRedirect(reverse('not_accepting'))
+        
+    return render_to_response(
+        'applyform/project_select.html',
+        {
+            'semester': semester,
+            'user': request.user,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
+
+def not_accepting(request):
+    return render_to_response(
+        'applyform/not_accepting.html',
+        {
+            'user': request.user,
+            'request': request,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
 
 def thanks(request):
     return render_to_response(

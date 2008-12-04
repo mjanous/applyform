@@ -21,10 +21,20 @@ class UserProfile(models.Model):
         '''This method determines if all the required fields for a correct
         application are filled out'''
         try:
-            if (self.user.first_name and self.user.last_name and 
-                self.dob and self.address1 and self.city and self.state and
-                self.zipcode and (self.home_phone or self.mobile_phone) and
-                self.student_profile.get().grad_date):
+            if (
+                (self.user.first_name) and
+                (self.user.last_name) and 
+                (self.dob) and
+                (self.address1) and
+                (self.city) and
+                (self.state) and
+                (self.zipcode) and
+                (self.home_phone or self.mobile_phone) and
+                (self.student_profile.get().grad_date) and
+                (self.student_profile.get().grad_status is not None) and
+                (self.student_profile.get().enrollment_status is not None) and
+                (self.student_profile.get().honors_status is not None)
+            ):
                 return True
             else:
                 return False
@@ -36,22 +46,17 @@ class Student(models.Model):
     profile = models.ForeignKey(UserProfile, unique=True, related_name='student_profile')
     major = models.ForeignKey('Major', related_name='student_set', null=True, blank=True)
     grad_date = models.ForeignKey('Semester', blank=True, null=True)
-    grad_status = models.BooleanField(
+    grad_status = models.NullBooleanField(
         verbose_name='Graduate Student?',
         help_text='Check this box if you are a graduate student',
         blank=True,
         null=True,
     )
-    enrollment_status = models.BooleanField(
+    enrollment_status = models.NullBooleanField(
         verbose_name='Enrolled in or have completed UBUS 311',
-        blank=True,
-        null=True,
     )
-    honors_status = models.BooleanField(
+    honors_status = models.NullBooleanField(
         verbose_name='Honors Student?',
-        help_text='Check this box if you are an honors student',
-        blank=True,
-        null=True,
     )
     hear_about_us = models.CharField(max_length=60, blank=True)
     

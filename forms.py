@@ -1,8 +1,10 @@
+from datetime import datetime
+
 from django import forms
 from django.contrib.localflavor.us.forms import USPhoneNumberField, USZipCodeField
 from django.contrib.localflavor.us.us_states import STATE_CHOICES
 from applyform.models import Semester
-from datetime import datetime
+from applyform.lib.widgets import NullBooleanDashedSelect
 
 class BasicInfoForm(forms.Form):
     # Personal Info
@@ -72,9 +74,17 @@ class BasicInfoForm(forms.Form):
     )
     grad_status = forms.NullBooleanField(
         required=False,
-        label="Graduate Student",
+        label="I am a Graduate Student",
+        widget=NullBooleanDashedSelect(),
     )
     enrollment_status = forms.NullBooleanField(
         required=False,
         label="I am enrolled in or have completed UBUS 311",
+        widget=NullBooleanDashedSelect(),
     )
+    honors_status = forms.NullBooleanField(
+        required=False,
+        label="I am an honors Student",
+        widget=NullBooleanDashedSelect(),
+    )
+    
