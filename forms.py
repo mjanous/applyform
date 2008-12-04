@@ -73,5 +73,8 @@ class BasicInfoForm(forms.Form):
     grad_status = forms.BooleanField(
         required=False,
         label="Graduate Student",
-        help_text="",
+    )
+    enrollment_status = forms.BooleanField(
+        required=False,
+        label="I am enrolled in or have completed UBUS 311",
     )

@@ -74,6 +74,8 @@ def basic_info(request):
             userprofile.save()
             
             student_profile.grad_date = form.cleaned_data['grad_date']
+            student_profile.grad_status = form.cleaned_data['grad_status']
+            student_profile.enrollment_status = form.cleaned_data['enrollment_status']
             student_profile.save() 
             return HttpResponseRedirect(reverse('apply_menu'))
     else:
@@ -96,6 +98,8 @@ def basic_info(request):
                 'home_phone': userprofile.home_phone,
                 'mobile_phone': userprofile.mobile_phone,
                 'grad_date': grad_date_pk,
+                'grad_status': student_profile.grad_status,
+                'enrollment_status': student_profile.enrollment_status,
             }
         )
         
