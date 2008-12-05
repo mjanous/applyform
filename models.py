@@ -63,6 +63,13 @@ class Student(models.Model):
     def __unicode__(self):
         return self.profile.user.username
     
+    def get_current_application(self):
+        '''This method retrieves the student's application for the semester
+        that is accepting applications. Will return DoesNotExist errors if
+        there is no current semester or no application for that semester.'''
+        current_semester = Semester.objects.get(accepting_apps=True)
+        return self.applications.get(for_semester=current_semester)
+    
 class Consultant(models.Model):
     student = models.ForeignKey(
         Student, related_name='consultant_profile')
@@ -106,7 +113,8 @@ class Application(models.Model):
     project_interests = models.ManyToManyField(
         'Project', through='ProjectInterest', related_name='applications')
     submitted = models.BooleanField('Application submitted?')
-    date_submitted = models.DateField(blank=True)
+    date_submitted = models.DateField(blank=True, null=True)
+    for_semester = models.ForeignKey('Semester', related_name='applications')
     
     def __unicode__(self):
         return self.student.profile.user.username
@@ -150,6 +158,9 @@ class ProjectInterest(models.Model):
             self.project.project_name
         ))
     
+    class Meta:
+        unique_together = ('application', 'project')
+        
 class ReferenceRating(models.Model):
     reference = models.ForeignKey(Reference)
     student = models.ForeignKey(Student)
