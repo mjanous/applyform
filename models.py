@@ -23,6 +23,17 @@ class CurrentAppsManager(models.Manager):
             for_semester__accepting_start_date__lte=now,
             for_semester__accepting_end_date__gte=now,
         )
+    
+class AcceptingAppsProjectsManager(models.Manager):
+    '''This manager goes with the Projects model to return a queryset of
+    projects that students are allowed to apply for, for the next semester'''
+    def get_query_set(self):
+        from datetime import datetime
+        now = datetime.now()
+        return super(AcceptingAppsProjectsManager, self).get_query_set().filter(
+            semester__accepting_start_date__lte=now,
+            semester__accepting_end_date__gte=now,
+        )
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
@@ -179,6 +190,10 @@ class Project(models.Model):
     semester = models.ForeignKey(Semester)
     sponsor = models.ForeignKey('Sponsor')
     sponsor_contacts = models.ManyToManyField('SponsorContact', related_name='projects', blank=True)
+    
+    # Managers
+    objects = models.Manager()
+    accepting_apps = AcceptingAppsProjectsManager()
     
     def __unicode__(self):
         return self.project_name
