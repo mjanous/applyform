@@ -2,6 +2,28 @@ from django.db import models
 from django.contrib.localflavor.us.models import PhoneNumberField, USStateField
 from django.contrib.auth.models import User
 
+class AcceptingAppsManager(models.Manager):
+    '''This manager goes with the Semester model to return a queryset of
+    semesters that we are currently accepting applications for.'''
+    def get_query_set(self):
+        from datetime import datetime
+        now = datetime.now()
+        return super(AcceptingAppsManager, self).get_query_set().filter(
+            accepting_start_date__lte=now, accepting_end_date__gte=now
+        )
+
+class CurrentAppsManager(models.Manager):
+    '''This manager goes with the Applications model to return a queryset
+    of applications that are for the current semester(s) we're accepting
+    apps for.'''
+    def get_query_set(self):
+        from datetime import datetime
+        now = datetime.now()
+        return super(CurrentAppsManager, self).get_query_set().filter(
+            for_semester__accepting_start_date__lte=now,
+            for_semester__accepting_end_date__gte=now,
+        )
+
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     dob = models.DateField(blank=True, null=True)
@@ -63,12 +85,20 @@ class Student(models.Model):
     def __unicode__(self):
         return self.profile.user.username
     
-    def get_current_application(self):
-        '''This method retrieves the student's application for the semester
-        that is accepting applications. Will return DoesNotExist errors if
+    def get_current_applications(self):
+        '''This method retrieves the student's applications for the semester(s)
+        that are accepting applications. Will return DoesNotExist errors if
         there is no current semester or no application for that semester.'''
-        current_semester = Semester.objects.get(accepting_apps=True)
-        return self.applications.get(for_semester=current_semester)
+        accepting_semesters = Semester.accepting_semesters.all()
+        applications = []
+        for semester in accepting_semesters:
+            try:
+                applications.append(self.applications.get(for_semester=semester))
+            except Application.DoesNotExist:
+                pass
+            
+        return applications
+            
     
 class Consultant(models.Model):
     student = models.ForeignKey(
@@ -116,15 +146,27 @@ class Application(models.Model):
     date_submitted = models.DateField(blank=True, null=True)
     for_semester = models.ForeignKey('Semester', related_name='applications')
     
+    # Managers
+    objects = models.Manager()
+    current_apps = CurrentAppsManager()    
+    
     def __unicode__(self):
         return self.student.profile.user.username
+    
+    class Meta:
+        unique_together = ('student', 'for_semester')
 
 class Semester(models.Model):
     year = models.IntegerField()
     season = models.CharField(max_length=6)
     start_date = models.DateField()
     end_date = models.DateField()
-    accepting_apps = models.BooleanField()
+    accepting_start_date = models.DateField(blank=True, null=True)
+    accepting_end_date = models.DateField(blank=True, null=True)
+    
+    # Managers
+    objects = models.Manager()
+    accepting_semesters = AcceptingAppsManager()
 
     def __unicode__(self):
         return ' '.join((self.season, str(self.year)))
