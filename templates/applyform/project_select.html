@@ -2,5 +2,10 @@
 
 {% block content %}
 <h1>Projects for {{ semester }} Semester</h1>
+<ul>
+{% for project in projects %}
+<li>{{ project }}</li>
+{% endfor %}
+</ul>
 
 {% endblock %}

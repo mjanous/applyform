@@ -127,11 +127,14 @@ def project_select(request):
         # to it's own view that will allow a student to choose which semester
         # they want to apply for.
         return HttpResponseRedirect(reverse('not_accepting'))
+    
+    projects = Project.accepting_apps.all()
 
         
     return render_to_response(
         'applyform/project_select.html',
         {
+            'projects': projects,
             'semester': semester,
             'user': request.user,
             'MEDIA_URL': settings.MEDIA_URL,
