@@ -1,13 +1,9 @@
 {% extends "base.html" %}
 
-{% block content %}
-<style type="text/css">
-    #id_username, #id_password {
-	width: 170px;
-	padding: 1px 3px;
-    }
-</style>
+{% block extrastyle %}
+{% endblock %}
 
+{% block content %}
 <h1>Login</h1>
 <p>Please login using your z-id and password</p>
 {% if form.errors %}
