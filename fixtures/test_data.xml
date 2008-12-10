@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<django-objects version="1.0">
+ <object pk="1" model="applyform.project">
+  <field type="CharField" name="project_name">
+   Test Project 1
+  </field>
+  <field to="applyform.semester" name="semester" rel="ManyToOneRel">
+   18
+  </field>
+  <field to="applyform.sponsor" name="sponsor" rel="ManyToOneRel">
+   1
+  </field>
+  <field to="applyform.sponsorcontact" name="sponsor_contacts" rel="ManyToManyRel">
+  </field>
+ </object>
+ <object pk="2" model="applyform.project">
+  <field type="CharField" name="project_name">
+   Test Project 2
+  </field>
+  <field to="applyform.semester" name="semester" rel="ManyToOneRel">
+   18
+  </field>
+  <field to="applyform.sponsor" name="sponsor" rel="ManyToOneRel">
+   1
+  </field>
+  <field to="applyform.sponsorcontact" name="sponsor_contacts" rel="ManyToManyRel">
+  </field>
+ </object>
+ <object pk="3" model="applyform.project">
+  <field type="CharField" name="project_name">
+   Test Project 3
+  </field>
+  <field to="applyform.semester" name="semester" rel="ManyToOneRel">
+   19
+  </field>
+  <field to="applyform.sponsor" name="sponsor" rel="ManyToOneRel">
+   1
+  </field>
+  <field to="applyform.sponsorcontact" name="sponsor_contacts" rel="ManyToManyRel">
+  </field>
+ </object>
+ <object pk="1" model="applyform.sponsor">
+  <field type="CharField" name="sponsor_name">
+   Test Sponsor
+  </field>
+ </object>
+ </django-objects>

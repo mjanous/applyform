@@ -156,6 +156,8 @@ class Application(models.Model):
     submitted = models.BooleanField('Application submitted?')
     date_submitted = models.DateField(blank=True, null=True)
     for_semester = models.ForeignKey('Semester', related_name='applications')
+    resume = models.TextField()
+    cover_letter = models.TextField()
     
     # Managers
     objects = models.Manager()
@@ -263,13 +265,6 @@ class Keycard(models.Model):
     
     def __unicode__(self):
         return self.owner.user.username
-    
-class Resume(models.Model):
-    application = models.ForeignKey(Application, related_name='resume')
-    resume_file = models.FileField(upload_to='resumes')
-    
-    def __unicode__(self):
-        return self.application.student.profile.user.username
 
 class Major(models.Model):
     title = models.CharField(max_length=50)
