@@ -187,6 +187,52 @@ def project_select(request):
         }
     )
 
+@login_required
+def resume(request):
+    user = request.user
+    userprofile, created = user.userprofile_set.get_or_create()
+    student_profile, created = userprofile.student_profile.get_or_create()
+        
+    try:
+        semester_accepting = Semester.accepting_semesters.get()
+    except Semester.DoesNotExist:
+        return HttpResponseRedirect(reverse('not_accepting'))
+    except Semester.MultipleObjectsReturned:
+        # BIG WARNING!! Currently, if more than one semester has an
+        # 'Accepting Apps' Date range that 'now' falls into, this exception
+        # will happen and it will appear as if there aren't any applications
+        # being accepted. I don't forsee us accepting applications for more
+        # than one semester at a time but I've left the functionality in there
+        # just in case. This exception will have to be changed and redirected
+        # to it's own view that will allow a student to choose which semester
+        # they want to apply for.
+        return HttpResponseRedirect(reverse('not_accepting'))
+    
+    projects = semester_accepting.project_set.filter(semester=semester_accepting)
+    application, created = student_profile.applications.get_or_create(for_semester=semester_accepting)
+    
+    if request.method == 'POST':
+        form = ResumeForm(request.POST)
+        if form.is_valid():
+            application.resume = form.cleaned_data['resume']
+            application.save()
+            return HttpResponseRedirect(reverse('apply_menu'))
+    else:
+        form = ResumeForm(
+            initial={
+                'resume': application.resume
+            }
+        )
+    
+    return render_to_response(
+        'applyform/resume.html',
+        {
+            'form': form,
+            'user': request.user,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
+
 def not_accepting(request):
     return render_to_response(
         'applyform/not_accepting.html',

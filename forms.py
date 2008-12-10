@@ -6,6 +6,8 @@ from django.contrib.localflavor.us.us_states import STATE_CHOICES
 from applyform.models import *
 from applyform.lib.widgets import NullBooleanDashedSelect
 
+from tinymce.widgets import TinyMCE
+
 class BasicInfoForm(forms.Form):
     # Personal Info
     first_name = forms.CharField(
@@ -100,5 +102,13 @@ class ProjectSelectForm(forms.Form):
     interest = forms.NullBooleanField(
         label="Interested in this project",
         widget=NullBooleanDashedSelect(),
+    )
+    
+class ResumeForm(forms.Form):
+    resume = forms.CharField(
+        widget=TinyMCE(
+            attrs={'cols': 71, 'rows': 20},
+            mce_attrs={'theme': 'advanced'},
+        )
     )
     

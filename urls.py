@@ -26,7 +26,11 @@ urlpatterns = patterns('applyform.views',
     url('^sorry/$',
         view='not_accepting',
         name='not_accepting',
-    )
+    ),
+    url('^resume/$',
+        view='resume',
+        name='resume',
+    ),
 )
 
 urlpatterns += patterns('',

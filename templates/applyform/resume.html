@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block extrastyle %}
+{{ form.media }}
+{% endblock %}
+
+{% block content %}
+<h1>Resume</h1>
+<form action="{% url resume %}" method="post">
+<ul>
+{{ form.resume.as_widget }}
+<li><input type="submit" value="Update Info" class="submit_button" /></li>
+</ul>
+</form>
+
+{% endblock %}
