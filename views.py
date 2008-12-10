@@ -28,10 +28,26 @@ def apply_menu(request):
             profile_complete = True
     except UserProfile.DoesNotExist:
         profile_complete = False
+    
+    try:
+        semester_accepting = Semester.accepting_semesters.get()
+    except Semester.DoesNotExist:
+        semester_accepting = None
+    except Semester.MultipleObjectsReturned:
+        semester_accepting = None
+    
+    try:
+        student_profile, created = userprofile.student_profile.get_or_create()
+        current_app_complete = student_profile.applications.get(for_semester=semester_accepting).is_complete()
+    except Application.DoesNotExist:
+        current_app_complete = False
+    except UnboundLocalError:
+        current_app_complete = False
 
     return render_to_response(
         'applyform/apply_menu.html',
         {
+            'current_app_complete': current_app_complete,
             'user': request.user,
             'request': request,
             'MEDIA_URL': settings.MEDIA_URL,
@@ -114,7 +130,7 @@ def project_select(request):
     student_profile, created = userprofile.student_profile.get_or_create()
         
     try:
-        semester = Semester.accepting_semesters.get()
+        semester_accepting = Semester.accepting_semesters.get()
     except Semester.DoesNotExist:
         return HttpResponseRedirect(reverse('not_accepting'))
     except Semester.MultipleObjectsReturned:
@@ -128,14 +144,44 @@ def project_select(request):
         # they want to apply for.
         return HttpResponseRedirect(reverse('not_accepting'))
     
-    projects = Project.accepting_apps.all()
-
+    projects = semester_accepting.project_set.filter(semester=semester_accepting)
+    application, created = student_profile.applications.get_or_create(for_semester=semester_accepting)
+    
+    initial_data = []
+    for project in projects:
+        try:
+            interest = project.projectinterest_set.get(application=application).interest
+        except ProjectInterest.DoesNotExist:
+            interest = None
+        except ProjectInterest.MultipleObjectsReturned:
+            # THIS SHOULD NEVER HAPPEN. If it does, something's seriously messed up.
+            interest = None
         
+        initial_data.append({
+            'project_name': project.project_name,
+            'project': project.pk, 'interest': interest
+        })
+
+    from django.forms.formsets import formset_factory
+    ProjectSelectFormSet = formset_factory(ProjectSelectForm, extra=0)
+    if request.method == 'POST':
+        formset = ProjectSelectFormSet(request.POST)
+        if formset.is_valid():
+            for i in range(int(request.POST['form-TOTAL_FORMS'])):
+                project_interest, created = application.projectinterest_set.get_or_create(
+                    project=Project.objects.get(pk=formset.forms[i].cleaned_data['project'])
+                )
+                project_interest.interest = formset.forms[i].cleaned_data['interest']
+                project_interest.save()
+            return HttpResponseRedirect(reverse('apply_menu'))
+    else:
+        formset = ProjectSelectFormSet(initial=initial_data)
     return render_to_response(
         'applyform/project_select.html',
         {
+            'formset': formset,
             'projects': projects,
-            'semester': semester,
+            'semester': semester_accepting,
             'user': request.user,
             'MEDIA_URL': settings.MEDIA_URL,
         }

@@ -3,7 +3,7 @@ from datetime import datetime
 from django import forms
 from django.contrib.localflavor.us.forms import USPhoneNumberField, USZipCodeField
 from django.contrib.localflavor.us.us_states import STATE_CHOICES
-from applyform.models import Semester
+from applyform.models import *
 from applyform.lib.widgets import NullBooleanDashedSelect
 
 class BasicInfoForm(forms.Form):
@@ -85,6 +85,20 @@ class BasicInfoForm(forms.Form):
     honors_status = forms.NullBooleanField(
         required=False,
         label="I am an honors Student",
+        widget=NullBooleanDashedSelect(),
+    )
+    
+class ProjectSelectForm(forms.Form):
+    project = forms.IntegerField(
+        required=False,
+        widget=forms.HiddenInput(),
+    )
+    project_name = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+    )
+    interest = forms.NullBooleanField(
+        label="Interested in this project",
         widget=NullBooleanDashedSelect(),
     )
     

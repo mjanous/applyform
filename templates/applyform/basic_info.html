@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Part 1 - Basic Information</h1>
+<h1>Basic Information</h1>
 {% if form.errors %}<p class="errorlist">Errors occured while saving your application.</p>{% endif %}
 <form action="{% url applyform.views.basic_info %}" method="post">
 <ul>

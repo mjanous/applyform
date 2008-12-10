@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Projects for {{ semester }} Semester</h1>
-<ul>
-{% for project in projects %}
-<li>{{ project }}</li>
-{% endfor %}
-</ul>
-
+<h1>Project Selection</h1>
+<p>Please select the projects that you wish to apply for in the {{ semester }} semester.</p>
+<form method="post" action="">
+    {{ formset.management_form }}
+    <ul>
+    {% for form in formset.forms %}
+    <li><label>{{ form.initial.project_name }}:</label> {{ form.interest.as_widget }}</li> {{ form.project }}
+    {% endfor %}
+    <li><input type="submit" value="Update Info" class="submit_button" /></li>
+    </ul>
+</form>
 {% endblock %}

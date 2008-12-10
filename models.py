@@ -164,6 +164,19 @@ class Application(models.Model):
     def __unicode__(self):
         return self.student.profile.user.username
     
+    def is_complete(self):
+        semester_projects = Project.objects.filter(semester=self.for_semester)
+        for p in semester_projects:
+            try:
+                proj_interest = self.projectinterest_set.get(project=p)
+                if proj_interest.interest is None:
+                    return False
+                else:
+                    pass
+            except ProjectInterest.DoesNotExist:
+                return False
+        return True
+    
     class Meta:
         unique_together = ('student', 'for_semester')
 
@@ -206,14 +219,20 @@ class Sponsor(models.Model):
  
 class ProjectInterest(models.Model):
     application = models.ForeignKey(Application)
-    project = models.ForeignKey(Project)
-    score = models.IntegerField(max_length=2)
+    project = models.ForeignKey(Project, related_name="projectinterest_set")
+    interest = models.NullBooleanField()
     
     def __unicode__(self):
         return ' '.join((
             self.application.student.profile.user.username,
             self.project.project_name
         ))
+    
+    def save(self, force_insert=False, force_update=False):
+        if self.application.for_semester != self.project.semester:
+            return
+        else:
+            super(ProjectInterest, self).save(force_insert, force_update)
     
     class Meta:
         unique_together = ('application', 'project')
