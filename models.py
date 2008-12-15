@@ -247,6 +247,9 @@ class ReferenceRating(models.Model):
     student = models.ForeignKey(Student)
     rating = models.IntegerField(max_length=2)
     
+    def __unicode__(self):
+        return self.student.profile.user.username
+    
 class SponsorContact(models.Model):
     company = models.ForeignKey(Sponsor, related_name='contact_set')
     first_name = models.CharField(max_length=40, blank=True)
