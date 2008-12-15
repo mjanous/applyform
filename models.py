@@ -3,8 +3,12 @@ from django.contrib.localflavor.us.models import PhoneNumberField, USStateField
 from django.contrib.auth.models import User
 
 class AcceptingAppsManager(models.Manager):
-    '''This manager goes with the Semester model to return a queryset of
-    semesters that we are currently accepting applications for.'''
+    """Manager class for Semester model
+    
+    Queryset is of all semesters that we are currently accepting
+    applications for.
+    
+    """
     def get_query_set(self):
         from datetime import datetime
         now = datetime.now()
