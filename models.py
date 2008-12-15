@@ -148,6 +148,9 @@ class Reference(models.Model):
         UserProfile, unique=True, related_name='reference_profile')
     students = models.ManyToManyField(
         Student, through='ReferenceRating')
+    
+    def __unicode__(self):
+        return self.profile.user.username
 
 class Application(models.Model):
     student = models.ForeignKey(Student, related_name='applications')
