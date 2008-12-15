@@ -61,8 +61,10 @@ class UserProfile(models.Model):
         return self.user.username
     
     def profile_info_completed(self):
-        '''This method determines if all the required fields for a correct
-        application are filled out'''
+        """
+        Returns True if if all the required fields for a valid
+        application are filled out.
+        """
         try:
             if (
                 (self.user.first_name) and
