@@ -186,6 +186,13 @@ class Application(models.Model):
         return self.student.profile.user.username
     
     def is_complete(self):
+        """Return true if all ProjectInterest objects are complete
+        
+        Find all projects that need ProjectInterest objects for the
+        Application's "for_semester" field. Return False if any ProjectInterest
+        object is not found or has a null for boolean interest value.
+        
+        """
         semester_projects = Project.objects.filter(semester=self.for_semester)
         for p in semester_projects:
             try:
