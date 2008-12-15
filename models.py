@@ -162,8 +162,8 @@ class Coach(models.Model):
 class Reference(models.Model):
     profile = models.ForeignKey(
         UserProfile, unique=True, related_name='reference_profile')
-    students = models.ManyToManyField(
-        Student, through='ReferenceRating')
+    applications = models.ManyToManyField(
+        'Application', through='ReferenceRating', related_name='reference')
     
     def __unicode__(self):
         return self.profile.user.username
@@ -267,7 +267,7 @@ class ProjectInterest(models.Model):
         
 class ReferenceRating(models.Model):
     reference = models.ForeignKey(Reference)
-    student = models.ForeignKey(Student)
+    application = models.ForeignKey(Application)
     department = models.CharField(max_length=40, blank=True)
     q_how_known = models.TextField(
         verbose_name="In what capacity have you known the student?",
