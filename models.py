@@ -17,9 +17,12 @@ class AcceptingAppsManager(models.Manager):
         )
 
 class CurrentAppsManager(models.Manager):
-    '''This manager goes with the Applications model to return a queryset
-    of applications that are for the current semester(s) we're accepting
-    apps for.'''
+    """Manager class for Application model
+    
+    Queryset is of all applications for the semesters we are currently
+    accepting applications for.
+    
+    """    
     def get_query_set(self):
         from datetime import datetime
         now = datetime.now()
