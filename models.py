@@ -245,7 +245,35 @@ class ProjectInterest(models.Model):
 class ReferenceRating(models.Model):
     reference = models.ForeignKey(Reference)
     student = models.ForeignKey(Student)
-    rating = models.IntegerField(max_length=2)
+    department = models.CharField(max_length=40, blank=True)
+    q_how_known = models.TextField(
+        verbose_name="In what capacity have you known the student?",
+        blank=True,
+    )
+    q_strengths = models.TextField(
+        verbose_name=("What strengths of the student would contribute to a "
+            "successful project outcome?"),
+        blank=True,
+    )
+    q_strength_example = models.TextField(
+        verbose_name=("Please give an example of a situation when the "
+            "student has demonstrated one or more of these strengths"),
+        blank=True,
+    )
+    q_weakness = models.TextField(
+        verbose_name="What is an area of weakness for the student?",
+        blank=True,
+    )
+    q_weakness_improve = models.TextField(
+        verbose_name=("How will being a member of an ELC team help the "
+            "student address this weakness?"),
+        blank=True,
+    )
+    ability_rating = models.IntegerField(
+        verbose_name=("On a scale from 1-10 (10 being the highest), "
+            "please rate the ability of this student to work in a "
+            "self-directed, team focused project."),
+        null=True, blank=True)
     
     def __unicode__(self):
         return self.student.profile.user.username
