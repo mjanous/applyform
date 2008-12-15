@@ -109,9 +109,13 @@ class Student(models.Model):
         return self.profile.user.username
     
     def get_current_applications(self):
-        '''This method retrieves the student's applications for the semester(s)
-        that are accepting applications. Will return DoesNotExist errors if
-        there is no current semester or no application for that semester.'''
+        """Return a list of Application objects
+        
+        This method retrieves the student's applications for the semester(s)
+        that are accepting applications. Will return an empty list if there
+        is no current semester or if there is no application for that semester.
+        
+        """
         accepting_semesters = Semester.accepting_semesters.all()
         applications = []
         for semester in accepting_semesters:
