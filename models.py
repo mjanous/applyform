@@ -32,8 +32,11 @@ class CurrentAppsManager(models.Manager):
         )
     
 class AcceptingAppsProjectsManager(models.Manager):
-    '''This manager goes with the Projects model to return a queryset of
-    projects that students are allowed to apply for, for the next semester'''
+    """Manager class for the Project model
+    
+    Queryset is of all projects that students are allowed to apply for.
+    
+    """
     def get_query_set(self):
         from datetime import datetime
         now = datetime.now()
