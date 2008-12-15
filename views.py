@@ -214,7 +214,8 @@ def resume(request):
     if request.method == 'POST':
         form = ResumeForm(request.POST)
         if form.is_valid():
-            application.resume = form.cleaned_data['resume']
+            application.resume = form.cleaned_data['resume'].replace(
+                '&lt;!--', '<!--').replace('--&gt;', '-->')
             application.save()
             return HttpResponseRedirect(reverse('apply_menu'))
     else:

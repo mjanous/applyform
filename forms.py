@@ -107,8 +107,26 @@ class ProjectSelectForm(forms.Form):
 class ResumeForm(forms.Form):
     resume = forms.CharField(
         widget=TinyMCE(
-            attrs={'cols': 71, 'rows': 20},
-            mce_attrs={'theme': 'advanced'},
+            attrs={'cols': 130, 'rows': 40},
+            mce_attrs={
+                'mode': "textareas",
+                'theme': "advanced",
+                'language': "en",
+                'theme_advanced_toolbar_location': "top",
+                'theme_advanced_toolbar_align': "left",
+                'theme_advanced_statusbar_location': "",
+                'theme_advanced_buttons1': "save,cancel,|,fullscreen,|,image,preview,|,cut,copy,paste,|,undo,redo,|,bold,italic,underline,|,bullist,numlist,|,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,|,link,unlink",
+                'theme_advanced_buttons2': "formatselect,|,forecolor,backcolor,|,table,delete_col,delete_row,col_after,col_before,row_after,row_before,row_after,row_before,split_cells,merge_cells",
+                'theme_advanced_buttons3': "",
+                'theme_advanced_path': 'false',
+                'theme_advanced_blockformats': "p,h1,h2,h3",
+                'width': '100%',
+                'height': '90%',
+                'content_css': "/media/css/style.css",
+                'plugins': "advimage,advlink,fullscreen,table,preview,save",
+                'advimage_update_dimensions_onchange': 'true',
+                'relative_urls': 'false'
+            },
         )
     )
     
