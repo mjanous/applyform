@@ -129,4 +129,9 @@ class ResumeForm(forms.Form):
             },
         )
     )
-    
+
+class ReferenceCheckForm(forms.Form):
+    email = forms.EmailField(
+        label='Reference Email',
+        required=True,
+    )
