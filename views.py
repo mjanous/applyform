@@ -144,7 +144,7 @@ def project_select(request):
         # they want to apply for.
         return HttpResponseRedirect(reverse('not_accepting'))
     
-    projects = semester_accepting.project_set.filter(semester=semester_accepting)
+    projects = semester_accepting.project_set.all()
     application, created = student_profile.applications.get_or_create(for_semester=semester_accepting)
     
     initial_data = []
@@ -208,7 +208,7 @@ def resume(request):
         # they want to apply for.
         return HttpResponseRedirect(reverse('not_accepting'))
     
-    projects = semester_accepting.project_set.filter(semester=semester_accepting)
+    projects = semester_accepting.project_set.all()
     application, created = student_profile.applications.get_or_create(for_semester=semester_accepting)
     
     if request.method == 'POST':
