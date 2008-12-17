@@ -31,6 +31,10 @@ urlpatterns = patterns('applyform.views',
         view='resume',
         name='resume',
     ),
+    url('reference/$',
+        view='reference',
+        name='reference',
+    ),
 )
 
 urlpatterns += patterns('',

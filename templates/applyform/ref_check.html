@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Reference Selection</h1>
+<form action="{% url reference %}" method="post">
+<ul>
+{{ form.as_ul }}
+<li><input type="submit" value="Update Info" class="submit_button" /></li>
+</ul>
+</form>
+
+{% endblock %}

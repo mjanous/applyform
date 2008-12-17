@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Reference Selection</h1>
+<p>We have the following reference(s) with the email address, "{{ ref_email }}":</p>
+<table>
+<tr>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Email</th>
+</tr>
+{% for ref in refs %}
+<tr>
+<td>{{ ref.first_name }}</td>
+<td>{{ ref.last_name }}</td>
+<td>{{ ref.email }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

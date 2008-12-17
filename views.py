@@ -234,6 +234,49 @@ def resume(request):
         }
     )
 
+@login_required
+def reference(request):
+    if request.method == 'POST':
+        form = ReferenceCheckForm(request.POST)
+        if form.is_valid():
+            ref_email = form.cleaned_data['email']
+            refs = User.objects.filter(email=ref_email)
+            if not refs:
+                return render_to_response(
+                    'applyform/ref_add.html',
+                    {
+                        'ref_email': ref_email,
+                        'form': form,
+                        'user': request.user,
+                        'request': request,
+                        'MEDIA_URL': settings.MEDIA_URL,
+                    }
+                )
+            else:
+                return render_to_response(
+                    'applyform/ref_confirm.html',
+                    {
+                        'ref_email': ref_email,
+                        'refs': refs,
+                        'form': form,
+                        'user': request.user,
+                        'request': request,
+                        'MEDIA_URL': settings.MEDIA_URL,
+                    }
+                )
+    else:
+        form = ReferenceCheckForm()
+        
+    return render_to_response(
+        'applyform/ref_check.html',
+        {
+            'form': form,
+            'user': request.user,
+            'request': request,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
+
 def not_accepting(request):
     return render_to_response(
         'applyform/not_accepting.html',
