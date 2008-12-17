@@ -448,16 +448,14 @@ table {
 	border-collapse:collapse;
 }
 
-table. th {
+table tr th {
 	color: #000;
-	background-color: #999999;
 	text-align: left;
 	padding: 3px;
 }
 
-table td {
+table tr td {
 	color: #000;
-	background-color: #FFFFFF;
 	text-align: left;
 	padding: 3px;
 }
