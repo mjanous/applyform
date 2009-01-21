@@ -8,16 +8,6 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
-def index(request):
-    return render_to_response(
-        'applyform/index.html',
-        {
-            'user': request.user,
-            'request': request,
-            'MEDIA_URL': settings.MEDIA_URL,
-        }
-    )
-
 @login_required
 def apply_menu(request):
     user = request.user
@@ -271,26 +261,6 @@ def reference(request):
         'applyform/ref_check.html',
         {
             'form': form,
-            'user': request.user,
-            'request': request,
-            'MEDIA_URL': settings.MEDIA_URL,
-        }
-    )
-
-def not_accepting(request):
-    return render_to_response(
-        'applyform/not_accepting.html',
-        {
-            'user': request.user,
-            'request': request,
-            'MEDIA_URL': settings.MEDIA_URL,
-        }
-    )
-
-def thanks(request):
-    return render_to_response(
-        'applyform/thanks.html',
-        {
             'user': request.user,
             'request': request,
             'MEDIA_URL': settings.MEDIA_URL,
