@@ -159,15 +159,6 @@ class Coach(models.Model):
     class Meta:
         verbose_name_plural = "Coaches"
 
-class Reference(models.Model):
-    profile = models.ForeignKey(
-        UserProfile, unique=True, related_name='reference_profile')
-    applications = models.ManyToManyField(
-        'Application', through='ReferenceRating', related_name='reference')
-    
-    def __unicode__(self):
-        return self.profile.user.username
-
 class Application(models.Model):
     student = models.ForeignKey(Student, related_name='applications')
     project_interests = models.ManyToManyField(
@@ -266,7 +257,7 @@ class ProjectInterest(models.Model):
         unique_together = ('application', 'project')
         
 class ReferenceRating(models.Model):
-    reference = models.ForeignKey(Reference)
+    reference = models.ForeignKey(UserProfile)
     application = models.ForeignKey(Application)
     department = models.CharField(max_length=40, blank=True)
     q_how_known = models.TextField(
