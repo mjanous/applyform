@@ -36,13 +36,6 @@ def apply_menu(request):
         profile_complete = False
     
     try:
-        semester_accepting = Semester.accepting_semesters.get()
-    except Semester.DoesNotExist:
-        semester_accepting = None
-    except Semester.MultipleObjectsReturned:
-        semester_accepting = None
-    
-    try:
         student_profile, created = userprofile.student_profile.get_or_create()
         current_app_complete = student_profile.applications.get(for_semester=semester_accepting).is_complete()
     except Application.DoesNotExist:
