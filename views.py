@@ -18,14 +18,6 @@ def apply_menu(request):
     except Semester.DoesNotExist:
         return HttpResponseRedirect(reverse('not_accepting'))
     except Semester.MultipleObjectsReturned:
-        # BIG WARNING!! Currently, if more than one semester has an
-        # 'Accepting Apps' Date range that 'now' falls into, this exception
-        # will happen and it will appear as if there aren't any applications
-        # being accepted. I don't forsee us accepting applications for more
-        # than one semester at a time but I've left the functionality in there
-        # just in case. This exception will have to be changed and redirected
-        # to it's own view that will allow a student to choose which semester
-        # they want to apply for.
         return HttpResponseRedirect(reverse('not_accepting'))
     
     try:  
@@ -134,14 +126,6 @@ def project_select(request):
     except Semester.DoesNotExist:
         return HttpResponseRedirect(reverse('not_accepting'))
     except Semester.MultipleObjectsReturned:
-        # BIG WARNING!! Currently, if more than one semester has an
-        # 'Accepting Apps' Date range that 'now' falls into, this exception
-        # will happen and it will appear as if there aren't any applications
-        # being accepted. I don't forsee us accepting applications for more
-        # than one semester at a time but I've left the functionality in there
-        # just in case. This exception will have to be changed and redirected
-        # to it's own view that will allow a student to choose which semester
-        # they want to apply for.
         return HttpResponseRedirect(reverse('not_accepting'))
     
     projects = semester_accepting.project_set.all()
@@ -198,14 +182,6 @@ def resume(request):
     except Semester.DoesNotExist:
         return HttpResponseRedirect(reverse('not_accepting'))
     except Semester.MultipleObjectsReturned:
-        # BIG WARNING!! Currently, if more than one semester has an
-        # 'Accepting Apps' Date range that 'now' falls into, this exception
-        # will happen and it will appear as if there aren't any applications
-        # being accepted. I don't forsee us accepting applications for more
-        # than one semester at a time but I've left the functionality in there
-        # just in case. This exception will have to be changed and redirected
-        # to it's own view that will allow a student to choose which semester
-        # they want to apply for.
         return HttpResponseRedirect(reverse('not_accepting'))
     
     projects = semester_accepting.project_set.all()
