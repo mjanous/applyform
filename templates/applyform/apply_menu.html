@@ -7,6 +7,6 @@
 <li><a href="{% url basic_info %}">Enter Basic Information</a> - {% if profile_complete %}Complete{% else %}Not complete{% endif %}</li>
 <li><a href="{% url project_select %}">Enter Project Selections</a> - {% if current_app_complete %}Complete{% else %}Not complete{% endif %}</li>
 <li><a href="{% url resume %}">Enter Resume</a> - </li>
-<li><a href="{% url reference %}">Enter a Reference</a> - </li>
+<li><a href="{% url reference %}">Enter a Reference</a> - Currently, {% if reference %}{{ reference.email }}.{% else %}none.{% endif %}</li>
 </ul>
 {% endblock %}
