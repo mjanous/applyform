@@ -263,6 +263,11 @@ class ProjectInterest(models.Model):
         ))
     
     def save(self, force_insert=False, force_update=False):
+        """
+        Makes sure that we don't have project interests created on
+        applications for a semester different than that project's
+        participating semester.
+        """
         if self.application.for_semester != self.project.semester:
             return
         else:
