@@ -53,6 +53,7 @@ def apply_menu(request):
     return render_to_response(
         'applyform/apply_menu.html',
         {
+            'semester': semester_accepting,
             'current_app_complete': current_app_complete,
             'user': request.user,
             'request': request,

@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Welcome to the ELC Application Form</h1>
+<h1>Application for the {{ semester }} semester</h1>
 <ul>
 <h3>Choose an action:</h3>
 <li><a href="{% url basic_info %}">Enter Basic Information</a> - {% if profile_complete %}Complete{% else %}Not complete{% endif %}</li>
 <li><a href="{% url project_select %}">Enter Project Selections</a> - {% if current_app_complete %}Complete{% else %}Not complete{% endif %}</li>
 <li><a href="{% url resume %}">Enter Resume</a> - </li>
+<li><a href="{% url reference %}">Enter a Reference</a> - </li>
 </ul>
 {% endblock %}
