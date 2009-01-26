@@ -361,7 +361,7 @@ body {
 #content p {
 	font-size: 75%;
 	line-height: 130%;
-	margin: 0px;
+	margin: 10px 0px 0px 0px;
 	padding: 0px 10px;
 	margin-bottom: 10px;
 }
