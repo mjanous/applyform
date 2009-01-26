@@ -196,6 +196,21 @@ class Application(models.Model):
                 return False
         return True
     
+    def get_reference(self):
+        """Return User object or None if None
+        
+        Get the User object that is listed on the Application
+        
+        """
+        try:
+            reference = self.referencerating_set.get().reference.user
+        except ReferenceRating.DoesNotExist:
+            reference = None
+        except ReferenceRating.MultipleObjectsReturned:
+            reference = None
+        
+        return reference
+
     class Meta:
         unique_together = ('student', 'for_semester')
 
