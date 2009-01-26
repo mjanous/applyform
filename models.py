@@ -305,7 +305,7 @@ class ReferenceRating(models.Model):
         null=True, blank=True)
     
     def __unicode__(self):
-        return self.student.profile.user.username
+        return self.application.student.profile.user.username
     
 class SponsorContact(models.Model):
     company = models.ForeignKey(Sponsor, related_name='contact_set')
