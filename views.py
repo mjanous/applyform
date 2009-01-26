@@ -12,6 +12,22 @@ from django.core.urlresolvers import reverse
 def apply_menu(request):
     user = request.user
     profile_complete = False
+    
+    try:
+        semester_accepting = Semester.accepting_semesters.get()
+    except Semester.DoesNotExist:
+        return HttpResponseRedirect(reverse('not_accepting'))
+    except Semester.MultipleObjectsReturned:
+        # BIG WARNING!! Currently, if more than one semester has an
+        # 'Accepting Apps' Date range that 'now' falls into, this exception
+        # will happen and it will appear as if there aren't any applications
+        # being accepted. I don't forsee us accepting applications for more
+        # than one semester at a time but I've left the functionality in there
+        # just in case. This exception will have to be changed and redirected
+        # to it's own view that will allow a student to choose which semester
+        # they want to apply for.
+        return HttpResponseRedirect(reverse('not_accepting'))
+    
     try:  
         userprofile = user.get_profile()
         if userprofile.profile_info_completed():
