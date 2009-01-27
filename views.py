@@ -15,9 +15,7 @@ def apply_menu(request):
     
     try:
         semester_accepting = Semester.accepting_semesters.get()
-    except Semester.DoesNotExist:
-        return HttpResponseRedirect(reverse('not_accepting'))
-    except Semester.MultipleObjectsReturned:
+    except (Semester.DoesNotExist, Semester.MultipleObjectsReturned):
         return HttpResponseRedirect(reverse('not_accepting'))
     
     try:  
@@ -124,9 +122,7 @@ def project_select(request):
         
     try:
         semester_accepting = Semester.accepting_semesters.get()
-    except Semester.DoesNotExist:
-        return HttpResponseRedirect(reverse('not_accepting'))
-    except Semester.MultipleObjectsReturned:
+    except (Semester.DoesNotExist, Semester.MultipleObjectsReturned):
         return HttpResponseRedirect(reverse('not_accepting'))
     
     projects = semester_accepting.project_set.all()
@@ -136,10 +132,7 @@ def project_select(request):
     for project in projects:
         try:
             interest = project.projectinterest_set.get(application=application).interest
-        except ProjectInterest.DoesNotExist:
-            interest = None
-        except ProjectInterest.MultipleObjectsReturned:
-            # THIS SHOULD NEVER HAPPEN. If it does, something's seriously messed up.
+        except (ProjectInterest.DoesNotExist, ProjectInterest.MultipleObjectsReturned):
             interest = None
         
         initial_data.append({
@@ -180,9 +173,7 @@ def resume(request):
         
     try:
         semester_accepting = Semester.accepting_semesters.get()
-    except Semester.DoesNotExist:
-        return HttpResponseRedirect(reverse('not_accepting'))
-    except Semester.MultipleObjectsReturned:
+    except (Semester.DoesNotExist, Semester.MultipleObjectsReturned):
         return HttpResponseRedirect(reverse('not_accepting'))
     
     projects = semester_accepting.project_set.all()
