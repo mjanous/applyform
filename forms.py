@@ -115,8 +115,17 @@ class ResumeForm(forms.Form):
                 'theme_advanced_toolbar_location': "top",
                 'theme_advanced_toolbar_align': "left",
                 'theme_advanced_statusbar_location': "",
-                'theme_advanced_buttons1': "save,cancel,|,fullscreen,|,image,preview,|,cut,copy,paste,|,undo,redo,|,bold,italic,underline,|,bullist,numlist,|,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,|,link,unlink",
-                'theme_advanced_buttons2': "formatselect,|,forecolor,backcolor,|,table,delete_col,delete_row,col_after,col_before,row_after,row_before,row_after,row_before,split_cells,merge_cells",
+                'theme_advanced_buttons1': (
+                    "save,cancel,|,fullscreen,|,image,preview,|,cut,copy,"
+                    "paste,|,undo,redo,|,bold,italic,underline,|,"
+                    "bullist,numlist,|,sub,sup,|,justifyleft,justifycenter,"
+                    "justifyright,justifyfull,|,outdent,indent,|,link,unlink"
+                ),
+                'theme_advanced_buttons2': (
+                    "formatselect,|,forecolor,backcolor,|,table,delete_col,"
+                    "delete_row,col_after,col_before,row_after,row_before,"
+                    "row_after,row_before,split_cells,merge_cells"
+                ),
                 'theme_advanced_buttons3': "",
                 'theme_advanced_path': 'false',
                 'theme_advanced_blockformats': "p,h1,h2,h3",
