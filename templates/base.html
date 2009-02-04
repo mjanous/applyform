@@ -46,7 +46,7 @@
     <li><a href="{% url django.contrib.auth.views.login %}">Login</a></li>
     {% endif %}
     {% if user.is_staff %}
-    <li><a href="{% url admin_site "" %}">Admin</a></li>
+    <li><a href="{% url admin_site . %}">Admin</a></li>
     {% endif %}
 </ul>
 {% if user.is_authenticated %}
