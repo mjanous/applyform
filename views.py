@@ -244,3 +244,27 @@ def reference(request):
             'MEDIA_URL': settings.MEDIA_URL,
         }
     )
+
+@login_required
+def reference_rate(request):
+    if request.method == 'POST':
+        form = ReferenceRatingForm(request.POST)
+        if form.is_valid():
+            # TODO
+            pass
+        else:
+            # TODO
+            pass
+    else:
+        # TODO
+        form = ReferenceRatingForm()
+        
+    return render_to_response(
+        'applyform/ref_check.html',
+        {
+            'form': form,
+            'user': request.user,
+            'request': request,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
