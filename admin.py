@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from applyform.models import *
 from django.contrib import admin
 
