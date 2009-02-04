@@ -144,3 +144,37 @@ class ReferenceCheckForm(forms.Form):
         label='Reference Email',
         required=True,
     )
+    
+class ReferenceRatingForm(forms.Form):
+    department = forms.CharField(
+        label=()
+    )
+    q_how_known = forms.CharField(
+        label="In what capacity have you known the student?",
+        required=True,
+    )
+    q_strengths = forms.CharField(
+        label=("What strengths of the student would contribute to a "
+            "successful project outcome?"),
+        required=True,
+    )
+    q_strength_example = forms.CharField(
+        label=("Please give an example of a situation when the "
+            "student has demonstrated one or more of these strengths"),
+        required=True,
+    )
+    q_weakness = forms.CharField(
+        label="What is an area of weakness for the student?",
+        required=True,
+    )
+    q_weakness_improve = forms.CharField(
+        label=("How will being a member of an ELC team help the "
+            "student address this weakness?"),
+        required=True,
+    )
+    ability_rating = forms.ComboField(
+        label=("On a scale from 1-10 (10 being the highest), "
+            "please rate the ability of this student to work in a "
+            "self-directed, team focused project."),
+        required=True,
+    )
