@@ -277,7 +277,16 @@ def reference_rate(request):
 def coach_list_projects(request):
     user=request.user
     userprofile, _ = user.userprofile_set.get_or_create()
-    projects = userprofile.coach_profile.get().project.all()
+    try:
+        coach_profile = userprofile.coach_profile.get()
+    except Coach.DoesNotExist:
+        # TODO: Make this redirect to a page explaining User is not a coach.
+        return HttpResponseRedirect(reverse('not_accepting'))
+    
+    try:
+        projects = coach_profile.project.all()
+    except:
+        projects = None
     
     return render_to_response(
         'applyform/coach_list_projects.html',
@@ -294,7 +303,8 @@ def coach_list_students(request, project_id):
     user=request.user
     userprofile, _ = user.userprofile_set.get_or_create()
     project = Project.objects.get(pk=project_id)
-    interested_students = project.applications.all()
+    interested_students = project.applications.filter(
+        is_submitted=True).filter(projectinterest__interest=True)
     
     return render_to_response(
         'applyform/coach_list_students.html',
