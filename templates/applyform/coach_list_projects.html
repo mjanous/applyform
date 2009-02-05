@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Your Projects</h1>
+<ul>
+{% for project in projects %}
+<li><a href="{% url coach_list_students project.id %}">{{ project }}</a> - {{ project.semester }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

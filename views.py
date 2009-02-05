@@ -272,3 +272,38 @@ def reference_rate(request):
             'MEDIA_URL': settings.MEDIA_URL,
         }
     )
+
+@login_required
+def coach_list_projects(request):
+    user=request.user
+    userprofile, _ = user.userprofile_set.get_or_create()
+    projects = userprofile.coach_profile.get().project.all()
+    
+    return render_to_response(
+        'applyform/coach_list_projects.html',
+        {
+            'projects': projects,
+            'user': user,
+            'request': request,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
+
+@login_required
+def coach_list_students(request, project_id):
+    user=request.user
+    userprofile, _ = user.userprofile_set.get_or_create()
+    project = Project.objects.get(pk=project_id)
+    interested_students = project.applications.all()
+    
+    return render_to_response(
+        'applyform/coach_list_students.html',
+        {
+            'students': interested_students,
+            'project': project,
+            'user': user,
+            'request': request,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
+    
