@@ -163,7 +163,7 @@ class Application(models.Model):
     student = models.ForeignKey(Student, related_name='applications')
     project_interests = models.ManyToManyField(
         'Project', through='ProjectInterest', related_name='applications')
-    submitted = models.BooleanField('Application submitted?')
+    is_submitted = models.BooleanField('Application submitted?')
     date_submitted = models.DateField(blank=True, null=True)
     for_semester = models.ForeignKey('Semester', related_name='applications')
     resume = models.TextField()
