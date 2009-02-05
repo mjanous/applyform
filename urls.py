@@ -30,6 +30,10 @@ urlpatterns = patterns('applyform.views',
         view='coach_list_students',
         name='coach_list_students',
     ),
+    url('apps/(?P<app_id>\d*)/$',
+        view='apps_detail',
+        name='apps_detail',
+    ),
 )
 
 urlpatterns += patterns('django.views.generic.simple',

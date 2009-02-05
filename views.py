@@ -306,4 +306,18 @@ def coach_list_students(request, project_id):
             'MEDIA_URL': settings.MEDIA_URL,
         }
     )
+
+@login_required
+def apps_detail(request, app_id):
+    application = Application.objects.get(pk=app_id)
+    user = request.user
     
+    return render_to_response(
+        'applyform/app_detail.html',
+        {
+            'app': application,
+            'user': user,
+            'request': request,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
