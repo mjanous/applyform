@@ -3,8 +3,8 @@
 {% block content %}
 <h1>Students interested in {{ project }}</h1>
 <ul>
-{% for student in students %}
-<li>{{ student }}</li>
+{% for app in apps %}
+<li><a href="{% url apps_detail app.pk %}">{{ app.student.profile.user.first_name }} {{ app.student.profile.user.last_name }}</a></li>
 {% endfor %}
 </ul>
 
