@@ -306,6 +306,21 @@ def coach_list_students(request, project_id):
     interested_students = project.applications.filter(
         is_submitted=True).filter(projectinterest__interest=True)
     
+    try:
+        coach_profile = userprofile.coach_profile.get()
+    except Coach.DoesNotExist:
+        # TODO: Make this redirect to a page explaining User is not a coach.
+        # Actually... change it to display the error on the page without a
+        # redirect
+        return HttpResponseRedirect(reverse('not_accepting'))
+    
+    try:
+        coach_profile.project.get(pk=project.pk)
+    except Project.DoesNotExist:
+        # TODO: Display an error that this coach is not a member of this
+        # project instead of redirecting to not_accepting page.
+        return HttpResponseRedirect(reverse('not_accepting'))
+    
     return render_to_response(
         'applyform/coach_list_students.html',
         {
