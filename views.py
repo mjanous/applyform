@@ -303,7 +303,7 @@ def coach_list_students(request, project_id):
     user=request.user
     userprofile, _ = user.userprofile_set.get_or_create()
     project = Project.objects.get(pk=project_id)
-    interested_students = project.applications.filter(
+    apps = project.applications.filter(
         is_submitted=True).filter(projectinterest__interest=True)
     
     try:
@@ -324,7 +324,7 @@ def coach_list_students(request, project_id):
     return render_to_response(
         'applyform/coach_list_students.html',
         {
-            'students': interested_students,
+            'apps': apps,
             'project': project,
             'user': user,
             'request': request,
