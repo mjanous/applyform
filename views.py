@@ -27,15 +27,16 @@ def apply_menu(request):
     
     try:
         student_profile, _ = userprofile.student_profile.get_or_create()
-        current_app_complete = current_app.is_complete()
-    except (Application.DoesNotExist, UnboundLocalError):
-        current_app_complete = False
-
-    try:
         current_app = student_profile.applications.get(for_semester=semester_accepting)
         reference = current_app.get_reference()
-    except:
+    except (Application.DoesNotExist, UnboundLocalError):
         reference = None
+
+    try:
+        current_app_complete = current_app.is_complete()
+    except:
+        current_app_complete = False
+
 
     return render_to_response(
         'applyform/apply_menu.html',

@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Application for {{ app }}</h1>
+<h1>{{ app.student.profile.user.first_name }} {{ app.student.profile.user.last_name }}</h1>
+<h3>Cover Letter</h3>
+<p>{{ app.cover_letter }}</p>
+<h3>Resume</h3>
+<p>{{ app.resume|safe }}</p>
 {% endblock %}
