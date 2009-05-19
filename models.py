@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.localflavor.us.models import PhoneNumberField, USStateField
 from django.contrib.auth.models import User
+from django.conf import settings
 
 class AcceptingAppsManager(models.Manager):
     """Manager class for Semester model
@@ -166,8 +167,8 @@ class Application(models.Model):
     is_submitted = models.BooleanField('Application submitted?')
     date_submitted = models.DateField(blank=True, null=True)
     for_semester = models.ForeignKey('Semester', related_name='applications')
-    resume = models.TextField()
-    cover_letter = models.TextField()
+    resume = models.FileField(upload_to='resumes')
+    cover_letter = models.FileField(upload_to='letters')
     
     # Managers
     objects = models.Manager()

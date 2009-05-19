@@ -107,7 +107,7 @@ class ProjectSelectForm(forms.Form):
 class ResumeForm(forms.Form):
     resume = forms.CharField(
         widget=TinyMCE(
-            attrs={'cols': 130, 'rows': 40},
+            attrs={'cols': 130, 'rows': 30},
             mce_attrs={
                 'mode': "textareas",
                 'theme': "advanced",
@@ -130,7 +130,7 @@ class ResumeForm(forms.Form):
                 'theme_advanced_path': 'false',
                 'theme_advanced_blockformats': "p,h1,h2,h3",
                 'width': '100%',
-                'height': '90%',
+                'height': '100%',
                 'content_css': "/media/css/style.css",
                 'plugins': "advimage,advlink,fullscreen,table,preview,save",
                 'advimage_update_dimensions_onchange': 'true',
