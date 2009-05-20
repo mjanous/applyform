@@ -235,8 +235,8 @@ class Semester(models.Model):
     
 class Project(models.Model):
     project_name = models.CharField(max_length=60)
-    semester = models.ForeignKey(Semester, related_name='project_set')
-    sponsor = models.ForeignKey('Sponsor', related_name='project_set')
+    semester = models.ForeignKey(Semester, related_name='project_set', blank=True, null=True)
+    sponsors = models.ManyToManyField('Sponsor', related_name='project_set')
     sponsor_contacts = models.ManyToManyField('SponsorContact', related_name='projects', blank=True)
     
     # Managers
