@@ -235,9 +235,22 @@ class Semester(models.Model):
     
 class Project(models.Model):
     project_name = models.CharField(max_length=60)
+    project_purpose = models.TextField()
     semester = models.ForeignKey(Semester, related_name='project_set', blank=True, null=True)
     sponsors = models.ManyToManyField('Sponsor', related_name='project_set')
     sponsor_contacts = models.ManyToManyField('SponsorContact', related_name='projects', blank=True)
+    implemented_as = models.ForeignKey('ImplementationType', related_name='projects', blank=True, null=True)
+    is_marketing_plan = models.BooleanField()
+    is_market_research = models.BooleanField()
+    is_operations = models.BooleanField()
+    is_information_systems = models.BooleanField()
+    is_interactive_marketing = models.BooleanField()
+    is_finance = models.BooleanField()
+    is_accountancy = models.BooleanField()
+    is_human_resources = models.BooleanField()
+    is_organizational_management = models.BooleanField()
+    project_expiration = models.DateField(blank=True, null=True)
+    price = models.IntegerField(blank=True, null=True)
     
     # Managers
     objects = models.Manager()
@@ -245,6 +258,12 @@ class Project(models.Model):
     
     def __unicode__(self):
         return self.project_name
+    
+class ImplementationType(models.Model):
+    implement = models.CharField(max_length=60)
+    
+    def __unicode__(self):
+        return self.implement
     
 class Sponsor(models.Model):
     sponsor_name = models.CharField(max_length=60)
