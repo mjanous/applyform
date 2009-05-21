@@ -86,8 +86,18 @@ class UserProfile(models.Model):
                 return False
         except:
             return False
-            
         
+    def _get_first_name(self):
+        return self.user.first_name
+    first_name = property(_get_first_name)
+    
+    def _get_last_name(self):
+        return self.user.last_name
+    last_name = property(_get_last_name)
+        
+    class Meta:
+        ordering = ['user']
+            
 class Student(models.Model):
     profile = models.ForeignKey(UserProfile, unique=True, related_name='student_profile')
     major = models.ForeignKey('Major', related_name='student_set', null=True, blank=True)
@@ -153,6 +163,7 @@ class Coach(models.Model):
     profile = models.ForeignKey(
         UserProfile, unique=True, related_name='coach_profile')
     project = models.ManyToManyField('Project', related_name='coaches')
+    expertise = models.TextField(blank=True)
 
     def __unicode__(self):
         return self.profile.user.username
@@ -257,7 +268,13 @@ class Project(models.Model):
     accepting_apps = AcceptingAppsProjectsManager()
     
     def __unicode__(self):
-        return self.project_name
+        project_sponsors = []
+        for sponsor in self.sponsors.all():
+            project_sponsors.append(sponsor.sponsor_name)
+        return ' - '.join(['\\'.join(project_sponsors), self.project_name])
+    
+    class Meta:
+        ordering = ['project_name']
     
 class ImplementationType(models.Model):
     implement = models.CharField(max_length=60)
@@ -270,6 +287,9 @@ class Sponsor(models.Model):
     
     def __unicode__(self):
         return self.sponsor_name
+    
+    class Meta:
+        ordering = ['sponsor_name']
  
 class ProjectInterest(models.Model):
     application = models.ForeignKey(Application)

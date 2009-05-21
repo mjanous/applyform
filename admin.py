@@ -43,10 +43,15 @@ class UserProfileAdmin(admin.ModelAdmin):
         CoachInline,
     ]
     
+    list_display = ('user', 'first_name', 'last_name')
+    
 class ApplicationAdmin(admin.ModelAdmin):
     inlines = [
         ProjectInterestInline,
     ]
+
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ('project_name', 'semester', 'implemented_as')
     
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Student, StudentAdmin)
@@ -55,7 +60,7 @@ admin.site.register(AssistantCoach, BlankAdmin)
 admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Keycard, BlankAdmin)
 admin.site.register(Semester, BlankAdmin)
-admin.site.register(Project, BlankAdmin)
+admin.site.register(Project, ProjectAdmin)
 admin.site.register(Sponsor, BlankAdmin)
 admin.site.register(SponsorContact, BlankAdmin)
 admin.site.register(ProjectInterest, BlankAdmin)
