@@ -102,16 +102,16 @@ class Student(models.Model):
     profile = models.ForeignKey(UserProfile, unique=True, related_name='student_profile')
     major = models.ForeignKey('Major', related_name='student_set', null=True, blank=True)
     grad_date = models.ForeignKey('Semester', blank=True, null=True)
-    grad_status = models.NullBooleanField(
+    is_grad_student = models.NullBooleanField(
         verbose_name='Graduate Student?',
         help_text='Check this box if you are a graduate student',
         blank=True,
         null=True,
     )
-    enrollment_status = models.NullBooleanField(
+    is_enrolled_in_ubus311 = models.NullBooleanField(
         verbose_name='Enrolled in or have completed UBUS 311',
     )
-    honors_status = models.NullBooleanField(
+    is_honors_student = models.NullBooleanField(
         verbose_name='Honors Student?',
     )
     hear_about_us = models.CharField(max_length=60, blank=True)
