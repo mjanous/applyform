@@ -140,7 +140,7 @@ class Student(models.Model):
     
 class Consultant(models.Model):
     student = models.ForeignKey(
-        Student, related_name='consultant_profile')
+        Student, related_name='consultant_profile', unique=True)
     project = models.ManyToManyField(
         'Project', related_name='students')
     
@@ -149,7 +149,7 @@ class Consultant(models.Model):
     
 class AssistantCoach(models.Model):
     student = models.ForeignKey(
-        Student, related_name='assistant_coach_profile')
+        Student, related_name='assistant_coach_profile', unique=True)
     project = models.ManyToManyField(
         'Project', related_name='assistant_coaches')
     
