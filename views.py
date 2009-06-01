@@ -79,9 +79,9 @@ def basic_info(request):
             userprofile.save()
             
             student_profile.grad_date = form.cleaned_data['grad_date']
-            student_profile.grad_status = form.cleaned_data['grad_status']
-            student_profile.enrollment_status = form.cleaned_data['enrollment_status']
-            student_profile.honors_status = form.cleaned_data['honors_status']
+            student_profile.is_grad_student = form.cleaned_data['is_grad_student']
+            student_profile.is_enrolled_in_ubus311 = form.cleaned_data['is_enrolled_in_ubus311']
+            student_profile.is_honors_student = form.cleaned_data['is_honors_student']
             student_profile.save() 
             return HttpResponseRedirect(reverse('apply_menu'))
     else:
@@ -104,9 +104,9 @@ def basic_info(request):
                 'home_phone': userprofile.home_phone,
                 'mobile_phone': userprofile.mobile_phone,
                 'grad_date': grad_date_pk,
-                'grad_status': student_profile.grad_status,
-                'enrollment_status': student_profile.enrollment_status,
-                'honors_status': student_profile.honors_status,
+                'is_grad_student': student_profile.is_grad_student,
+                'is_enrolled_in_ubus311': student_profile.is_enrolled_in_ubus311,
+                'is_honors_student': student_profile.is_honors_student,
             }
         )
         
