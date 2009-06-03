@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.localflavor.us.models import PhoneNumberField, USStateField
+from django.contrib.localflavor.us.models import PhoneNumberField
+from applyform.lib.us.models import USStateField
 from django.contrib.auth.models import User
 from django.conf import settings
 
@@ -21,7 +22,7 @@ class CurrentAppsManager(models.Manager):
     """Manager class for Application model
     
     Queryset is of all applications for the semesters we are currently
-    accepting applications for.
+    accepting applications fstor.
     
     """    
     def get_query_set(self):

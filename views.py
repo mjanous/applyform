@@ -98,7 +98,7 @@ def basic_info(request):
                 'address2': userprofile.address2,
                 'dob': userprofile.dob,
                 'city': userprofile.city,
-                'state': userprofile.state or 'IL',
+                'state': userprofile.state,
                 'zipcode': userprofile.zipcode,
                 'email': user.email,
                 'home_phone': userprofile.home_phone,

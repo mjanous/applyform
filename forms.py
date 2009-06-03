@@ -2,11 +2,12 @@ from datetime import datetime
 
 from django import forms
 from django.contrib.localflavor.us.forms import USPhoneNumberField, USZipCodeField
-from django.contrib.localflavor.us.us_states import STATE_CHOICES
+from applyform.lib.us.us_states import STATE_CHOICES
 from applyform.models import *
 from applyform.lib.widgets import NullBooleanDashedSelect
 
 from tinymce.widgets import TinyMCE
+
 
 class BasicInfoForm(forms.Form):
     # Personal Info
