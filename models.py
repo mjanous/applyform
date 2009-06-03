@@ -355,6 +355,7 @@ class ReferenceRating(models.Model):
     
 class SponsorContact(models.Model):
     company = models.ForeignKey(Sponsor, related_name='contact_set')
+    salutation = models.CharField(max_length=10, blank=True)
     first_name = models.CharField(max_length=40, blank=True)
     last_name = models.CharField(max_length=40, blank=True)
     title = models.CharField(max_length=40, blank=True)
