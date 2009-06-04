@@ -364,6 +364,7 @@ class SponsorContact(models.Model):
     city = models.CharField(max_length=40, blank=True)
     state = USStateField(blank=True)
     zipcode = models.IntegerField(max_length=5, blank=True, null=True)
+    phone = PhoneNumberField(blank=True)
     
     def __unicode__(self):
         return ' '.join((self.first_name, self.last_name))
