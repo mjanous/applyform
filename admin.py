@@ -1,5 +1,14 @@
 from applyform.models import *
+from django.contrib.auth.models import User
 from django.contrib import admin
+
+class AssignedKeycardInline(admin.StackedInline):
+    model = AssignedKeycard
+    extra = 1
+
+class UserInline(admin.StackedInline):
+    model = User
+    extra = 0
 
 class SponsorContactInline(admin.StackedInline):
     model = SponsorContact
@@ -53,6 +62,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     inlines = [
         StudentInline,
         CoachInline,
+        AssignedKeycardInline,
     ]
     
     list_display = ('user', 'first_name', 'last_name')
@@ -80,12 +90,17 @@ class SponsorAdmin(admin.ModelAdmin):
         SponsorContactInline,
     ]
     
+class KeycardAdmin(admin.ModelAdmin):
+    inlines= [
+        AssignedKeycardInline,
+    ]
+    
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Consultant, BlankAdmin)
 admin.site.register(AssistantCoach, BlankAdmin)
 admin.site.register(Application, ApplicationAdmin)
-admin.site.register(Keycard, BlankAdmin)
+admin.site.register(Keycard, KeycardAdmin)
 admin.site.register(Semester, BlankAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Sponsor, SponsorAdmin)

@@ -58,9 +58,12 @@ class UserProfile(models.Model):
     home_phone = PhoneNumberField(blank=True)
     mobile_phone = PhoneNumberField(blank=True)
     bio = models.TextField(blank=True)
+    keycards = models.ManyToManyField(
+        'Keycard', related_name='owner', through='AssignedKeycard', blank=True
+    )
     
     def __unicode__(self):
-        return self.user.username
+        return ' '.join((self.user.username, '-', self.user.first_name, self.user.last_name))
     
     def profile_info_completed(self):
         """
@@ -374,12 +377,14 @@ class SponsorContact(models.Model):
         return ' '.join((self.first_name, self.last_name))
     
 class Keycard(models.Model):
-    owner = models.ForeignKey(UserProfile, related_name='keycard_set')
-    number = models.IntegerField(max_length=20)
-    returned = models.BooleanField()
+    keycard_number = models.IntegerField(unique=True)
+    is_active = models.BooleanField()
     
     def __unicode__(self):
-        return self.owner.user.username
+        return unicode(self.keycard_number)
+    
+    class Meta:
+        ordering = ['keycard_number']
 
 class Major(models.Model):
     title = models.CharField(max_length=50)
@@ -404,4 +409,10 @@ class ProjectContact(models.Model):
 class ProjectSponsor(models.Model):
     project = models.ForeignKey(Project)
     sponsor = models.ForeignKey(Sponsor)
+    
+class AssignedKeycard(models.Model):
+    owner = models.ForeignKey(UserProfile)
+    keycard = models.ForeignKey(Keycard)
+    issue_date = models.DateField(blank=True, null=True)
+    return_date = models.DateField(blank=True, null=True)
     
