@@ -249,8 +249,12 @@ class Project(models.Model):
     project_name = models.CharField(max_length=60)
     project_purpose = models.TextField(blank=True)
     semester = models.ForeignKey(Semester, related_name='project_set', blank=True, null=True)
-    sponsors = models.ManyToManyField('Sponsor', related_name='project_set')
-    sponsor_contacts = models.ManyToManyField('SponsorContact', related_name='projects', blank=True)
+    sponsors = models.ManyToManyField(
+        'Sponsor', related_name='project_set', through='ProjectSponsor', blank=True
+    )
+    sponsor_contacts = models.ManyToManyField(
+        'SponsorContact', related_name='projects', through='ProjectContact', blank=True
+    )
     implemented_as = models.ForeignKey('ImplementationType', related_name='projects', blank=True, null=True)
     is_marketing_plan = models.BooleanField()
     is_market_research = models.BooleanField()
@@ -389,3 +393,15 @@ class College(models.Model):
     
     def __unicode__(self):
         return self.name
+    
+class ProjectContact(models.Model):
+    project = models.ForeignKey(Project)
+    sponsor_contact = models.ForeignKey(SponsorContact)
+    
+    def __unicode__(self):
+        return self.project.project_name
+    
+class ProjectSponsor(models.Model):
+    project = models.ForeignKey(Project)
+    sponsor = models.ForeignKey(Sponsor)
+    

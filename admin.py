@@ -1,6 +1,18 @@
 from applyform.models import *
 from django.contrib import admin
 
+class SponsorContactInline(admin.StackedInline):
+    model = SponsorContact
+    extra = 1
+    
+class ProjectSponsorInline(admin.TabularInline):
+    model = ProjectSponsor
+    extra = 1
+    
+class ProjectContactInline(admin.TabularInline):
+    model = ProjectContact
+    extra = 1
+
 class ApplicationInline(admin.StackedInline):
     model = Application
     extra = 1
@@ -52,6 +64,21 @@ class ApplicationAdmin(admin.ModelAdmin):
 
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('project_name', 'semester', 'implemented_as')
+    inlines = [
+        ProjectContactInline,
+        ProjectSponsorInline,
+    ]
+    
+class SponsorContactAdmin(admin.ModelAdmin):
+    inlines = [
+        ProjectContactInline,
+    ]
+
+class SponsorAdmin(admin.ModelAdmin):
+    inlines = [
+        ProjectSponsorInline,
+        SponsorContactInline,
+    ]
     
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Student, StudentAdmin)
@@ -61,8 +88,8 @@ admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Keycard, BlankAdmin)
 admin.site.register(Semester, BlankAdmin)
 admin.site.register(Project, ProjectAdmin)
-admin.site.register(Sponsor, BlankAdmin)
-admin.site.register(SponsorContact, BlankAdmin)
+admin.site.register(Sponsor, SponsorAdmin)
+admin.site.register(SponsorContact, SponsorContactAdmin)
 admin.site.register(ProjectInterest, BlankAdmin)
 admin.site.register(Coach, BlankAdmin)
 admin.site.register(Major, BlankAdmin)
