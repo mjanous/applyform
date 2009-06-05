@@ -4,6 +4,8 @@ from applyform.lib.us.models import USStateField
 from django.contrib.auth.models import User
 from django.conf import settings
 
+User._meta.ordering = ['last_name', 'first_name']
+
 class AcceptingAppsManager(models.Manager):
     """Manager class for Semester model
     
@@ -63,7 +65,7 @@ class UserProfile(models.Model):
     )
     
     def __unicode__(self):
-        return ' '.join((self.user.username, '-', self.user.first_name, self.user.last_name))
+        return ''.join((self.user.last_name, ', ', self.user.first_name, ' - ', self.user.username,))
     
     def profile_info_completed(self):
         """
