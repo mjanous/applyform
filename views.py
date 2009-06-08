@@ -7,6 +7,7 @@ from applyform.forms import *
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from applyform.lib.decorators import submit_restriction
 
 @login_required
 def apply_menu(request):
@@ -120,6 +121,7 @@ def basic_info(request):
     )
 
 @login_required
+@submit_restriction
 def project_select(request):
     user = request.user
     userprofile, created = user.userprofile_set.get_or_create()
@@ -171,6 +173,7 @@ def project_select(request):
     )
 
 @login_required
+@submit_restriction
 def resume(request):
     user = request.user
     userprofile, created = user.userprofile_set.get_or_create()
@@ -208,6 +211,7 @@ def resume(request):
     )
 
 @login_required
+@submit_restriction
 def reference(request):
     if request.method == 'POST':
         form = ReferenceCheckForm(request.POST)

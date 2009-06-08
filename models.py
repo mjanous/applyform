@@ -93,6 +93,17 @@ class UserProfile(models.Model):
         except:
             return False
         
+    def current_app_is_complete(self):
+        from datetime import datetime
+        now = datetime.now()
+        try:
+            return self.student_profile.get().applications.get_query_set().filter(
+                for_semester__accepting_start_date__lte=now,
+                for_semester__accepting_end_date__gte=now,
+            )[0].is_submitted
+        except:
+            return 'False'
+        
     def _get_first_name(self):
         return self.user.first_name
     first_name = property(_get_first_name)
