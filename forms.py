@@ -100,7 +100,7 @@ class ProjectSelectForm(forms.Form):
         required=False,
         widget=forms.HiddenInput(),
     )
-    interest = forms.NullBooleanField(
+    is_interested = forms.NullBooleanField(
         label="Interested in this project",
         widget=NullBooleanDashedSelect(),
     )

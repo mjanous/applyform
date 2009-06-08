@@ -312,7 +312,7 @@ class Sponsor(models.Model):
 class ProjectInterest(models.Model):
     application = models.ForeignKey(Application)
     project = models.ForeignKey(Project, related_name="projectinterest_set")
-    interest = models.NullBooleanField()
+    is_interested = models.NullBooleanField()
     
     def __unicode__(self):
         return ' '.join((

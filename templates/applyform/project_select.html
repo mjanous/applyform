@@ -7,7 +7,7 @@
     {{ formset.management_form }}
     <ul>
     {% for form in formset.forms %}
-    <li><label>{{ form.initial.project_name }}:</label> {{ form.interest.as_widget }}</li> {{ form.project }}
+    <li><label>{{ form.initial.project_name }}:</label> {{ form.is_interested.as_widget }}</li> {{ form.project }}
     {% endfor %}
     <li><input type="submit" value="Update Info" class="submit_button" /></li>
     </ul>

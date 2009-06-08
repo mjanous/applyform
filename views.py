@@ -136,13 +136,13 @@ def project_select(request):
     initial_data = []
     for project in projects:
         try:
-            interest = project.projectinterest_set.get(application=application).interest
+            is_interested = project.projectinterest_set.get(application=application).is_interested
         except (ProjectInterest.DoesNotExist, ProjectInterest.MultipleObjectsReturned):
-            interest = None
+            is_interested = None
         
         initial_data.append({
             'project_name': project.project_name,
-            'project': project.pk, 'interest': interest
+            'project': project.pk, 'is_interested': is_interested
         })
 
     from django.forms.formsets import formset_factory
@@ -154,7 +154,7 @@ def project_select(request):
                 project_interest, created = application.projectinterest_set.get_or_create(
                     project=Project.objects.get(pk=formset.forms[i].cleaned_data['project'])
                 )
-                project_interest.interest = formset.forms[i].cleaned_data['interest']
+                project_interest.is_interested = formset.forms[i].cleaned_data['is_interested']
                 project_interest.save()
             return HttpResponseRedirect(reverse('apply_menu'))
     else:
@@ -305,7 +305,7 @@ def coach_list_students(request, project_id):
     userprofile, _ = user.userprofile_set.get_or_create()
     project = Project.objects.get(pk=project_id)
     apps = project.applications.filter(
-        is_submitted=True).filter(projectinterest__interest=True)
+        is_submitted=True).filter(projectinterest__is_interested=True)
     
     try:
         coach_profile = userprofile.coach_profile.get()
