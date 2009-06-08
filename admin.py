@@ -47,6 +47,10 @@ class ProjectInterestInline(admin.StackedInline):
 class CoachInline(admin.StackedInline):
     model = Coach
     verbose_name_plural = "Coach Projects"
+
+class ProjectCoachInline(admin.TabularInline):
+    model = ProjectCoach
+    extra = 1
     
 class BlankAdmin(admin.ModelAdmin):
     pass
@@ -59,12 +63,13 @@ class StudentAdmin(admin.ModelAdmin):
     ]
 
 class UserProfileAdmin(admin.ModelAdmin):
+    
     inlines = [
         StudentInline,
         CoachInline,
         AssignedKeycardInline,
     ]
-    
+    search_fields = ['user__first_name', 'user__last_name', 'user__username']
     list_display = ('user', 'first_name', 'last_name')
     
 class ApplicationAdmin(admin.ModelAdmin):
@@ -77,6 +82,7 @@ class ProjectAdmin(admin.ModelAdmin):
     inlines = [
         ProjectContactInline,
         ProjectSponsorInline,
+        ProjectCoachInline,
     ]
     
 class SponsorContactAdmin(admin.ModelAdmin):
@@ -91,14 +97,25 @@ class SponsorAdmin(admin.ModelAdmin):
     ]
     
 class KeycardAdmin(admin.ModelAdmin):
-    inlines= [
+    inlines = [
         AssignedKeycardInline,
     ]
     
+class CoachAdmin(admin.ModelAdmin):
+    inlines = [
+        ProjectCoachInline,
+    ]
+    
+class AssistantCoachAdmin(admin.ModelAdmin):
+    filter_vertical = ['projects']
+    
+class ConsultantAdmin(admin.ModelAdmin):
+    filter_vertical = ['projects']
+    
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Student, StudentAdmin)
-admin.site.register(Consultant, BlankAdmin)
-admin.site.register(AssistantCoach, BlankAdmin)
+admin.site.register(Consultant, ConsultantAdmin)
+admin.site.register(AssistantCoach, AssistantCoachAdmin)
 admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Keycard, KeycardAdmin)
 admin.site.register(Semester, BlankAdmin)
@@ -106,7 +123,7 @@ admin.site.register(Project, ProjectAdmin)
 admin.site.register(Sponsor, SponsorAdmin)
 admin.site.register(SponsorContact, SponsorContactAdmin)
 admin.site.register(ProjectInterest, BlankAdmin)
-admin.site.register(Coach, BlankAdmin)
+admin.site.register(Coach, CoachAdmin)
 admin.site.register(Major, BlankAdmin)
 admin.site.register(College, BlankAdmin)
 admin.site.register(ReferenceRating, BlankAdmin)

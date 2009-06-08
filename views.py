@@ -285,7 +285,7 @@ def coach_list_projects(request):
         return HttpResponseRedirect(reverse('not_accepting'))
     
     try:
-        projects = coach_profile.project.all()
+        projects = coach_profile.projects.all()
     except:
         projects = None
     
@@ -316,7 +316,7 @@ def coach_list_students(request, project_id):
         return HttpResponseRedirect(reverse('not_accepting'))
     
     try:
-        coach_profile.project.get(pk=project.pk)
+        coach_profile.projects.get(pk=project.pk)
     except Project.DoesNotExist:
         # TODO: Display an error that this coach is not a member of this
         # project instead of redirecting to not_accepting page.

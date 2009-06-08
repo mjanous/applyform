@@ -149,7 +149,7 @@ class Student(models.Model):
 class Consultant(models.Model):
     student = models.ForeignKey(
         Student, related_name='consultant_profile', unique=True)
-    project = models.ManyToManyField(
+    projects = models.ManyToManyField(
         'Project', related_name='students')
     
     def __unicode__(self):
@@ -161,7 +161,7 @@ class Consultant(models.Model):
 class AssistantCoach(models.Model):
     student = models.ForeignKey(
         Student, related_name='assistant_coach_profile', unique=True)
-    project = models.ManyToManyField(
+    projects = models.ManyToManyField(
         'Project', related_name='assistant_coaches')
     
     def __unicode__(self):
@@ -174,7 +174,8 @@ class AssistantCoach(models.Model):
 class Coach(models.Model):
     profile = models.ForeignKey(
         UserProfile, unique=True, related_name='coach_profile')
-    project = models.ManyToManyField('Project', related_name='coaches')
+    projects = models.ManyToManyField(
+        'Project', related_name='coach_set', through='ProjectCoach')
     expertise = models.TextField(blank=True)
 
     def __unicode__(self):
@@ -424,4 +425,9 @@ class AssignedKeycard(models.Model):
     keycard = models.ForeignKey(Keycard)
     issue_date = models.DateField(blank=True, null=True)
     return_date = models.DateField(blank=True, null=True)
+    
+class ProjectCoach(models.Model):
+    project = models.ForeignKey(Project)
+    coach = models.ForeignKey(Coach)
+    
     
