@@ -123,7 +123,7 @@ class Student(models.Model):
     hear_about_us = models.CharField(max_length=60, blank=True)
     
     def __unicode__(self):
-        return self.profile.user.username
+        return self.profile.__unicode__()
     
     def get_current_applications(self):
         """Return a list of Application objects
@@ -142,7 +142,9 @@ class Student(models.Model):
                 pass
             
         return applications
-            
+    
+    class Meta:
+        ordering = ['profile']
     
 class Consultant(models.Model):
     student = models.ForeignKey(
@@ -151,7 +153,10 @@ class Consultant(models.Model):
         'Project', related_name='students')
     
     def __unicode__(self):
-        return self.student.profile.user.username
+        return self.student.profile.__unicode__()
+    
+    class Meta:
+        ordering = ['student']
     
 class AssistantCoach(models.Model):
     student = models.ForeignKey(
@@ -160,10 +165,11 @@ class AssistantCoach(models.Model):
         'Project', related_name='assistant_coaches')
     
     def __unicode__(self):
-        return self.student.profile.user.username
+        return self.student.profile.__unicode__()
     
     class Meta:
         verbose_name_plural = "Assistant coaches"
+        ordering = ['student']
     
 class Coach(models.Model):
     profile = models.ForeignKey(
@@ -172,10 +178,11 @@ class Coach(models.Model):
     expertise = models.TextField(blank=True)
 
     def __unicode__(self):
-        return self.profile.user.username
+        return self.profile.__unicode__()
     
     class Meta:
         verbose_name_plural = "Coaches"
+        ordering = ['profile']
 
 class Application(models.Model):
     student = models.ForeignKey(Student, related_name='applications')
