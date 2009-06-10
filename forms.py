@@ -75,17 +75,17 @@ class BasicInfoForm(forms.Form):
         label="Anticipated Graduation Semester",
         queryset=Semester.objects.filter(end_date__gte=datetime.now()),
     )
-    grad_status = forms.NullBooleanField(
+    is_grad_student = forms.NullBooleanField(
         required=False,
         label="I am a Graduate Student",
         widget=NullBooleanDashedSelect(),
     )
-    enrollment_status = forms.NullBooleanField(
+    is_enrolled_in_ubus311 = forms.NullBooleanField(
         required=False,
         label="I am enrolled in or have completed UBUS 311",
         widget=NullBooleanDashedSelect(),
     )
-    honors_status = forms.NullBooleanField(
+    is_honors_student = forms.NullBooleanField(
         required=False,
         label="I am an honors Student",
         widget=NullBooleanDashedSelect(),

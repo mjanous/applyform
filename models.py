@@ -83,9 +83,9 @@ class UserProfile(models.Model):
                 (self.zipcode) and
                 (self.home_phone or self.mobile_phone) and
                 (self.student_profile.get().grad_date) and
-                (self.student_profile.get().grad_status is not None) and
-                (self.student_profile.get().enrollment_status is not None) and
-                (self.student_profile.get().honors_status is not None)
+                (self.student_profile.get().is_grad_student is not None) and
+                (self.student_profile.get().is_enrolled_in_ubus311 is not None) and
+                (self.student_profile.get().is_honors_student is not None)
             ):
                 return True
             else:
