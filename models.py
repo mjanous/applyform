@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.localflavor.us.models import PhoneNumberField
 from applyform.lib.us.models import USStateField
+from applyform.lib.shirts.models import ShirtSizeField
 from django.contrib.auth.models import User
 from django.conf import settings
 
@@ -62,8 +63,8 @@ class UserProfile(models.Model):
     bio = models.TextField(blank=True)
     keycards = models.ManyToManyField(
         'Keycard', related_name='owner', through='AssignedKeycard', blank=True
-    ),
-    tshirt_size = models.CharField(max_length=3, blank=True),
+    )
+    tshirt_size = ShirtSizeField(max_length=3, blank=True)
     
     def __unicode__(self):
         return ''.join((self.user.last_name, ', ', self.user.first_name, ' - ', self.user.username,))
@@ -103,7 +104,7 @@ class UserProfile(models.Model):
                 for_semester__accepting_end_date__gte=now,
             )[0].is_submitted
         except:
-            return 'False'
+            return False
         
     def _get_first_name(self):
         return self.user.first_name

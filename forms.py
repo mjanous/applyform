@@ -3,6 +3,7 @@ from datetime import datetime
 from django import forms
 from django.contrib.localflavor.us.forms import USPhoneNumberField, USZipCodeField
 from applyform.lib.us.us_states import STATE_CHOICES
+from applyform.lib.shirts.shirts import SHIRT_CHOICES
 from applyform.models import *
 from applyform.lib.widgets import NullBooleanDashedSelect
 
@@ -91,6 +92,13 @@ class BasicInfoForm(forms.Form):
         widget=NullBooleanDashedSelect(),
     )
     
+    # Miscellaneous Info
+    tshirt_size = forms.ChoiceField(
+        required=False,
+        choices=SHIRT_CHOICES,
+        widget=forms.Select(attrs={'class': 'text_field'})
+    )
+    
 class ProjectSelectForm(forms.Form):
     project = forms.IntegerField(
         required=False,
@@ -105,8 +113,8 @@ class ProjectSelectForm(forms.Form):
         widget=NullBooleanDashedSelect(),
     )
     
-class ResumeForm(forms.Form):
-    resume = forms.CharField(
+class CoverLetterForm(forms.Form):
+    cover_letter = forms.CharField(
         widget=TinyMCE(
             attrs={'cols': 130, 'rows': 30},
             mce_attrs={

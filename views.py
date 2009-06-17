@@ -77,6 +77,7 @@ def basic_info(request):
                 userprofile.zipcode = form.cleaned_data['zipcode'] 
             userprofile.home_phone = form.cleaned_data['home_phone']
             userprofile.mobile_phone = form.cleaned_data['mobile_phone']
+            userprofile.tshirt_size = form.cleaned_data['tshirt_size']
             userprofile.save()
             
             student_profile.grad_date = form.cleaned_data['grad_date']
@@ -108,6 +109,7 @@ def basic_info(request):
                 'is_grad_student': student_profile.is_grad_student,
                 'is_enrolled_in_ubus311': student_profile.is_enrolled_in_ubus311,
                 'is_honors_student': student_profile.is_honors_student,
+                'tshirt_size' : userprofile.tshirt_size
             }
         )
         
@@ -174,7 +176,7 @@ def project_select(request):
 
 @login_required
 @submit_restriction
-def resume(request):
+def cover_letter(request):
     user = request.user
     userprofile, created = user.userprofile_set.get_or_create()
     student_profile, created = userprofile.student_profile.get_or_create()
@@ -188,21 +190,21 @@ def resume(request):
     application, created = student_profile.applications.get_or_create(for_semester=semester_accepting)
     
     if request.method == 'POST':
-        form = ResumeForm(request.POST)
+        form = CoverLetterForm(request.POST)
         if form.is_valid():
-            application.resume = form.cleaned_data['resume'].replace(
+            application.cover_letter = form.cleaned_data['cover_letter'].replace(
                 '&lt;!--', '<!--').replace('--&gt;', '-->')
             application.save()
             return HttpResponseRedirect(reverse('apply_menu'))
     else:
-        form = ResumeForm(
+        form = CoverLetterForm(
             initial={
-                'resume': application.resume
+                'cover_letter': application.cover_letter
             }
         )
     
     return render_to_response(
-        'applyform/resume.html',
+        'applyform/cover_letter.html',
         {
             'form': form,
             'user': request.user,
