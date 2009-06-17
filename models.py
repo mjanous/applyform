@@ -205,7 +205,7 @@ class Application(models.Model):
     date_submitted = models.DateField(blank=True, null=True)
     for_semester = models.ForeignKey('Semester', related_name='applications')
     resume = models.FileField(upload_to='resumes')
-    cover_letter = models.FileField(upload_to='letters')
+    cover_letter = models.TextField(blank=True)
     
     # Managers
     objects = models.Manager()
