@@ -7,18 +7,14 @@ from applyform.forms import *
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from applyform.lib.decorators import submit_restriction
+from applyform.lib.decorators import submit_restriction, require_accepting
 
 @login_required
-def apply_menu(request):
+@require_accepting
+def apply_menu(request, semester_accepting):
     user = request.user
     profile_complete = False
-    
-    try:
-        semester_accepting = Semester.accepting_semesters.get()
-    except (Semester.DoesNotExist, Semester.MultipleObjectsReturned):
-        return HttpResponseRedirect(reverse('not_accepting'))
-    
+        
     try:  
         userprofile = user.get_profile()
         if userprofile.profile_info_completed():
@@ -123,16 +119,12 @@ def basic_info(request):
     )
 
 @login_required
+@require_accepting
 @submit_restriction
-def project_select(request):
+def project_select(request, semester_accepting):
     user = request.user
     userprofile, created = user.userprofile_set.get_or_create()
     student_profile, created = userprofile.student_profile.get_or_create()
-        
-    try:
-        semester_accepting = Semester.accepting_semesters.get()
-    except (Semester.DoesNotExist, Semester.MultipleObjectsReturned):
-        return HttpResponseRedirect(reverse('not_accepting'))
     
     projects = semester_accepting.project_set.all()
     application, created = student_profile.applications.get_or_create(for_semester=semester_accepting)
@@ -175,17 +167,13 @@ def project_select(request):
     )
 
 @login_required
+@require_accepting
 @submit_restriction
-def cover_letter(request):
+def cover_letter(request, semester_accepting):
     user = request.user
     userprofile, created = user.userprofile_set.get_or_create()
     student_profile, created = userprofile.student_profile.get_or_create()
         
-    try:
-        semester_accepting = Semester.accepting_semesters.get()
-    except (Semester.DoesNotExist, Semester.MultipleObjectsReturned):
-        return HttpResponseRedirect(reverse('not_accepting'))
-    
     projects = semester_accepting.project_set.all()
     application, created = student_profile.applications.get_or_create(for_semester=semester_accepting)
     
@@ -213,8 +201,9 @@ def cover_letter(request):
     )
 
 @login_required
+@require_accepting
 @submit_restriction
-def reference(request):
+def reference(request, semester_accepting):
     if request.method == 'POST':
         form = ReferenceCheckForm(request.POST)
         if form.is_valid():
