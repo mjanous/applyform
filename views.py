@@ -11,7 +11,8 @@ from applyform.lib.decorators import submit_restriction, require_accepting
 
 @login_required
 @require_accepting
-def apply_menu(request, semester_accepting):
+def apply_menu(request):
+    semester_accepting = Semester.accepting_semesters.get()
     user = request.user
     profile_complete = False
         
@@ -121,7 +122,8 @@ def basic_info(request):
 @login_required
 @require_accepting
 @submit_restriction
-def project_select(request, semester_accepting):
+def project_select(request):
+    semester_accepting = Semester.accepting_semesters.get()
     user = request.user
     userprofile, created = user.userprofile_set.get_or_create()
     student_profile, created = userprofile.student_profile.get_or_create()
@@ -169,7 +171,8 @@ def project_select(request, semester_accepting):
 @login_required
 @require_accepting
 @submit_restriction
-def cover_letter(request, semester_accepting):
+def cover_letter(request):
+    semester_accepting = Semester.accepting_semesters.get()
     user = request.user
     userprofile, created = user.userprofile_set.get_or_create()
     student_profile, created = userprofile.student_profile.get_or_create()
@@ -203,7 +206,8 @@ def cover_letter(request, semester_accepting):
 @login_required
 @require_accepting
 @submit_restriction
-def reference(request, semester_accepting):
+def reference(request):
+    semester_accepting = Semester.accepting_semesters.get()
     if request.method == 'POST':
         form = ReferenceCheckForm(request.POST)
         if form.is_valid():

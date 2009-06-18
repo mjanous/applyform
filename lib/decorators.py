@@ -9,11 +9,11 @@ except ImportError:
 def require_accepting(func):
     """
     Decorator to make a view allow access only if we're currently
-    accepting apps. Also adds a semester_accepting variable to the view.
+    accepting apps.
     Usage::
 
         @require_accepting
-        def my_view(request, semester_accepting):
+        def my_view(request):
             # I can assume now that we have a current semester
             # assigned to semester_accepting
             # ...
@@ -25,7 +25,7 @@ def require_accepting(func):
             semester_accepting = Semester.accepting_semesters.get()
         except (Semester.DoesNotExist, Semester.MultipleObjectsReturned):
             return HttpResponseRedirect(reverse('not_accepting'))
-        return func(request, semester_accepting, *args, **kwargs)
+        return func(request, *args, **kwargs)
     return wraps(func)(inner)
 
 
