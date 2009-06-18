@@ -5,6 +5,30 @@ try:
     from functools import wraps
 except ImportError:
     from django.utils.functional import wraps  # Python 2.3, 2.4 fallback.
+    
+def require_app_started(func):
+    """
+    Decorator to make a view allow access only if user has started the
+    ELC application process. If not started, will bring them to a view asking
+    if they would like to begin.
+    Usage::
+    
+        @require_app_started
+        def my_view(request):
+            # I can assume now that we have started the app process.
+    """
+    
+    def inner(request, *args, **kwargs):
+        from applyform.models import Semester
+        semester_accepting = Semester.accepting_semesters.get()
+        
+        try:
+            userprofile = request.user.userprofile_set.get()
+            student_profile = userprofile.student_profile.get()
+            application = student_profile.applications.get(
+                for_semester=semester_accepting)
+        except (UserProfile.DoesNotExist, StudentProfile.DoesNotExist, Application.DoesNotExist):
+            return HttpResponseRedirect('begin_app')
 
 def require_accepting(func):
     """

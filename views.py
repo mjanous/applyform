@@ -7,7 +7,8 @@ from applyform.forms import *
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from applyform.lib.decorators import submit_restriction, require_accepting
+from applyform.lib.decorators import (
+    submit_restriction, require_accepting, require_app_started)
 
 @login_required
 @require_accepting
@@ -52,8 +53,8 @@ def apply_menu(request):
 @login_required
 def basic_info(request):
     user = request.user
-    userprofile, created = user.userprofile_set.get_or_create()
-    student_profile, created = userprofile.student_profile.get_or_create()
+    userprofile = user.userprofile_set.get()
+    student_profile = userprofile.student_profile.get()
         
     if request.method == 'POST':
         form = BasicInfoForm(request.POST)
@@ -121,15 +122,15 @@ def basic_info(request):
 
 @login_required
 @require_accepting
+@require_app_started
 @submit_restriction
 def project_select(request):
     semester_accepting = Semester.accepting_semesters.get()
     user = request.user
-    userprofile, created = user.userprofile_set.get_or_create()
-    student_profile, created = userprofile.student_profile.get_or_create()
-    
+    userprofile = user.userprofile_set.get()
+    student_profile = userprofile.student_profile.get()
     projects = semester_accepting.project_set.all()
-    application, created = student_profile.applications.get_or_create(for_semester=semester_accepting)
+    application = student_profile.applications.get(for_semester=semester_accepting)
     
     initial_data = []
     for project in projects:
@@ -170,15 +171,15 @@ def project_select(request):
 
 @login_required
 @require_accepting
+@require_app_started
 @submit_restriction
 def cover_letter(request):
     semester_accepting = Semester.accepting_semesters.get()
     user = request.user
-    userprofile, created = user.userprofile_set.get_or_create()
-    student_profile, created = userprofile.student_profile.get_or_create()
-        
+    userprofile = user.userprofile_set.get()
+    student_profile = userprofile.student_profile.get()
     projects = semester_accepting.project_set.all()
-    application, created = student_profile.applications.get_or_create(for_semester=semester_accepting)
+    application = student_profile.applications.get(for_semester=semester_accepting)
     
     if request.method == 'POST':
         form = CoverLetterForm(request.POST)
@@ -205,6 +206,7 @@ def cover_letter(request):
 
 @login_required
 @require_accepting
+@require_app_started
 @submit_restriction
 def reference(request):
     semester_accepting = Semester.accepting_semesters.get()
