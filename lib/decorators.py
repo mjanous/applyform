@@ -6,6 +6,24 @@ try:
 except ImportError:
     from django.utils.functional import wraps  # Python 2.3, 2.4 fallback.
     
+def require_student_profile(func):
+    """
+    Decorator to make a view create a student profile for the user if one
+    isn't already started. Usage::
+    
+        @require_app_started
+        def my_view(request):
+            # I can assume now that we have a student profile.
+    """
+    
+    def inner(request, *args, **kwargs):
+        from applyform.models import Semester
+        semester_accepting = Semester.accepting_semesters.get()
+        userprofile, created = request.user.userprofile_set.get_or_create()
+        student_profile, created = userprofile.student_profile.get_or_create()
+        return func(request, *args, **kwargs)
+    return wraps(func)(inner)
+    
 def require_app_started(func):
     """
     Decorator to make a view allow access only if user has started the
@@ -29,6 +47,8 @@ def require_app_started(func):
                 for_semester=semester_accepting)
         except (UserProfile.DoesNotExist, StudentProfile.DoesNotExist, Application.DoesNotExist):
             return HttpResponseRedirect('begin_app')
+        return func(request, *args, **kwargs)
+    return wraps(func)(inner)
 
 def require_accepting(func):
     """

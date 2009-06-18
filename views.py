@@ -8,21 +8,17 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from applyform.lib.decorators import (
-    submit_restriction, require_accepting, require_app_started)
+    submit_restriction, require_accepting, require_app_started, require_student_profile)
 
 @login_required
 @require_accepting
+@require_student_profile
 def apply_menu(request):
     semester_accepting = Semester.accepting_semesters.get()
     user = request.user
     profile_complete = False
-        
-    try:  
-        userprofile = user.get_profile()
-        if userprofile.profile_info_completed():
-            profile_complete = True
-    except UserProfile.DoesNotExist:
-        profile_complete = False
+    userprofile = user.get_profile()
+    profile_complete = userprofile.profile_info_completed()
     
     try:
         student_profile, _ = userprofile.student_profile.get_or_create()
@@ -51,6 +47,7 @@ def apply_menu(request):
     )
 
 @login_required
+@require_student_profile
 def basic_info(request):
     user = request.user
     userprofile = user.userprofile_set.get()
