@@ -156,6 +156,14 @@ class Student(models.Model):
             
         return applications
     
+    def _get_first_name(self):
+        return self.profile.user.first_name
+    first_name = property(_get_first_name)
+    
+    def _get_last_name(self):
+        return self.profile.user.last_name
+    last_name = property(_get_last_name)
+    
     class Meta:
         ordering = ['profile']
     
@@ -202,6 +210,8 @@ class Application(models.Model):
     student = models.ForeignKey(Student, related_name='applications')
     project_interests = models.ManyToManyField(
         'Project', through='ProjectInterest', related_name='applications')
+    reference = models.ManyToManyField(
+        'Reference', through='ReferenceRating', related_name='applications')
     is_submitted = models.BooleanField('Application submitted?')
     date_submitted = models.DateField(blank=True, null=True)
     for_semester = models.ForeignKey('Semester', related_name='applications')
@@ -236,13 +246,13 @@ class Application(models.Model):
         return True
     
     def get_reference(self):
-        """Return User object or None if None
+        """Return Reference object or None if None
         
-        Get the User object that is listed on the Application
+        Get the Reference object that is listed on the Application
         
         """
         try:
-            reference = self.referencerating_set.get().reference.user
+            reference = self.referencerating_set.get().reference
         except ReferenceRating.DoesNotExist:
             reference = None
         except ReferenceRating.MultipleObjectsReturned:
@@ -348,7 +358,7 @@ class ProjectInterest(models.Model):
         unique_together = ('application', 'project')
         
 class ReferenceRating(models.Model):
-    reference = models.ForeignKey(UserProfile)
+    reference = models.ForeignKey('Reference')
     application = models.ForeignKey(Application)
     department = models.CharField(max_length=40, blank=True)
     q_how_known = models.TextField(
@@ -388,6 +398,7 @@ class SponsorContact(models.Model):
     salutation = models.CharField(max_length=10, blank=True)
     first_name = models.CharField(max_length=40, blank=True)
     last_name = models.CharField(max_length=40, blank=True)
+    email = models.EmailField(blank=True)
     title = models.CharField(max_length=40, blank=True)
     address1 = models.CharField(max_length=40, blank=True)
     address2 = models.CharField(max_length=40, blank=True)
@@ -443,4 +454,10 @@ class ProjectCoach(models.Model):
     project = models.ForeignKey(Project)
     coach = models.ForeignKey(Coach)
     
+class Reference(models.Model):
+    email = models.EmailField()
+    first_name = models.CharField(max_length=40, blank=True)
+    last_name = models.CharField(max_length=40, blank=True)
+    phone_number = PhoneNumberField(blank=True)
+    verified = models.BooleanField(default=False)
     

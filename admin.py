@@ -61,6 +61,8 @@ class StudentAdmin(admin.ModelAdmin):
         AssistantCoachInline,
         ApplicationInline,
     ]
+    search_fields = ['user__first_name', 'user__last_name', 'user__username']
+    list_display = ('profile', 'first_name', 'last_name')
 
 class UserProfileAdmin(admin.ModelAdmin):
     
