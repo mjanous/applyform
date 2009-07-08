@@ -359,7 +359,7 @@ class ProjectInterest(models.Model):
         
 class ReferenceRating(models.Model):
     reference = models.ForeignKey('Reference')
-    application = models.ForeignKey(Application)
+    application = models.ForeignKey('Application')
     department = models.CharField(max_length=40, blank=True)
     q_how_known = models.TextField(
         verbose_name="In what capacity have you known the student?",
@@ -460,4 +460,7 @@ class Reference(models.Model):
     last_name = models.CharField(max_length=40, blank=True)
     phone_number = PhoneNumberField(blank=True)
     verified = models.BooleanField(default=False)
+    
+    def __unicode__(self):
+        return self.email
     

@@ -2,6 +2,14 @@ from applyform.models import *
 from django.contrib.auth.models import User
 from django.contrib import admin
 
+class ReferenceRatingInline(admin.StackedInline):
+    model = ReferenceRating
+    extra = 1
+    
+class ReferenceInline(admin.StackedInline):
+    model = Reference
+    extra = 1
+    
 class AssignedKeycardInline(admin.StackedInline):
     model = AssignedKeycard
     extra = 1
@@ -77,6 +85,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 class ApplicationAdmin(admin.ModelAdmin):
     inlines = [
         ProjectInterestInline,
+        ReferenceRatingInline,
     ]
 
 class ProjectAdmin(admin.ModelAdmin):
@@ -130,3 +139,4 @@ admin.site.register(Major, BlankAdmin)
 admin.site.register(College, BlankAdmin)
 admin.site.register(ReferenceRating, BlankAdmin)
 admin.site.register(ImplementationType, BlankAdmin)
+admin.site.register(Reference, BlankAdmin)
