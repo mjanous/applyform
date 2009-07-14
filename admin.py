@@ -128,6 +128,14 @@ class AssistantCoachAdmin(admin.ModelAdmin):
     
 class ConsultantAdmin(admin.ModelAdmin):
     filter_vertical = ['projects']
+    search_fields = [
+        'student__profile__user__first_name',
+        'student__profile__user__last_name',
+        'projects__project_name',
+        'projects__sponsors__sponsor_name',
+        'projects__semester__season',
+        'projects__semester__year',
+    ]
     
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Student, StudentAdmin)
