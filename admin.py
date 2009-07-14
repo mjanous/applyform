@@ -89,11 +89,17 @@ class ApplicationAdmin(admin.ModelAdmin):
     ]
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('project_name', 'semester', 'implemented_as')
+    list_display = ('__unicode__', 'semester', 'implemented_as')
     inlines = [
         ProjectContactInline,
         ProjectSponsorInline,
         ProjectCoachInline,
+    ]
+    search_fields = [
+        'project_name',
+        'semester__year',
+        'semester__season',
+        'sponsors__sponsor_name',
     ]
     
 class SponsorContactAdmin(admin.ModelAdmin):
