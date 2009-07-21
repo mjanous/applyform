@@ -90,6 +90,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'semester', 'implemented_as')
+    list_filter = ('semester', 'sponsors')
     inlines = [
         ProjectContactInline,
         ProjectSponsorInline,

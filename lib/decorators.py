@@ -45,7 +45,7 @@ def require_app_started(func):
             student_profile = userprofile.student_profile.get()
             application = student_profile.applications.get(
                 for_semester=semester_accepting)
-        except (UserProfile.DoesNotExist, StudentProfile.DoesNotExist, Application.DoesNotExist):
+        except (UserProfile.DoesNotExist, Student.DoesNotExist, Application.DoesNotExist):
             return HttpResponseRedirect('begin_app')
         return func(request, *args, **kwargs)
     return wraps(func)(inner)

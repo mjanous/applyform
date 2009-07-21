@@ -1,11 +1,11 @@
-#Create your views here.
+import csv
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from applyform.models import *
 from applyform.forms import *
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.urlresolvers import reverse
 from applyform.lib.decorators import (
     submit_restriction, require_accepting, require_app_started, require_student_profile)
@@ -24,13 +24,11 @@ def apply_menu(request):
         student_profile = userprofile.student_profile.get()
         current_app = student_profile.applications.get(for_semester=semester_accepting)
         reference = current_app.get_reference()
-    except (StudentProfile.DoesNotExist, Application.DoesNotExist, Reference.DoesNotExist, UnboundLocalError):
+    except (Student.DoesNotExist, Application.DoesNotExist, Reference.DoesNotExist, UnboundLocalError):
         return render_to_response(
             'applyform/start_app.html',
             {
-                'reference': reference,
                 'semester': semester_accepting,
-                'current_app_complete': current_app_complete,
                 'user': request.user,
                 'request': request,
                 'MEDIA_URL': settings.MEDIA_URL,
@@ -42,7 +40,6 @@ def apply_menu(request):
         current_app_complete = current_app.is_complete()
     except:
         current_app_complete = False
-
 
     return render_to_response(
         'applyform/apply_menu.html',
@@ -352,6 +349,159 @@ def apps_detail(request, app_id):
         {
             'app': application,
             'user': user,
+            'request': request,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
+
+@login_required
+@permission_required('is_staff')
+def student_contact_report_by_semester(request):
+    if request.method == 'POST':
+        form = ReportSemesterForm(request.POST)
+        if form.is_valid():
+            semester = form.cleaned_data['semester']
+            consultants = Consultant.objects.filter(projects__semester=semester)
+            assistant_coaches = AssistantCoach.objects.filter(projects__semester=semester)
+            response = HttpResponse(mimetype='text/csv')
+            response['Content-Disposition'] = 'attachment; filename=report.csv'
+            writer = csv.writer(response)
+            writer.writerow([
+                'first_name',
+                'last_name',
+                'email',
+                'semester',
+                'project_sponsor',
+                'project_name',
+                'address1',
+                'address2',
+                'city',
+                'state',
+                'zip',
+                'is_assistant_coach'
+            ])
+            
+            for consultant in consultants:
+                project = consultant.projects.get(semester=semester)
+                writer.writerow([
+                    consultant.student.profile.user.first_name,
+                    consultant.student.profile.user.last_name,
+                    consultant.student.profile.user.email,
+                    semester.__unicode__(),
+                    project.sponsors_string,
+                    project.project_name,
+                    consultant.student.profile.address1,
+                    consultant.student.profile.address2,
+                    consultant.student.profile.city,
+                    consultant.student.profile.state,
+                    consultant.student.profile.zipcode,
+                    'False'
+                ])
+                
+            for assistant_coach in assistant_coaches:
+                project = assistant_coach.projects.get(semester=semester)
+                writer.writerow([
+                    assistant_coach.student.profile.user.first_name,
+                    assistant_coach.student.profile.user.last_name,
+                    assistant_coach.student.profile.user.email,
+                    semester.__unicode__(),
+                    project.sponsors_string,
+                    project.project_name,
+                    assistant_coach.student.profile.address1,
+                    assistant_coach.student.profile.address2,
+                    assistant_coach.student.profile.city,
+                    assistant_coach.student.profile.state,
+                    assistant_coach.student.profile.zipcode,
+                    'True'
+                ])
+                
+            return response
+
+    else:
+        form = ReportSemesterForm()
+        
+    return render_to_response(
+        'applyform/report_semester.html',
+        {
+            'form': form,
+            'user': request.user,
+            'request': request,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
+
+@login_required
+@permission_required('is_staff')
+def student_contact_report_by_project(request):
+    if request.method == 'POST':
+        form = ReportProjectForm(request.POST)
+        if form.is_valid():
+            project = form.cleaned_data['project']
+            consultants = Consultant.objects.filter(projects=project)
+            assistant_coaches = AssistantCoach.objects.filter(projects=project)
+            semester = project.semester
+        
+            response = HttpResponse(mimetype='text/csv')
+            response['Content-Disposition'] = 'attachment; filename=report.csv'
+            
+            writer = csv.writer(response)
+            writer.writerow([
+                'first_name',
+                'last_name',
+                'email',
+                'semester',
+                'project_sponsor',
+                'project_name',
+                'address1',
+                'address2',
+                'city',
+                'state',
+                'zip',
+                'is_assistant_coach'
+            ])
+            
+            for consultant in consultants:
+                writer.writerow([
+                    consultant.student.profile.user.first_name,
+                    consultant.student.profile.user.last_name,
+                    consultant.student.profile.user.email,
+                    semester.__unicode__(),
+                    project.sponsors_string,
+                    project.project_name,
+                    consultant.student.profile.address1,
+                    consultant.student.profile.address2,
+                    consultant.student.profile.city,
+                    consultant.student.profile.state,
+                    consultant.student.profile.zipcode,
+                    'False'
+                ])
+                
+            for assistant_coach in assistant_coaches:
+                writer.writerow([
+                    assistant_coach.student.profile.user.first_name,
+                    assistant_coach.student.profile.user.last_name,
+                    assistant_coach.student.profile.user.email,
+                    semester.__unicode__(),
+                    project.sponsors_string,
+                    project.project_name,
+                    assistant_coach.student.profile.address1,
+                    assistant_coach.student.profile.address2,
+                    assistant_coach.student.profile.city,
+                    assistant_coach.student.profile.state,
+                    assistant_coach.student.profile.zipcode,
+                    'True'
+                ])
+                
+            return response
+    
+    else:
+        form = ReportProjectForm()
+        
+    return render_to_response(
+        'applyform/report_project.html',
+        {
+            'form': form,
+            'user': request.user,
             'request': request,
             'MEDIA_URL': settings.MEDIA_URL,
         }

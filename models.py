@@ -171,7 +171,7 @@ class Consultant(models.Model):
     student = models.ForeignKey(
         Student, related_name='consultant_profile', unique=True)
     projects = models.ManyToManyField(
-        'Project', related_name='students')
+        'Project', related_name='consultants')
     
     def __unicode__(self):
         return self.student.profile.__unicode__()
@@ -313,6 +313,13 @@ class Project(models.Model):
         for sponsor in self.sponsors.all():
             project_sponsors.append(sponsor.sponsor_name)
         return ' - '.join(['\\'.join(project_sponsors), self.project_name])
+    
+    def _get_sponsors_string(self):
+        sponsors_list = []
+        for sponsor in self.sponsors.all():
+            sponsors_list.append(sponsor.sponsor_name)
+        return '\\'.join(sponsors_list)
+    sponsors_string = property(_get_sponsors_string)
     
     class Meta:
         ordering = ['project_name']

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Student Info by Project</h1>
+<p>Select a project to view.</p>
+{% if form.errors %}<p class="errorlist">Errors occured while selecting a Project, please try again.</p>{% endif %}
+<form action="{% url applyform.views.student_contact_report_by_project %}" method="post">
+<ul>
+{{ form.as_ul }}
+<li><input type="submit" value="View Report" class="submit_button" /></li>
+</ul>
+</form>
+
+{% endblock %}
