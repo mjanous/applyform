@@ -52,7 +52,6 @@ class AcceptingAppsProjectsManager(models.Manager):
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
-    dob = models.DateField(blank=True, null=True)
     address1 = models.CharField(max_length=40, blank=True)
     address2 = models.CharField(max_length=40, blank=True)
     city = models.CharField(max_length=40, blank=True)
@@ -78,7 +77,6 @@ class UserProfile(models.Model):
             if (
                 (self.user.first_name) and
                 (self.user.last_name) and 
-                (self.dob) and
                 (self.address1) and
                 (self.city) and
                 (self.state) and
@@ -86,7 +84,6 @@ class UserProfile(models.Model):
                 (self.home_phone or self.mobile_phone) and
                 (self.student_profile.get().grad_date) and
                 (self.student_profile.get().is_grad_student is not None) and
-                (self.student_profile.get().is_enrolled_in_ubus311 is not None) and
                 (self.student_profile.get().is_honors_student is not None)
             ):
                 return True
@@ -127,13 +124,12 @@ class Student(models.Model):
         blank=True,
         null=True,
     )
-    is_enrolled_in_ubus311 = models.NullBooleanField(
-        verbose_name='Enrolled in or have completed UBUS 311',
-    )
     is_honors_student = models.NullBooleanField(
         verbose_name='Honors Student?',
     )
     hear_about_us = models.CharField(max_length=60, blank=True)
+    semester_for_310 = models.ForeignKey('Semester', blank=True, null=True, related_name='310_grad')
+    semester_for_311 = models.ForeignKey('Semester', blank=True, null=True, related_name='311_grad')
     
     def __unicode__(self):
         return self.profile.__unicode__()

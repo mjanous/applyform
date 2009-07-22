@@ -72,7 +72,6 @@ def basic_info(request):
             
             userprofile.address1 = form.cleaned_data['address1']
             userprofile.address2 = form.cleaned_data['address2']
-            userprofile.dob = form.cleaned_data['dob']
             userprofile.city = form.cleaned_data['city']
             userprofile.state = form.cleaned_data['state']
             if form.cleaned_data['zipcode'] == u'':
@@ -85,8 +84,9 @@ def basic_info(request):
             userprofile.save()
             
             student_profile.grad_date = form.cleaned_data['grad_date']
+            student_profile.semester_for_310 = form.cleaned_data['semester_for_310']
+            student_profile.semester_for_311 = form.cleaned_data['semester_for_311']            
             student_profile.is_grad_student = form.cleaned_data['is_grad_student']
-            student_profile.is_enrolled_in_ubus311 = form.cleaned_data['is_enrolled_in_ubus311']
             student_profile.is_honors_student = form.cleaned_data['is_honors_student']
             student_profile.save() 
             return HttpResponseRedirect(reverse('apply_menu'))
@@ -95,6 +95,14 @@ def basic_info(request):
             grad_date_pk = student_profile.grad_date.pk
         except AttributeError:
             grad_date_pk = None
+        try:
+            semester_for_310_pk = student_profile.semester_for_310.pk
+        except AttributeError:
+            semester_for_310_pk = None
+        try:
+            semester_for_311_pk = student_profile.semester_for_311.pk
+        except AttributeError:
+            semester_for_311_pk = None
             
         form = BasicInfoForm(
             initial={
@@ -102,7 +110,6 @@ def basic_info(request):
                 'last_name': user.last_name,
                 'address1': userprofile.address1,
                 'address2': userprofile.address2,
-                'dob': userprofile.dob,
                 'city': userprofile.city,
                 'state': userprofile.state,
                 'zipcode': userprofile.zipcode,
@@ -110,8 +117,9 @@ def basic_info(request):
                 'home_phone': userprofile.home_phone,
                 'mobile_phone': userprofile.mobile_phone,
                 'grad_date': grad_date_pk,
+                'semester_for_310': semester_for_310_pk,
+                'semester_for_311': semester_for_311_pk,
                 'is_grad_student': student_profile.is_grad_student,
-                'is_enrolled_in_ubus311': student_profile.is_enrolled_in_ubus311,
                 'is_honors_student': student_profile.is_honors_student,
                 'tshirt_size' : userprofile.tshirt_size
             }

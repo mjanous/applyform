@@ -22,11 +22,6 @@ class BasicInfoForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={'class': 'text_field'}),
     )
-    dob = forms.DateField(
-        label='Date of Birth',
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'text_field'}),
-    )
     
     # Local Address Info
     address1 = forms.CharField(
@@ -76,19 +71,24 @@ class BasicInfoForm(forms.Form):
         label="Anticipated Graduation Semester",
         queryset=Semester.objects.filter(end_date__gte=datetime.now()),
     )
+    semester_for_310 = forms.ModelChoiceField(
+        required=False,
+        label="UBUS 310 Completion Semester",
+        queryset=Semester.objects.all(),
+    )
+    semester_for_311 = forms.ModelChoiceField(
+        required=False,
+        label="UBUS 311 Completion Semester",
+        queryset=Semester.objects.all(),
+    )
     is_grad_student = forms.NullBooleanField(
         required=False,
-        label="I am a Graduate Student",
-        widget=NullBooleanDashedSelect(),
-    )
-    is_enrolled_in_ubus311 = forms.NullBooleanField(
-        required=False,
-        label="I am enrolled in or have completed UBUS 311",
+        label="Graduate Student",
         widget=NullBooleanDashedSelect(),
     )
     is_honors_student = forms.NullBooleanField(
         required=False,
-        label="I am an honors Student",
+        label="Honors Student",
         widget=NullBooleanDashedSelect(),
     )
     
