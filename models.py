@@ -321,6 +321,11 @@ class Project(models.Model):
         return '\\'.join(sponsors_list)
     sponsors_string = property(_get_sponsors_string)
     
+    @models.permalink
+    def get_absolute_url(self):
+        return ('project_detail', (), {
+            'object_id': self.id})
+    
     class Meta:
         ordering = ['project_name']
     

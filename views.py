@@ -1,5 +1,6 @@
 import csv
 
+from django.views.generic import list_detail
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from applyform.models import *
@@ -505,4 +506,51 @@ def student_contact_report_by_project(request):
             'request': request,
             'MEDIA_URL': settings.MEDIA_URL,
         }
+    )
+
+@login_required
+@permission_required('is_staff')
+def project_list(request, page):
+    order = ''
+    order_type = ''
+    
+    if request.GET.has_key('o'):
+        order = request.GET['o']
+        if request.GET.has_key('ot'):
+            order_type = request.GET['ot']
+            if order_type == 'asc':
+                if order == 'name':
+                    query = Project.objects.all().order_by('project_name')
+                elif order == 'semester':
+                    query = Project.objects.all().order_by('semester')
+                else:
+                    query = Project.objects.all()
+            else:
+                order_type = 'dsc'
+                if order == 'name':
+                    query = Project.objects.all().order_by('-project_name')
+                elif order == 'semester':
+                    query = Project.objects.all().order_by('-semester')
+                else:
+                    query = Project.objects.all()
+    else:
+        query = Project.objects.all()
+        
+    return list_detail.object_list(
+        request,
+        queryset=query,
+        template_name='applyform/project_list.html',
+        paginate_by=30,
+        page=page,
+        extra_context={'ot': order_type, 'o': order},
+    )
+
+@login_required
+@permission_required('is_staff')
+def project_detail(request, object_id):
+    return list_detail.object_detail(
+        request,
+        queryset=Project.objects.all(),
+        template_name='applyform/project_detail.html',
+        object_id=object_id,
     )

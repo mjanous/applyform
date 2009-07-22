@@ -529,3 +529,18 @@ input.submit_button {
 	width: 85px;
 	display: block;
 }
+
+
+table.project_list {margin: auto; width: 99%}
+
+thead th {text-align:center;background-color:#f0f0f0;color:#333;font-size: 1.3em;}
+td, th {padding:3px;border:none;}
+
+tbody tr th, td.navbar {background-color:#f0f0f0;color:#333;}
+tbody tr th.left {text-align:left;}
+tbody tr th.center, td.navbar {text-align:center;}
+tbody tr th.right {text-align:right;}
+
+tr.odd td {background-color:#edf3fe;}
+tr.even td {background-color:#fff;}
+tr.row_divider td {background-color:#ccc}

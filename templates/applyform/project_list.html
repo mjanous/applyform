@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Student Info by Project</h1>
+<p>Select a project to view.</p>
+<table class="project_list">
+<thead>
+<tr>
+    <td class="navbar" colspan="3">
+    {% if page_obj.has_previous %}
+    <a href="{% url applyform.views.project_list 1 %}?ot={{ ot }}&o={{ o }}">&lt&lt</a> 
+    <a href="{% url applyform.views.project_list previous %}?ot={{ ot }}&o={{ o }}">&lt</a>
+    {% else %}&lt&lt &lt{% endif %}
+    
+    {% for page_num in paginator.page_range %}
+    {% ifequal page_num page %}
+    {{ page }}
+    {% else %}
+    <a href="{% url applyform.views.project_list page_num %}?ot={{ ot }}&o={{ o }}">{{ page_num }}</a>
+    {% endifequal %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <a href="{% url applyform.views.project_list next %}?ot={{ ot }}&o={{ o }}">&gt</a>
+    <a href="{% url applyform.views.project_list paginator.num_pages %}?ot={{ ot }}&o={{ o }}">&gt&gt</a></td>
+    {% else %}&gt &gt&gt{% endif %}
+</tr>
+</thead>
+<tfoot>
+<tr>
+    <td class="navbar" colspan="3">
+    {% if page_obj.has_previous %}
+    <a href="{% url applyform.views.project_list 1 %}?ot={{ ot }}&o={{ o }}">&lt&lt</a> 
+    <a href="{% url applyform.views.project_list previous %}?ot={{ ot }}&o={{ o }}">&lt</a>
+    {% else %}&lt&lt &lt{% endif %}
+    
+    {% for page_num in paginator.page_range %}
+    {% ifequal page_num page %}
+    {{ page }}
+    {% else %}
+    <a href="{% url applyform.views.project_list page_num %}?ot={{ ot }}&o={{ o }}">{{ page_num }}</a>
+    {% endifequal %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <a href="{% url applyform.views.project_list next %}?ot={{ ot }}&o={{ o }}">&gt</a>
+    <a href="{% url applyform.views.project_list paginator.num_pages %}?ot={{ ot }}&o={{ o }}">&gt&gt</a></td>
+    {% else %}&gt &gt&gt{% endif %}
+</tr>
+</tfoot>
+<tbody>
+<tr>
+    <th style="width: 10%">
+        {% ifequal o 'name' %}
+        {% ifequal ot 'asc' %}
+        <a href="{% url applyform.views.project_list page %}?o=name&ot=dsc">Project Name</a></th>
+        {% else %}
+        <a href="{% url applyform.views.project_list page %}?o=name&ot=asc">Project Name</a></th>
+        {% endifequal %}
+        {% else %}
+        <a href="{% url applyform.views.project_list page %}?o=name&ot=asc">Project Name</a></th>
+        {% endifequal %}
+    <th style="width: 15%">
+        Project Sponsor</th>
+    <th style="width: 15%">
+        {% ifequal o 'semester' %}
+        {% ifequal ot 'asc' %}
+        <a href="{% url applyform.views.project_list page %}?o=semester&ot=dsc">Semester</a></th>
+        {% else %}
+        <a href="{% url applyform.views.project_list page %}?o=semester&ot=asc">Semester</a></th>   
+        {% endifequal %}
+        {% else %}
+        <a href="{% url applyform.views.project_list page %}?o=semester&ot=asc">Semester</a></th>
+        {% endifequal %}
+</tr>
+{% for project in object_list %}
+<tr class="{% cycle 'odd' 'even' %}">
+    <td><a href="{{ project.get_absolute_url }}">{{ project.project_name }}</a></td>
+    <td>{{ project.sponsors_string }}</td>
+    <td>{{ project.semester }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}

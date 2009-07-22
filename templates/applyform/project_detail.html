@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ object.project_name }}</h1>
+<h3>Project Sponsor</h3>
+<p>{{ object.sponsors_string }}</p>
+
+<h3>Contact List</h3>
+<table><thead>
+<tr>
+<td>First Name</td>
+<td>Last Name</td>
+<td>E-mail</td>
+<td>Home Phone</td>
+<td>Mobile Phone</td>
+<td>
+</tr>
+</thead>
+<tbody>
+{% if object.sponsor_contacts.all %}
+<tr class="row_divider"><td colspan='5'>Sponsor Contact{{ object.sponsor_contacts.all|pluralize }}</td></tr>
+{% endif %}
+{% for sponsor_contact in object.sponsor_contacts.all %}
+<tr class="{% cycle 'odd' 'even' %}">
+<td>{{ sponsor_contact.first_name }}</td>
+<td>{{ sponsor_contact.last_name }}</td>
+<td>{{ sponsor_contact.user.email }}</td>
+<td></td>
+<td>{{ sponsor_contact.phone }}</td>
+</tr>
+{% endfor %}
+
+{% if object.coach_set.all %}
+<tr class="row_divider"><td colspan='5'>Coach{{ object.coach_set.all|pluralize:"es" }}</td></tr>
+{% endif %}
+{% for coach in object.coach_set.all %}
+<tr class="{% cycle 'odd' 'even' %}">
+<td>{{ coach.profile.user.first_name }}</td>
+<td>{{ coach.profile.user.last_name }}</td>
+<td>{{ coach.profile.user.email }}</td>
+<td>{{ coach.profile.home_phone }}</td>
+<td>{{ coach.profile.mobile_phone }}</td>
+</tr>
+{% endfor %}
+
+{% if object.assistant_coaches.all %}
+<tr class="row_divider"><td colspan='5'>Assistant Coach{{ object.assistant_coaches.all|pluralize:"es" }}</td></tr>
+{% endif %}
+{% for assistant_coach in object.assistant_coaches.all %}
+<tr class="{% cycle 'odd' 'even' %}">
+<td>{{ assistant_coach.student.profile.user.first_name }}</td>
+<td>{{ assistant_coach.student.profile.user.last_name }}</td>
+<td>{{ assistant_coach.student.profile.user.email }}</td>
+<td>{{ assistant_coach.student.profile.home_phone }}</td>
+<td>{{ assistant_coach.student.profile.mobile_phone }}</td>
+</tr>
+{% endfor %}
+
+{% if object.consultants.all %}
+<tr class="row_divider"><td colspan='5'>Student{{ object.consultants.all|pluralize }}</td></tr>
+{% endif %}
+{% for consultant in object.consultants.all %}
+<tr class="{% cycle 'odd' 'even' %}">
+<td>{{ consultant.student.profile.user.first_name }}</td>
+<td>{{ consultant.student.profile.user.last_name }}</td>
+<td>{{ consultant.student.profile.user.email }}</td>
+<td>{{ consultant.student.profile.home_phone }}</td>
+<td>{{ consultant.student.profile.mobile_phone }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
