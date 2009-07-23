@@ -16,7 +16,7 @@ body {
 	width: 778px;
 	background-color: #EFEAD6;
 	position: relative;
-	height: 72px;
+	height: 60px;
 	margin: 0px;
 	padding: 0px;
 }
@@ -39,8 +39,8 @@ body {
 	left: 10px;
 	top: 13px;
 	width: 140px;
-	height: 83px;
-	background-image: url(../images/niu_no_curve.gif);
+	height: 100px;
+	background-image: url(../images/niu2.gif);
 	background-repeat: no-repeat;
 	z-index: 3;
 	margin: 0;
@@ -112,6 +112,7 @@ body {
 	height: 20px;
 	text-decoration: none;
 	margin-left: 0px;
+	margin-top: 12px;
 	font-size: 75%;
 	font-weight: bold;
 	border-left: solid #ffffff 1px;
@@ -125,8 +126,9 @@ body {
 	color: #333333;
 }
 #top_navigation {
+	background-image: url(../images/nav_bg.gif);
 	width: 778px;
-	height: 24px;
+	height: 38px;
 	background-color: #CC0000;
 	background-repeat: no-repeat;
 	text-align: center;
@@ -177,7 +179,7 @@ body {
 
 #sidebar ul {
 	margin: 0px;
-	padding: 0px 0px 10px;
+	padding: 20px 0px 10px;
 	list-style: none;
 	background-color: #CC0000;
 }
