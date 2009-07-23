@@ -50,20 +50,20 @@
 <div id="content_wrapper">
 <div id="sidebar">
 <ul>
-<li> <a href="http://www.cob.niu.edu/elc/about.asp">About the ELC</a></li>
-<li> <a href="http://www.cob.niu.edu/elc/tv/index.asp">ELC TV</a></li>
-<li> <a href="http://www.cob.niu.edu/elc/upComingProjects.asp">Upcoming Projects</a></li>
-<li> <a href="http://www.cob.niu.edu/elc/currentProjects.asp">Current Projects</a></li>
-<li> <a href="http://www.cob.niu.edu/elc/pastProjects.asp">Past Projects</a></li>
-<li> <a href="http://www.cob.niu.edu/elc/ApplicantInfoSheet.pdf">Application</a></li>
-<li> <a href="http://www.cob.niu.edu/elc/workshops.asp">Professional Development Workshops</a></li>
-<li> <a href="http://www.cob.niu.edu/elc/sponsors.asp">Sponsors</a></li>
-<li> <a href="http://www.cob.niu.edu/elc/coaches.asp">ELC Coaches</a></li>
-<li> <a href="http://www.cob.niu.edu/elc/sponsorform.asp">Project Request</a></li>
+<li><a href="http://www.cob.niu.edu/elc/about.asp">About the ELC</a></li>
+<li><a href="http://www.cob.niu.edu/elc/tv/index.asp">ELC TV</a></li>
+<li><a href="http://www.cob.niu.edu/elc/upComingProjects.asp">Upcoming Projects</a></li>
+<li><a href="http://www.cob.niu.edu/elc/currentProjects.asp">Current Projects</a></li>
+<li><a href="http://www.cob.niu.edu/elc/pastProjects.asp">Past Projects</a></li>
+<li><a href="/">Application</a></li>
+<li><a href="http://www.cob.niu.edu/elc/workshops.asp">Professional Development Workshops</a></li>
+<li><a href="http://www.cob.niu.edu/elc/sponsors.asp">Sponsors</a></li>
+<li><a href="http://www.cob.niu.edu/elc/coaches.asp">ELC Coaches</a></li>
+<li><a href="http://www.cob.niu.edu/elc/sponsorform.asp">Project Request</a></li>
 <li><a href="http://www.cob.niu.edusafety.asp">Safety & Security on Campus</a></li>
-<li> <a href="http://131.156.205.68/elcstudreferral/home.aspx">Student Referrals</a></li>
-<li> <a href="http://sharepoint.elc.niu.edu/">SharePoint</a></li>
-<li> <a href="http://www.cob.niu.edu/elc/contactus.asp">Contact Us</a></li>
+<li><a href="http://131.156.205.68/elcstudreferral/home.aspx">Student Referrals</a></li>
+<li><a href="http://sharepoint.elc.niu.edu/">SharePoint</a></li>
+<li><a href="http://www.cob.niu.edu/elc/contactus.asp">Contact Us</a></li>
 <li><a href="http://www.cob.niu.edu/">College Home</a></li> 
 <li><a href="http://www.cob.niu.edu/elc/">ELC Home</a></li> 
 </ul>
@@ -73,9 +73,27 @@
 </a>
 <br clear="all">
 </div>
-
 </div>
-<div id="content">	
+
+<div id="secondary_navigation">
+<ul>
+{% if user.is_authenticated %}
+<li><a href="{% url django.contrib.auth.views.logout %}">Logout</a></li>
+{% else %}
+<li><a href="{% url django.contrib.auth.views.login %}">Login</a></li>
+{% endif %}
+{% if user.is_staff %}
+<li><a href="{% url admin_site . %}">Admin</a></li>
+{% endif %}
+</ul>
+{% if user.is_authenticated %}
+<p>Welcome, {{ user.first_name }} {{ user.last_name }}.</p>
+{% else %}
+<p>Welcome, guest.</p>
+{% endif %}
+</div>
+
+<div id="content">
 {% block content %}{% endblock %}
 </div>
 </div>
