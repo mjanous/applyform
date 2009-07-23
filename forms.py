@@ -81,15 +81,17 @@ class BasicInfoForm(forms.Form):
         label="UBUS 311 Completion Semester",
         queryset=Semester.objects.all(),
     )
-    is_grad_student = forms.NullBooleanField(
+    is_grad_student = forms.TypedChoiceField(
         required=False,
         label="Graduate Student",
-        widget=NullBooleanDashedSelect(),
+        widget=forms.RadioSelect(),
+        choices=((1, 'Yes'),(0, 'No')),\
     )
-    is_honors_student = forms.NullBooleanField(
+    is_honors_student = forms.TypedChoiceField(
         required=False,
         label="Honors Student",
-        widget=NullBooleanDashedSelect(),
+        widget=forms.RadioSelect(),
+        choices=((1, 'Yes'),(0, 'No')),
     )
     
     # Miscellaneous Info
