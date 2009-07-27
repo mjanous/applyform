@@ -2,6 +2,10 @@ from django.conf.urls.defaults import *
 from applyform.models import *
 
 urlpatterns = patterns('applyform.views',
+    url('^$',
+        view='index',
+        name='index',
+    ),
     url('^menu/$',
         view='apply_menu',
         name='apply_menu',
@@ -53,11 +57,6 @@ urlpatterns = patterns('applyform.views',
 )
 
 urlpatterns += patterns('django.views.generic.simple',
-    url('^$',
-        'direct_to_template',
-        {'template': 'applyform/index.html'},
-        name='index',
-    ),
     url('^thanks/$',
         'direct_to_template',
         {'template': 'applyform/thanks.html'},

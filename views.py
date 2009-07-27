@@ -11,6 +11,21 @@ from django.core.urlresolvers import reverse
 from applyform.lib.decorators import (
     submit_restriction, require_accepting, require_app_started, require_student_profile)
 
+def index(request):
+    try:
+        semester_accepting = Semester.accepting_semesters.get()
+    except (Semester.DoesNotExist, Semester.MultipleObjectsReturned):
+        semester_accepting = False
+    return render_to_response(
+        'applyform/index.html',
+        {
+            'semester_accepting': semester_accepting,
+            'user': request.user,
+            'request': request,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+    )
+
 @login_required
 @require_accepting
 @require_student_profile

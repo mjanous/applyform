@@ -11,14 +11,12 @@ def require_student_profile(func):
     Decorator to make a view create a student profile for the user if one
     isn't already started. Usage::
     
-        @require_app_started
+        @require_student_profile
         def my_view(request):
             # I can assume now that we have a student profile.
     """
     
     def inner(request, *args, **kwargs):
-        from applyform.models import Semester
-        semester_accepting = Semester.accepting_semesters.get()
         userprofile, created = request.user.userprofile_set.get_or_create()
         student_profile, created = userprofile.student_profile.get_or_create()
         return func(request, *args, **kwargs)
@@ -68,7 +66,7 @@ def require_accepting(func):
         try:
             semester_accepting = Semester.accepting_semesters.get()
         except (Semester.DoesNotExist, Semester.MultipleObjectsReturned):
-            return HttpResponseRedirect(reverse('not_accepting'))
+            return HttpResponseRedirect(reverse('index'))
         return func(request, *args, **kwargs)
     return wraps(func)(inner)
 

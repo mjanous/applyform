@@ -2,5 +2,13 @@
 
 {% block content %}
 <h1>ELC Application Process</h1>
-
+{% if semester_accepting %}
+<p>We are currently accepting applications for the {{ semester_accepting }} semester. Click <a href="{% url apply_menu %}">here</a> to get started.</p>
+{% else %}
+<p>Sorry, we are not accepting applications at this time. However, you can still enter or edit your basic information.</p>
+<ul>
+<li><a href="{% url basic_info %}">Change your basic information</a></li>
+<li><a href="http://www.cob.niu.edu/elc">Go back to the ELC Homepage</a></li>
+</ul>
+{% endif %}
 {% endblock %}
