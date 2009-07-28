@@ -28,6 +28,17 @@ def index(request):
 
 @login_required
 @require_accepting
+def start_app(request):
+    semester_accepting = Semester.accepting_semesters.get()
+    user = request.user
+    profile = user.get_profile()
+    student, created = profile.student_profile.get_or_create()
+    app, created = student.applications.get_or_create(for_semester=semester_accepting)
+    
+    return HttpResponseRedirect(reverse('apply_menu'))
+
+@login_required
+@require_accepting
 @require_student_profile
 def apply_menu(request):
     semester_accepting = Semester.accepting_semesters.get()
@@ -44,7 +55,7 @@ def apply_menu(request):
         return render_to_response(
             'applyform/start_app.html',
             {
-                'semester': semester_accepting,
+                'semester_accepting': semester_accepting,
                 'user': request.user,
                 'request': request,
                 'MEDIA_URL': settings.MEDIA_URL,
@@ -164,9 +175,9 @@ def project_select(request):
     initial_data = []
     for project in projects:
         try:
-            is_interested = project.projectinterest_set.get(application=application).is_interested
+            interest_rating = project.projectinterest_set.get(application=application).interest_rating
         except (ProjectInterest.DoesNotExist, ProjectInterest.MultipleObjectsReturned):
-            is_interested = None
+            interest_rating = None
         
         initial_data.append({
             'project_name': project.project_name,
@@ -174,7 +185,7 @@ def project_select(request):
             'meeting_times': project.meeting_times,
             'sponsors_string': project.sponsors_string,
             'project': project.pk,
-            'is_interested': is_interested
+            'interest_rating': interest_rating
         })
 
     from django.forms.formsets import formset_factory
@@ -186,7 +197,10 @@ def project_select(request):
                 project_interest, created = application.projectinterest_set.get_or_create(
                     project=Project.objects.get(pk=formset.forms[i].cleaned_data['project'])
                 )
-                project_interest.is_interested = formset.forms[i].cleaned_data['is_interested']
+                if formset.forms[i].cleaned_data['interest_rating'] == u'':
+                    project_interest.interest_rating = None
+                else:
+                    project_interest.interest_rating = formset.forms[i].cleaned_data['interest_rating']
                 project_interest.save()
             return HttpResponseRedirect(reverse('apply_menu'))
     else:
@@ -338,8 +352,8 @@ def coach_list_students(request, project_id):
     user=request.user
     userprofile, _ = user.userprofile_set.get_or_create()
     project = Project.objects.get(pk=project_id)
-    apps = project.applications.filter(
-        is_submitted=True).filter(projectinterest__is_interested=True)
+    project_interests = ProjectInterest.objects.filter(
+        project=project).filter(interest_rating__isnull=False)
     
     try:
         coach_profile = userprofile.coach_profile.get()
@@ -359,7 +373,7 @@ def coach_list_students(request, project_id):
     return render_to_response(
         'applyform/coach_list_students.html',
         {
-            'apps': apps,
+            'project_interests': project_interests,
             'project': project,
             'user': user,
             'request': request,

@@ -233,7 +233,7 @@ class Application(models.Model):
         for p in semester_projects:
             try:
                 proj_interest = self.projectinterest_set.get(project=p)
-                if proj_interest.interest is None:
+                if proj_interest.interest_rating is None:
                     return False
                 else:
                     pass
@@ -344,7 +344,7 @@ class Sponsor(models.Model):
 class ProjectInterest(models.Model):
     application = models.ForeignKey(Application)
     project = models.ForeignKey(Project, related_name="projectinterest_set")
-    is_interested = models.NullBooleanField()
+    interest_rating = models.IntegerField(blank=True, null=True)
     
     def __unicode__(self):
         return ' '.join((

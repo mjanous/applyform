@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Application for the {{ semester }} semester</h1>
+<h1>Application for the {{ semester }} Semester</h1>
 <ul>
 <h3>Choose an action:</h3>
 <li><a href="{% url basic_info %}">Enter Basic Information</a> - {% if profile_complete %}Complete{% else %}Not complete{% endif %}</li>

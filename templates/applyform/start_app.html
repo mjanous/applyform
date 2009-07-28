@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if semester_accepting %}
+<h1>Application for the {{ semester_accepting }} Semester</h1>
+<p>It appears you haven't started an application, yet. Click <a href="{% url start_app %}">here</a> to get started.</p>
+{% else %}
+<h1>ELC Application Process</h1>
+<p>Sorry, we are not accepting applications at this time. However, you can still enter or edit your basic information.</p>
+<ul>
+<li><a href="{% url basic_info %}">Change your basic information</a></li>
+<li><a href="http://www.cob.niu.edu/elc">Go back to the ELC Homepage</a></li>
+</ul>
+{% endif %}
+{% endblock %}

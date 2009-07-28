@@ -1,11 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Students interested in {{ project }}</h1>
-<ul>
-{% for app in apps %}
-<li><a href="{% url apps_detail app.pk %}">{{ app.student.profile.user.first_name }} {{ app.student.profile.user.last_name }}</a></li>
+<h1>Student List</h1>
+<h3>{{ project }}</h3>
+<table>
+<th>Name</th>
+<th>Interest</th>
+<th>Major</th>
+<th>Grad Date</th>
+<th>UBUS 311</th>
+<th>G/U?</th>
+<th>Honors?</th>
+{% for project_interest in project_interests %}
+<tr class="{% cycle 'odd' 'even' %}">
+<td><a href="{% url apps_detail project_interest.application.pk %}">{{ project_interest.application.student.profile.user.first_name|slice:":1" }}. {{ project_interest.application.student.profile.user.last_name }}</a></td>
+<td>{% ifequal project_interest.interest_rating 1 %}Interested{% endifequal %}
+    {% ifequal project_interest.interest_rating 2 %}Very Interested{% endifequal %}</td>
+<td>{{ project_interest.application.student.major }}</td>
+<td>{{ project_interest.application.student.grad_date.season }} {{ project_interest.application.student.grad_date.year }}</td>
+<td>{{ project_interest.application.student.semester_for_311 }}</td>
+<td>{{ project_interest.application.student.is_grad_student }}</td>
+<td>{{ project_interest.application.student.is_honors_student }}</td>
 {% endfor %}
-</ul>
+</table>
 
 {% endblock %}

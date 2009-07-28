@@ -102,6 +102,13 @@ class BasicInfoForm(forms.Form):
     )
     
 class ProjectSelectForm(forms.Form):
+    PROJECT_RATING_CHOICES = (
+        ('', '--------'),
+        ('0', 'Not Interested'),
+        ('1', 'Interested'),
+        ('2', 'Very Interested'),
+    )
+    
     project = forms.IntegerField(
         required=False,
         widget=forms.HiddenInput(),
@@ -110,9 +117,10 @@ class ProjectSelectForm(forms.Form):
         required=False,
         widget=forms.HiddenInput(),
     )
-    is_interested = forms.NullBooleanField(
-        label="Interested in this project",
-        widget=NullBooleanDashedSelect(),
+    interest_rating = forms.ChoiceField(
+        required=False,
+        choices=PROJECT_RATING_CHOICES,
+        widget=forms.Select(),
     )
     
 class CoverLetterForm(forms.Form):

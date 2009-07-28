@@ -4,16 +4,20 @@
 <h1>{{ object.project_name }}</h1>
 <h3>Project Sponsor</h3>
 <p>{{ object.sponsors_string }}</p>
+<h3>Project Purpose</h3>
+{{ object.project_purpose|safe }}
+<h3>Meeting Times</h3>
+<p>{{ object.meeting_times }}</p>
 
 <h3>Contact List</h3>
-<table><thead>
+<table class="project_list">
+<thead>
 <tr>
-<td>First Name</td>
-<td>Last Name</td>
-<td>E-mail</td>
-<td>Home Phone</td>
-<td>Mobile Phone</td>
-<td>
+<th>First Name</th>
+<th>Last Name</th>
+<th>E-mail</th>
+<th>Home Phone</th>
+<th>Mobile Phone</th>
 </tr>
 </thead>
 <tbody>

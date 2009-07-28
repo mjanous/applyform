@@ -592,19 +592,21 @@ input.submit_button {
 
 /* table modifications */
 
-table.project_list {margin: auto; width: 99%}
+#wrapper #content_wrapper #content table.project_list {margin: auto; width: 602px}
 
-thead th {text-align:center;background-color:#f0f0f0;color:#333;font-size: 1.3em;}
-td, th {padding:3px;border:none;}
+#wrapper #content_wrapper #content thead tr th {text-align:center;background-color:#CC0000;color:#ffffff;}
+#wrapper #content_wrapper #content thead tr th a:link, #wrapper #content_wrapper #content thead tr th a:visited  {color:#ffffff; text-decoration: underline;}
+#wrapper #content_wrapper #content td, th {padding:3px;border:none;}
 
-tbody tr th, td.navbar {background-color:#f0f0f0;color:#333;}
-tbody tr th.left {text-align:left;}
-tbody tr th.center, td.navbar {text-align:center;}
-tbody tr th.right {text-align:right;}
+#wrapper #content_wrapper #content tbody tr th, td.navbar {background-color:#efead6;color:#333;}
+#wrapper #content_wrapper #content tbody tr th.left {text-align:left;}
+#wrapper #content_wrapper #content tbody tr th.center, td.navbar {text-align:center;}
+#wrapper #content_wrapper #content tbody tr th.right {text-align:right;}
 
-tr.odd td {background-color:#edf3fe;}
+/* tr.odd td {background-color:#edf3fe;} */
+tr.odd td {background-color:#eeeeee;}
 tr.even td {background-color:#fff;}
-tr.row_divider td {background-color:#ccc}
+tr.row_divider td {background-color:#efead6}
 
 /* Tooltip */
 a.tooltip:hover {
@@ -631,5 +633,5 @@ table.project_select {
 	width:602px;
 }
 table.project_select tr.project_item td {
-	background-color:#EFEAD6;
+	background-color:#efead6;
 }

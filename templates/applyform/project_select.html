@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Project Selection</h1>
-<p>Please rate your interest in the following {{ semester }} projects. Rollover the text to see a brief description on each project</p>
+<p>Please rate your interest in the following {{ semester }} projects. You must choose an interest level for each project. Rollover the text to see a brief description on each project.</p>
 <form method="post" action="">
     {{ formset.management_form }}
     <table class="project_select">
@@ -14,7 +14,7 @@
     </a></b>
     <br />
     {{ form.initial.meeting_times }}</td>
-    <td>{{ form.is_interested.as_widget }}{{ form.project }}</td>
+    <td>{{ form.interest_rating.as_widget }}{{ form.project }}</td>
     </tr>
     <tr>
     <td colspan="3"></td>

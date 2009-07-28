@@ -6,6 +6,30 @@
 <table class="project_list">
 <thead>
 <tr>
+    <th>
+        {% ifequal o 'name' %}
+        {% ifequal ot 'asc' %}
+        <a href="{% url applyform.views.project_list page %}?o=name&ot=dsc">Project Name</a></th>
+        {% else %}
+        <a href="{% url applyform.views.project_list page %}?o=name&ot=asc">Project Name</a></th>
+        {% endifequal %}
+        {% else %}
+        <a href="{% url applyform.views.project_list page %}?o=name&ot=asc">Project Name</a></th>
+        {% endifequal %}
+    <th>
+        Project Sponsor</th>
+    <th style="width: 90px;">
+        {% ifequal o 'semester' %}
+        {% ifequal ot 'asc' %}
+        <a href="{% url applyform.views.project_list page %}?o=semester&ot=dsc">Semester</a></th>
+        {% else %}
+        <a href="{% url applyform.views.project_list page %}?o=semester&ot=asc">Semester</a></th>   
+        {% endifequal %}
+        {% else %}
+        <a href="{% url applyform.views.project_list page %}?o=semester&ot=asc">Semester</a></th>
+        {% endifequal %}
+</tr>
+<tr>
     <td class="navbar" colspan="3">
     {% if page_obj.has_previous %}
     <a href="{% url applyform.views.project_list 1 %}?ot={{ ot }}&o={{ o }}">&lt&lt</a> 
@@ -49,30 +73,7 @@
 </tr>
 </tfoot>
 <tbody>
-<tr>
-    <th style="width: 10%">
-        {% ifequal o 'name' %}
-        {% ifequal ot 'asc' %}
-        <a href="{% url applyform.views.project_list page %}?o=name&ot=dsc">Project Name</a></th>
-        {% else %}
-        <a href="{% url applyform.views.project_list page %}?o=name&ot=asc">Project Name</a></th>
-        {% endifequal %}
-        {% else %}
-        <a href="{% url applyform.views.project_list page %}?o=name&ot=asc">Project Name</a></th>
-        {% endifequal %}
-    <th style="width: 15%">
-        Project Sponsor</th>
-    <th style="width: 15%">
-        {% ifequal o 'semester' %}
-        {% ifequal ot 'asc' %}
-        <a href="{% url applyform.views.project_list page %}?o=semester&ot=dsc">Semester</a></th>
-        {% else %}
-        <a href="{% url applyform.views.project_list page %}?o=semester&ot=asc">Semester</a></th>   
-        {% endifequal %}
-        {% else %}
-        <a href="{% url applyform.views.project_list page %}?o=semester&ot=asc">Semester</a></th>
-        {% endifequal %}
-</tr>
+
 {% for project in object_list %}
 <tr class="{% cycle 'odd' 'even' %}">
     <td><a href="{{ project.get_absolute_url }}">{{ project.project_name }}</a></td>
