@@ -559,7 +559,7 @@ table tr td {
 
 #content form ul {
 	margin: 5px auto 5px 5px;
-	width: 500px
+	width: 612px
 }
 
 #content form ul li {
@@ -590,6 +590,8 @@ input.submit_button {
 }
 
 
+/* table modifications */
+
 table.project_list {margin: auto; width: 99%}
 
 thead th {text-align:center;background-color:#f0f0f0;color:#333;font-size: 1.3em;}
@@ -603,3 +605,31 @@ tbody tr th.right {text-align:right;}
 tr.odd td {background-color:#edf3fe;}
 tr.even td {background-color:#fff;}
 tr.row_divider td {background-color:#ccc}
+
+/* Tooltip */
+a.tooltip:hover {
+	background:#ccc; /*BG color is a must for IE6*/
+	text-decoration:none;
+}
+a.tooltip span {
+	display:none;
+	padding:2px 3px;
+	margin-left:8px;
+	width:250px;
+}
+
+a.tooltip:hover span {
+	display:inline;
+	position:absolute;
+	background:#ffffff;
+	border:1px solid #cccccc;
+	color:#6c6c6c;
+	text-decoration:none;
+}
+
+table.project_select {
+	width:602px;
+}
+table.project_select tr.project_item td {
+	background-color:#EFEAD6;
+}

@@ -170,7 +170,11 @@ def project_select(request):
         
         initial_data.append({
             'project_name': project.project_name,
-            'project': project.pk, 'is_interested': is_interested
+            'project_purpose': project.project_purpose,
+            'meeting_times': project.meeting_times,
+            'sponsors_string': project.sponsors_string,
+            'project': project.pk,
+            'is_interested': is_interested
         })
 
     from django.forms.formsets import formset_factory

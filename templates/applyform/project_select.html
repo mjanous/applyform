@@ -2,14 +2,25 @@
 
 {% block content %}
 <h1>Project Selection</h1>
-<p>Please select the projects that you wish to apply for in the {{ semester }} semester.</p>
+<p>Please rate your interest in the following {{ semester }} projects. Rollover the text to see a brief description on each project</p>
 <form method="post" action="">
     {{ formset.management_form }}
-    <ul>
+    <table class="project_select">
     {% for form in formset.forms %}
-    <li><label>{{ form.initial.project_name }}:</label> {{ form.is_interested.as_widget }}</li> {{ form.project }}
+    <tr class="project_item">
+    <td>
+    <b><a href="#" class="tooltip">{{ form.initial.sponsors_string }} - {{ form.initial.project_name }}
+    <span>{{ form.initial.project_purpose|safe }}</span>
+    </a></b>
+    <br />
+    {{ form.initial.meeting_times }}</td>
+    <td>{{ form.is_interested.as_widget }}{{ form.project }}</td>
+    </tr>
+    <tr>
+    <td colspan="3"></td>
+    </tr>
     {% endfor %}
-    <li><input type="submit" value="Update Info" class="submit_button" /></li>
-    </ul>
+    </table>
+<input type="submit" value="Update Info" class="submit_button" /></li>
 </form>
 {% endblock %}

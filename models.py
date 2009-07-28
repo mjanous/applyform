@@ -299,6 +299,7 @@ class Project(models.Model):
     is_organizational_management = models.BooleanField()
     project_expiration = models.DateField(blank=True, null=True)
     price = models.IntegerField(blank=True, null=True)
+    meeting_times = models.TextField(blank=True)
     
     # Managers
     objects = models.Manager()
