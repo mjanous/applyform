@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.urlresolvers import reverse
 from applyform.lib.decorators import (
     submit_restriction, require_accepting, require_app_started, require_student_profile)
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 def index(request):
     try:
@@ -41,45 +42,55 @@ def start_app(request):
 @require_accepting
 @require_student_profile
 def apply_menu(request):
-    semester_accepting = Semester.accepting_semesters.get()
-    user = request.user
-    profile_complete = False
-    userprofile = user.get_profile()
-    profile_complete = userprofile.profile_info_completed()
+    if request.method == 'POST':
+        form = ResumeUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = form.cleaned_data['file_upload']
+            filename = uploaded_file.name
+            file_content = uploaded_file.read()
+            return HttpResponseRedirect(reverse('apply_menu'))
+    else:
+        form = ResumeUploadForm()
+        semester_accepting = Semester.accepting_semesters.get()
+        user = request.user
+        profile_complete = False
+        userprofile = user.get_profile()
+        profile_complete = userprofile.profile_info_completed()
+        
+        try:
+            student_profile = userprofile.student_profile.get()
+            current_app = student_profile.applications.get(for_semester=semester_accepting)
+            reference = current_app.get_reference()
+        except (Student.DoesNotExist, Application.DoesNotExist, Reference.DoesNotExist, UnboundLocalError):
+            return render_to_response(
+                'applyform/start_app.html',
+                {
+                    'semester_accepting': semester_accepting,
+                    'user': request.user,
+                    'request': request,
+                    'MEDIA_URL': settings.MEDIA_URL,
+                    'profile_complete': profile_complete
+                }
+            )
     
-    try:
-        student_profile = userprofile.student_profile.get()
-        current_app = student_profile.applications.get(for_semester=semester_accepting)
-        reference = current_app.get_reference()
-    except (Student.DoesNotExist, Application.DoesNotExist, Reference.DoesNotExist, UnboundLocalError):
+        try:
+            current_app_complete = current_app.is_complete()
+        except:
+            current_app_complete = False
+    
         return render_to_response(
-            'applyform/start_app.html',
+            'applyform/apply_menu.html',
             {
-                'semester_accepting': semester_accepting,
+                'form': form,
+                'reference': reference,
+                'semester': semester_accepting,
+                'current_app_complete': current_app_complete,
                 'user': request.user,
                 'request': request,
                 'MEDIA_URL': settings.MEDIA_URL,
                 'profile_complete': profile_complete
             }
         )
-
-    try:
-        current_app_complete = current_app.is_complete()
-    except:
-        current_app_complete = False
-
-    return render_to_response(
-        'applyform/apply_menu.html',
-        {
-            'reference': reference,
-            'semester': semester_accepting,
-            'current_app_complete': current_app_complete,
-            'user': request.user,
-            'request': request,
-            'MEDIA_URL': settings.MEDIA_URL,
-            'profile_complete': profile_complete
-        }
-    )
 
 @login_required
 @require_student_profile
@@ -109,6 +120,7 @@ def basic_info(request):
             userprofile.tshirt_size = form.cleaned_data['tshirt_size']
             userprofile.save()
             
+            student_profile.major = form.cleaned_data['major']
             student_profile.grad_date = form.cleaned_data['grad_date']
             student_profile.semester_for_310 = form.cleaned_data['semester_for_310']
             student_profile.semester_for_311 = form.cleaned_data['semester_for_311']            
@@ -117,6 +129,10 @@ def basic_info(request):
             student_profile.save() 
             return HttpResponseRedirect(reverse('apply_menu'))
     else:
+        try:
+            major_pk = student_profile.major.pk
+        except:
+            major_pk = None
         try:
             grad_date_pk = student_profile.grad_date.pk
         except AttributeError:
@@ -142,6 +158,7 @@ def basic_info(request):
                 'email': user.email,
                 'home_phone': userprofile.home_phone,
                 'mobile_phone': userprofile.mobile_phone,
+                'major': major_pk,
                 'grad_date': grad_date_pk,
                 'semester_for_310': semester_for_310_pk,
                 'semester_for_311': semester_for_311_pk,
@@ -368,7 +385,7 @@ def coach_list_students(request, project_id):
     except Project.DoesNotExist:
         # TODO: Display an error that this coach is not a member of this
         # project instead of redirecting to not_accepting page.
-        return HttpResponseRedirect(reverse('not_accepting'))
+        return HttpResponseRedirect(reverse('coach_error'))
     
     return render_to_response(
         'applyform/coach_list_students.html',
@@ -420,7 +437,9 @@ def student_contact_report_by_semester(request):
                 'city',
                 'state',
                 'zip',
-                'is_assistant_coach'
+                'is_assistant_coach',
+                'tshirt_size',
+                'honors_student',
             ])
             
             for consultant in consultants:
@@ -437,7 +456,9 @@ def student_contact_report_by_semester(request):
                     consultant.student.profile.city,
                     consultant.student.profile.state,
                     consultant.student.profile.zipcode,
-                    'False'
+                    'False',
+                    consultant.student.profile.tshirt_size,
+                    consultant.student.is_honors_student,
                 ])
                 
             for assistant_coach in assistant_coaches:
@@ -454,7 +475,9 @@ def student_contact_report_by_semester(request):
                     assistant_coach.student.profile.city,
                     assistant_coach.student.profile.state,
                     assistant_coach.student.profile.zipcode,
-                    'True'
+                    'True',
+                    assistant_coach.student.profile.tshirt_size,
+                    assistant_coach.student.is_honors_student,
                 ])
                 
             return response

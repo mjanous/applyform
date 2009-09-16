@@ -66,6 +66,11 @@ class BasicInfoForm(forms.Form):
     )
     
     # Academic (student) Info
+    major = forms.ModelChoiceField(
+        required=False,
+        label="Current Major",
+        queryset=Major.objects.all(),
+    )
     grad_date = forms.ModelChoiceField(
         required=False,
         label="Anticipated Graduation Semester",
@@ -221,3 +226,7 @@ class ReportProjectForm(forms.Form):
         label="Project",
         queryset=sorted(Project.objects.all(), key=lambda a: a.sponsors_string),
     )
+
+class ResumeUploadForm(forms.Form):
+    file_upload = forms.FileField()
+    

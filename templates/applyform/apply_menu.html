@@ -8,5 +8,10 @@
 <li><a href="{% url project_select %}">Enter Project Selections</a> - {% if current_app_complete %}Complete{% else %}Not complete{% endif %}</li>
 <li><a href="{% url cover_letter %}">Enter Cover Letter</a> - </li>
 <li><a href="{% url reference %}">Enter a Reference</a> - Currently, {% if reference %}{{ reference.email }}.{% else %}none.{% endif %}</li>
+
+<form enctype="multipart/form-data" method="post" action="{% url applyform.views.apply_menu %}">
+<li>Upload a Resume:{{ form.file_upload }}</li>
+<li><input type="submit" value="Update Info" class="submit_button" /></li>
+</form>
 </ul>
 {% endblock %}
