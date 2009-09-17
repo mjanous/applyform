@@ -5,13 +5,10 @@
 <ul>
 <h3>Choose an action:</h3>
 <li><a href="{% url basic_info %}">Enter Basic Information</a> - {% if profile_complete %}Complete{% else %}Not complete{% endif %}</li>
-<li><a href="{% url project_select %}">Enter Project Selections</a> - {% if current_app_complete %}Complete{% else %}Not complete{% endif %}</li>
-<li><a href="{% url cover_letter %}">Enter Cover Letter</a> - </li>
-<li><a href="{% url reference %}">Enter a Reference</a> - Currently, {% if reference %}{{ reference.email }}.{% else %}none.{% endif %}</li>
-
-<form enctype="multipart/form-data" method="post" action="{% url applyform.views.apply_menu %}">
-<li>Upload a Resume:{{ form.file_upload }}</li>
-<li><input type="submit" value="Update Info" class="submit_button" /></li>
-</form>
+<li><a href="{% url project_select %}">Enter Project Selections</a> - {% if current_app.is_complete %}Complete{% else %}Not complete{% endif %}</li>
+<li><a href="{% url cover_letter %}">Enter Cover Letter</a> - {% if current_app.cover_letter %}Complete{% else %}Not complete{% endif %}</li>
+<li><a href="{% url reference %}">Enter a Reference</a> - {% if reference %}Complete{% else %}Not complete{% endif %}</li>
+<li><a href="{% url resume_upload %}">Upload a Resume</a> - {% if current_app.resume %}Complete{% else %}Not complete{% endif %}</li>
+<li><a href="{% url finalize_submission %}">Submit your Application</a></li>
 </ul>
 {% endblock %}

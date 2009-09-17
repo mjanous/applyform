@@ -585,8 +585,12 @@ table tr td {
 
 input.submit_button {
 	margin: 0px auto 0px auto;
-	width: 85px;
+	width: 140px;
 	display: block;
+}
+
+#wrapper #content_wrapper #content #submit_table {
+	margin: auto;
 }
 
 

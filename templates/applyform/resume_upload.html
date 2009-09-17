@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Basic Information</h1>
-{% if form.errors %}<p class="errorlist">Errors occured while saving your application.</p>{% endif %}
-<form action="{% url applyform.views.basic_info %}" method="post">
+<form enctype="multipart/form-data" method="post" action="{% url applyform.views.apply_menu %}">
 <ul>
-{{ form.as_ul }}
+<li>Upload a Resume: {{ form.file_upload }}</li>
+</ul>
 <table id="submit_table">
 <tr>
 <td><input type="submit" name="update" value="Save and Continue" class="submit_button" /></td>
@@ -14,5 +13,4 @@
 </ul>
 </table>
 </form>
-
 {% endblock %}

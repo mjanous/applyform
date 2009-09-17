@@ -230,3 +230,6 @@ class ReportProjectForm(forms.Form):
 class ResumeUploadForm(forms.Form):
     file_upload = forms.FileField()
     
+class FinalizeSubmissionForm(forms.Form):
+    understand = forms.BooleanField()
+    

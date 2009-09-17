@@ -42,55 +42,39 @@ def start_app(request):
 @require_accepting
 @require_student_profile
 def apply_menu(request):
-    if request.method == 'POST':
-        form = ResumeUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            uploaded_file = form.cleaned_data['file_upload']
-            filename = uploaded_file.name
-            file_content = uploaded_file.read()
-            return HttpResponseRedirect(reverse('apply_menu'))
-    else:
-        form = ResumeUploadForm()
-        semester_accepting = Semester.accepting_semesters.get()
-        user = request.user
-        profile_complete = False
-        userprofile = user.get_profile()
-        profile_complete = userprofile.profile_info_completed()
-        
-        try:
-            student_profile = userprofile.student_profile.get()
-            current_app = student_profile.applications.get(for_semester=semester_accepting)
-            reference = current_app.get_reference()
-        except (Student.DoesNotExist, Application.DoesNotExist, Reference.DoesNotExist, UnboundLocalError):
-            return render_to_response(
-                'applyform/start_app.html',
-                {
-                    'semester_accepting': semester_accepting,
-                    'user': request.user,
-                    'request': request,
-                    'MEDIA_URL': settings.MEDIA_URL,
-                    'profile_complete': profile_complete
-                }
-            )
+    semester_accepting = Semester.accepting_semesters.get()
+    user = request.user
+    profile_complete = False
+    userprofile = user.get_profile()
+    profile_complete = userprofile.profile_info_completed()
     
-        try:
-            current_app_complete = current_app.is_complete()
-        except:
-            current_app_complete = False
-    
+    try:
+        student_profile = userprofile.student_profile.get()
+        current_app = student_profile.applications.get(for_semester=semester_accepting)
+        reference = current_app.get_reference()
+    except (Student.DoesNotExist, Application.DoesNotExist, Reference.DoesNotExist, UnboundLocalError):
         return render_to_response(
-            'applyform/apply_menu.html',
+            'applyform/start_app.html',
             {
-                'form': form,
-                'reference': reference,
-                'semester': semester_accepting,
-                'current_app_complete': current_app_complete,
-                'user': request.user,
-                'request': request,
-                'MEDIA_URL': settings.MEDIA_URL,
-                'profile_complete': profile_complete
+                'semester_accepting': semester_accepting,
+                 'user': request.user,
+                 'request': request,
+                 'MEDIA_URL': settings.MEDIA_URL,
             }
         )
+
+    return render_to_response(
+        'applyform/apply_menu.html',
+        {
+            'reference': reference,
+            'semester': semester_accepting,
+            'current_app': current_app,
+            'user': request.user,
+            'request': request,
+            'MEDIA_URL': settings.MEDIA_URL,
+            'profile_complete': profile_complete
+        }
+    )
 
 @login_required
 @require_student_profile
@@ -100,6 +84,8 @@ def basic_info(request):
     student_profile = userprofile.student_profile.get()
         
     if request.method == 'POST':
+        if request.POST['update'] == "Cancel":
+            return HttpResponseRedirect(reverse('apply_menu'))
         form = BasicInfoForm(request.POST)
         if form.is_valid():
             user.first_name = form.cleaned_data['first_name']
@@ -123,11 +109,22 @@ def basic_info(request):
             student_profile.major = form.cleaned_data['major']
             student_profile.grad_date = form.cleaned_data['grad_date']
             student_profile.semester_for_310 = form.cleaned_data['semester_for_310']
-            student_profile.semester_for_311 = form.cleaned_data['semester_for_311']            
-            student_profile.is_grad_student = form.cleaned_data['is_grad_student']
-            student_profile.is_honors_student = form.cleaned_data['is_honors_student']
-            student_profile.save() 
-            return HttpResponseRedirect(reverse('apply_menu'))
+            student_profile.semester_for_311 = form.cleaned_data['semester_for_311']
+            if form.cleaned_data['is_grad_student'] == u"1":
+                student_profile.is_grad_student = True
+            elif form.cleaned_data['is_grad_student'] == u"0":
+                student_profile.is_grad_student = False
+            if form.cleaned_data['is_honors_student'] == u"1":
+                student_profile.is_honors_student = True
+            elif form.cleaned_data['is_honors_student'] == u"0":
+                student_profile.is_honors_student = False
+            #form.cleaned_data['blah']
+            student_profile.save()
+            
+            if request.POST['update'] == "Save and Continue":
+                return HttpResponseRedirect(reverse('project_select'))
+            else:
+                return HttpResponseRedirect(reverse('apply_menu'))
     else:
         try:
             major_pk = student_profile.major.pk
@@ -145,7 +142,17 @@ def basic_info(request):
             semester_for_311_pk = student_profile.semester_for_311.pk
         except AttributeError:
             semester_for_311_pk = None
-            
+        
+        try:
+            is_grad_student = int(student_profile.is_grad_student)
+        except TypeError:
+            is_grad_student = None
+        
+        try:
+            is_honors_student = int(student_profile.is_honors_student)
+        except TypeError:
+            is_honors_student = None
+        
         form = BasicInfoForm(
             initial={
                 'first_name': user.first_name,
@@ -162,8 +169,8 @@ def basic_info(request):
                 'grad_date': grad_date_pk,
                 'semester_for_310': semester_for_310_pk,
                 'semester_for_311': semester_for_311_pk,
-                'is_grad_student': student_profile.is_grad_student,
-                'is_honors_student': student_profile.is_honors_student,
+                'is_grad_student': is_grad_student,
+                'is_honors_student': is_honors_student,
                 'tshirt_size' : userprofile.tshirt_size
             }
         )
@@ -208,6 +215,8 @@ def project_select(request):
     from django.forms.formsets import formset_factory
     ProjectSelectFormSet = formset_factory(ProjectSelectForm, extra=0)
     if request.method == 'POST':
+        if request.POST['update'] == "Cancel":
+            return HttpResponseRedirect(reverse('apply_menu'))
         formset = ProjectSelectFormSet(request.POST)
         if formset.is_valid():
             for i in range(int(request.POST['form-TOTAL_FORMS'])):
@@ -219,7 +228,10 @@ def project_select(request):
                 else:
                     project_interest.interest_rating = formset.forms[i].cleaned_data['interest_rating']
                 project_interest.save()
-            return HttpResponseRedirect(reverse('apply_menu'))
+            if request.POST['update'] == "Save and Continue":
+                return HttpResponseRedirect(reverse('cover_letter'))
+            else:
+                return HttpResponseRedirect(reverse('apply_menu'))
     else:
         formset = ProjectSelectFormSet(initial=initial_data)
     return render_to_response(
@@ -246,12 +258,17 @@ def cover_letter(request):
     application = student_profile.applications.get(for_semester=semester_accepting)
     
     if request.method == 'POST':
+        if request.POST['update'] == "Cancel":
+            return HttpResponseRedirect(reverse('apply_menu'))
         form = CoverLetterForm(request.POST)
         if form.is_valid():
             application.cover_letter = form.cleaned_data['cover_letter'].replace(
                 '&lt;!--', '<!--').replace('--&gt;', '-->')
             application.save()
-            return HttpResponseRedirect(reverse('apply_menu'))
+            if request.POST['update'] == "Save and Continue":
+                return HttpResponseRedirect(reverse('reference'))
+            else:
+                return HttpResponseRedirect(reverse('apply_menu'))
     else:
         form = CoverLetterForm(
             initial={
@@ -275,6 +292,8 @@ def cover_letter(request):
 def reference(request):
     semester_accepting = Semester.accepting_semesters.get()
     if request.method == 'POST':
+        if request.POST['update'] == "Cancel":
+            return HttpResponseRedirect(reverse('apply_menu'))
         form = ReferenceCheckForm(request.POST)
         if form.is_valid():
             ref_email = form.cleaned_data['email']
@@ -618,3 +637,56 @@ def project_detail(request, object_id):
         template_name='applyform/project_detail.html',
         object_id=object_id,
     )
+
+@login_required
+@require_accepting
+@require_app_started
+@submit_restriction
+def resume_upload(request):
+    if request.method == 'POST':
+        if request.POST['update'] == "Cancel":
+            return HttpResponseRedirect(reverse('apply_menu'))
+        form = ResumeUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = form.cleaned_data['file_upload']
+            filename = uploaded_file.name
+            file_content = uploaded_file.read()
+            if request.POST['update'] == "Save and Continue":
+                return HttpResponseRedirect(reverse('finalize_submission'))
+            else:
+                return HttpResponseRedirect(reverse('apply_menu'))
+    else:
+        form = ResumeUploadForm()
+        return render_to_response(
+            'applyform/resume_upload.html',
+            {
+                'form': form,
+                'user': request.user,
+                'request': request,
+                'MEDIA_URL': settings.MEDIA_URL,
+            }
+       )
+
+@login_required
+@require_accepting
+@require_app_started
+@submit_restriction
+def finalize_submission(request):
+    if request.method == "POST":
+        if request.POST['update'] == "Cancel":
+            return HttpResponseRedirect(reverse('apply_menu'))
+        form = FinalizeSubmissionForm(request.POST)
+        if form.is_valid():
+            pass
+            
+    else:
+        form = FinalizeSubmissionForm()
+        return render_to_response(
+            'applyform/finalize_submission.html',
+            {
+                'form': form,
+                'user': request.user,
+                'request': request,
+                'MEDIA_URL': settings.MEDIA_URL,
+            }
+        )
