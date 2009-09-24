@@ -1,21 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>Edit Resume</title>
-{{ form.media }}
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}ELC Application Form - Edit Cover Letter{% endblock title %}
+{% block extrastyle %}{{ form.media }}{% endblock %}
+
+{% block content %}
+<body><p>Please place a cover letter in the space below. The cover letter should briefly state why you are interested, the skills and knowledge you will bring to the the team and additional relevant information.</p>
 <form action="{% url cover_letter %}" method="post">
 {{ form.cover_letter.as_widget }}
 <br />
-<table id="submit_table">
-<tr>
-<td><input type="submit" name="update" value="Save and Continue" class="submit_button" /></td>
-<td><input type="submit" name="update" value="Save" class="submit_button" /></td>
-<td><input type="submit" name="update" value="Cancel" class="submit_button" /></td>
-</ul>
-</table>
+{% include "applyform/save_buttons.html" %}
 </form>
-</body>
-</html>
+{% endblock content %}

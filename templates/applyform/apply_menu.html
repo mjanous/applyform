@@ -2,13 +2,14 @@
 
 {% block content %}
 <h1>Application for the {{ semester }} Semester</h1>
-<ul>
+<p>There are 6 steps needed to complete your ELC Application.</p>
 <h3>Choose an action:</h3>
-<li><a href="{% url basic_info %}">Enter Basic Information</a> - {% if profile_complete %}Complete{% else %}Not complete{% endif %}</li>
-<li><a href="{% url project_select %}">Enter Project Selections</a> - {% if current_app.is_complete %}Complete{% else %}Not complete{% endif %}</li>
-<li><a href="{% url cover_letter %}">Enter Cover Letter</a> - {% if current_app.cover_letter %}Complete{% else %}Not complete{% endif %}</li>
-<li><a href="{% url reference %}">Enter a Reference</a> - {% if reference %}Complete{% else %}Not complete{% endif %}</li>
-<li><a href="{% url resume_upload %}">Upload a Resume</a> - {% if current_app.resume %}Complete{% else %}Not complete{% endif %}</li>
-<li><a href="{% url finalize_submission %}">Submit your Application</a></li>
+<ul>
+<li><a href="{% url basic_info %}"><b>Step 1:</b> Enter Basic Information</a> - {% if profile_complete %}Complete{% else %}Not complete{% endif %}</li>
+<li><a href="{% url project_select %}"><b>Step 2:</b> Enter Project Selections</a> - {% if current_app.is_complete %}Complete{% else %}Not complete{% endif %}</li>
+<li><a href="{% url cover_letter %}"><b>Step 3:</b> Enter Cover Letter</a> - {% if current_app.cover_letter %}Complete{% else %}Not complete{% endif %}</li>
+<li><a href="{% url reference %}"><b>Step 4:</b> Enter a Reference</a> - {% if reference %}Complete{% else %}Not complete{% endif %}</li>
+<li><a href="{% url resume_upload %}"><b>Step 5:</b> Upload a Resume</a> - {% if current_app.resume %}Complete{% else %}Not complete{% endif %}</li>
+<li><a href="{% url finalize_submission %}"><b>Step 6:</b> Submit your Application</a></li>
 </ul>
 {% endblock %}

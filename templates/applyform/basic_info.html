@@ -6,13 +6,7 @@
 <form action="{% url applyform.views.basic_info %}" method="post">
 <ul>
 {{ form.as_ul }}
-<table id="submit_table">
-<tr>
-<td><input type="submit" name="update" value="Save and Continue" class="submit_button" /></td>
-<td><input type="submit" name="update" value="Save" class="submit_button" /></td>
-<td><input type="submit" name="update" value="Cancel" class="submit_button" /></td>
-</ul>
-</table>
+{% include "applyform/save_buttons.html" %}
 </form>
 
 {% endblock %}

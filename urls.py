@@ -69,6 +69,11 @@ urlpatterns = patterns('applyform.views',
 )
 
 urlpatterns += patterns('django.views.generic.simple',
+    url('^help/$',
+        'direct_to_template',
+        {'template': 'applyform/help.html'},
+        name='help',
+    ),
     url('^thanks/$',
         'direct_to_template',
         {'template': 'applyform/thanks.html'},

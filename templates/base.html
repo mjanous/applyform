@@ -92,6 +92,8 @@
 {% if user.is_staff %}
 <li><a href="{% url admin_site . %}">Admin</a></li>
 {% endif %}
+
+<li><a href="{% url help %}">Help</a></li>
 </ul>
 
 {% if user.is_authenticated %}

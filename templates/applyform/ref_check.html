@@ -2,17 +2,12 @@
 
 {% block content %}
 <h1>Reference Selection</h1>
+<p>Please provide the name and email address of an employer or faculty member who is willing to serve as a professional reference.</p>
 <form action="{% url reference %}" method="post">
 <ul>
 {{ form.as_ul }}
 </ul>
-<table id="submit_table">
-<tr>
-<td><input type="submit" name="update" value="Save and Continue" class="submit_button" /></td>
-<td><input type="submit" name="update" value="Save" class="submit_button" /></td>
-<td><input type="submit" name="update" value="Cancel" class="submit_button" /></td>
-</ul>
-</table>
+{% include "applyform/save_buttons.html" %}
 </form>
 
 {% endblock %}
