@@ -464,7 +464,7 @@ class ProjectCoach(models.Model):
     coach = models.ForeignKey(Coach)
     
 class Reference(models.Model):
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=40, blank=True)
     last_name = models.CharField(max_length=40, blank=True)
     phone_number = PhoneNumberField(blank=True)

@@ -291,42 +291,47 @@ def cover_letter(request):
 @submit_restriction
 def reference(request):
     semester_accepting = Semester.accepting_semesters.get()
+    user = request.user
+    userprofile = user.userprofile_set.get()
+    student_profile = userprofile.student_profile.get()
+    application = student_profile.applications.get(for_semester=semester_accepting)
+    try:
+        reference = Reference.objects.get(applications=application)
+    except Reference.DoesNotExist:
+        reference = None
     if request.method == 'POST':
         if request.POST['update'] == "Cancel":
             return HttpResponseRedirect(reverse('apply_menu'))
-        form = ReferenceCheckForm(request.POST)
+        form = ReferenceForm(request.POST)
         if form.is_valid():
-            ref_email = form.cleaned_data['email']
-            refs = User.objects.filter(email=ref_email)
-            if not refs:
-                return render_to_response(
-                    'applyform/ref_add.html',
-                    {
-                        'ref_email': ref_email,
-                        'form': form,
-                        'user': request.user,
-                        'request': request,
-                        'MEDIA_URL': settings.MEDIA_URL,
-                    }
-                )
+            email = form.cleaned_data['email']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            new_reference, created = Reference.objects.get_or_create(email=email)
+            if created:
+                new_reference.first_name = first_name
+                new_reference.last_name = last_name
+                new_reference.save()
+            
+            try:
+                previous_rr = ReferenceRating.objects.get(application=application)
+                previous_rr.delete()
+            except ReferenceRating.DoesNotExist:
+                pass
+            
+            ReferenceRating.objects.get_or_create(application=application, reference=new_reference)
+            
+            if request.POST['update'] == "Save and Continue":
+                return HttpResponseRedirect(reverse('resume_upload'))
             else:
-                return render_to_response(
-                    'applyform/ref_confirm.html',
-                    {
-                        'ref_email': ref_email,
-                        'refs': refs,
-                        'form': form,
-                        'user': request.user,
-                        'request': request,
-                        'MEDIA_URL': settings.MEDIA_URL,
-                    }
-                )
+                return HttpResponseRedirect(reverse('apply_menu'))
     else:
-        form = ReferenceCheckForm()
+        form = ReferenceForm()
         
     return render_to_response(
-        'applyform/ref_check.html',
+        'applyform/reference_edit.html',
         {
+            'reference': reference,
             'form': form,
             'user': request.user,
             'request': request,

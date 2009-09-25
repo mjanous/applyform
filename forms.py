@@ -163,9 +163,17 @@ class CoverLetterForm(forms.Form):
         )
     )
 
-class ReferenceCheckForm(forms.Form):
+class ReferenceForm(forms.Form):
     email = forms.EmailField(
         label='Reference Email',
+        required=True,
+    )
+    first_name = forms.CharField(
+        label="First Name",
+        required=True,
+    )
+    last_name = forms.CharField(
+        label="Last Name",
         required=True,
     )
     

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Reference Selection</h1>
+<p>Please provide the name and email address of an employer or faculty member who is willing to serve as a professional reference.</p>
+{% if reference %}<p>You currently have selected: {{ reference.first_name }} {{ reference.last_name }} at {{ reference.email }}{% endif %}
+<form action="{% url reference %}" method="post">
+<ul>
+{{ form.as_ul }}
+</ul>
+{% include "applyform/save_buttons.html" %}
+</form>
+
+{% endblock %}
