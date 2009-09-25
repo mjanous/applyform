@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from applyform.models import *
 
 urlpatterns = patterns('applyform.views',
-    url('$',
+    url('^$',
         view='index',
         name='index',
     ),
