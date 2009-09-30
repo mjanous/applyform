@@ -77,7 +77,9 @@ def apply_menu(request):
     )
 
 @login_required
-@require_student_profile
+@require_accepting
+@require_app_started
+@submit_restriction
 def basic_info(request):
     user = request.user
     userprofile = user.userprofile_set.get()
@@ -118,7 +120,6 @@ def basic_info(request):
                 student_profile.is_honors_student = True
             elif form.cleaned_data['is_honors_student'] == u"0":
                 student_profile.is_honors_student = False
-            #form.cleaned_data['blah']
             student_profile.save()
             
             if request.POST['update'] == "Save and Continue":
@@ -394,7 +395,8 @@ def coach_list_students(request, project_id):
     userprofile, _ = user.userprofile_set.get_or_create()
     project = Project.objects.get(pk=project_id)
     project_interests = ProjectInterest.objects.filter(
-        project=project).filter(interest_rating__isnull=False)
+        project=project).filter(
+            interest_rating__isnull=False).filter(application__is_submitted=True)
     
     try:
         coach_profile = userprofile.coach_profile.get()
@@ -648,14 +650,29 @@ def project_detail(request, object_id):
 @require_app_started
 @submit_restriction
 def resume_upload(request):
+    from applyform.lib.file_handlers import handle_uploaded_resume
+    
+    semester_accepting = Semester.accepting_semesters.get()
+    user = request.user
+    userprofile = user.userprofile_set.get()
+    student_profile = userprofile.student_profile.get()
+    application = student_profile.applications.get(for_semester=semester_accepting)
+    
     if request.method == 'POST':
         if request.POST['update'] == "Cancel":
             return HttpResponseRedirect(reverse('apply_menu'))
         form = ResumeUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            uploaded_file = form.cleaned_data['file_upload']
-            filename = uploaded_file.name
-            file_content = uploaded_file.read()
+            filename = handle_uploaded_resume(request.FILES['file_upload'], request.user.username)
+            if application.resume:
+                import os
+                old_filename = application.resume.file.name
+                application.resume = None
+                application.save()
+                os.remove(old_filename)
+                
+            application.resume = filename
+            application.save()
             if request.POST['update'] == "Save and Continue":
                 return HttpResponseRedirect(reverse('finalize_submission'))
             else:
@@ -665,6 +682,7 @@ def resume_upload(request):
         return render_to_response(
             'applyform/resume_upload.html',
             {
+                'application': application,
                 'form': form,
                 'user': request.user,
                 'request': request,
@@ -677,13 +695,23 @@ def resume_upload(request):
 @require_app_started
 @submit_restriction
 def finalize_submission(request):
+    semester_accepting = Semester.accepting_semesters.get()
+    user = request.user
+    userprofile = user.userprofile_set.get()
+    student_profile = userprofile.student_profile.get()
+    application = student_profile.applications.get(for_semester=semester_accepting)
+    
     if request.method == "POST":
         if request.POST['update'] == "Cancel":
             return HttpResponseRedirect(reverse('apply_menu'))
         form = FinalizeSubmissionForm(request.POST)
         if form.is_valid():
-            pass
-            
+            understand = form.cleaned_data['understand']
+            if understand:
+                application.is_submitted = True
+                application.save()
+                return HttpResponseRedirect(reverse('thanks'))
+    
     else:
         form = FinalizeSubmissionForm()
         return render_to_response(

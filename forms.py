@@ -239,5 +239,7 @@ class ResumeUploadForm(forms.Form):
     file_upload = forms.FileField()
     
 class FinalizeSubmissionForm(forms.Form):
-    understand = forms.BooleanField()
+    understand = forms.BooleanField(
+        label="I understand that once I click submit I can no longer change my application",
+    )
     

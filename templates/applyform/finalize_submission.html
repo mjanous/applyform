@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Submit Application</h1>
+<p>You have completed the steps necessary. Please check the info below. If you would like to change anything, go back to the corresponding step. Once you have looked over your application, check the box below and click submit.</p>
+<form action="{% url applyform.views.finalize_submission %}" method="post">
+<p>{{ form.understand.as_widget }} {{ form.understand.label }}</p>
+{% include "applyform/save_buttons.html" %}
+</form>
+
+{% endblock %}

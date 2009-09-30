@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form enctype="multipart/form-data" method="post" action="{% url applyform.views.apply_menu %}">
+<h1>Resume Upload</h1>
+{% if application.resume %}
+<p>Your current resume is <a href="{{ MEDIA_URL }}{{ application.resume.name }}">here</a>. Uploading a new one will overwrite your old.</p>
+{% else %}
+<p>You don't currently have a resume uploaded.</p>
+{% endif %}
+<form enctype="multipart/form-data" method="POST" action="{% url applyform.views.resume_upload %}">
 <ul>
 <li>Upload a Resume: {{ form.file_upload }}</li>
 </ul>

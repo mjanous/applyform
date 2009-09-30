@@ -92,7 +92,7 @@ urlpatterns += patterns('django.views.generic.simple',
     # TODO: Make this point to a real page for already submitted error.
     url('already_submitted/$',
         'direct_to_template',
-        {'template': 'applyform/not_accepting.html'},
+        {'template': 'applyform/already_submitted.html'},
         name='already_submitted',
     ),
 )
