@@ -63,7 +63,7 @@ class UserProfile(models.Model):
     keycards = models.ManyToManyField(
         'Keycard', related_name='owner', through='AssignedKeycard', blank=True
     )
-    tshirt_size = ShirtSizeField(max_length=3, blank=True)
+    tshirt_size = ShirtSizeField(max_length=10, blank=True)
     
     def __unicode__(self):
         return ''.join((self.user.last_name, ', ', self.user.first_name, ' - ', self.user.username,))

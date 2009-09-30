@@ -4,5 +4,6 @@ SHIRT_CHOICES = [
     ('M', 'Medium'),
     ('L', 'Large'),
     ('XL', 'X-Large'),
-    ('XXL', 'XX-Large')
+    ('XXL', 'XX-Large'),
+    ('Other', 'Other'),
 ]

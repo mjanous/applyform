@@ -718,7 +718,10 @@ def finalize_submission(request):
             'applyform/finalize_submission.html',
             {
                 'form': form,
+                'application': application,
                 'user': request.user,
+                'userprofile': userprofile,
+                'student_profile': student_profile,
                 'request': request,
                 'MEDIA_URL': settings.MEDIA_URL,
             }
