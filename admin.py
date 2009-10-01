@@ -141,7 +141,8 @@ class ConsultantAdmin(admin.ModelAdmin):
         'projects__semester__season',
         'projects__semester__year',
     ]
-    
+
+admin.site.register(Config, BlankAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Consultant, ConsultantAdmin)

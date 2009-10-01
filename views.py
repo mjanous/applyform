@@ -15,17 +15,19 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 def index(request):
     try:
         semester_accepting = Semester.accepting_semesters.get()
-    except (Semester.DoesNotExist, Semester.MultipleObjectsReturned):
-        semester_accepting = False
-    return render_to_response(
-        'applyform/index.html',
-        {
-            'semester_accepting': semester_accepting,
-            'user': request.user,
-            'request': request,
-            'MEDIA_URL': settings.MEDIA_URL,
-        }
-    )
+        return render_to_response(
+            'applyform/index.html',
+            {
+                'semester_accepting': semester_accepting,
+                'user': request.user,
+                'request': request,
+                'MEDIA_URL': settings.MEDIA_URL,
+            }
+        )
+    except:
+        return HttpResponseRedirect(reverse('not_accepting'))
+
+
 
 @login_required
 @require_accepting
@@ -726,3 +728,14 @@ def finalize_submission(request):
                 'MEDIA_URL': settings.MEDIA_URL,
             }
         )
+    
+def not_accepting(request):
+    not_accepting_text = Config.objects.get(name="not_accepting_text").value
+    return render_to_response(
+        'applyform/not_accepting.html',
+        {
+            'text': not_accepting_text,
+            'MEDIA_URL': settings.MEDIA_URL,
+            'request': request,
+        }
+    )

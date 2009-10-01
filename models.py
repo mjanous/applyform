@@ -473,3 +473,7 @@ class Reference(models.Model):
     def __unicode__(self):
         return self.email
     
+class Config(models.Model):
+    name = models.CharField(max_length=40)
+    value = models.TextField()
+    

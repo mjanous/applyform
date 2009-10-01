@@ -4,29 +4,29 @@
 <h1>Submit Application</h1>
 <p>You have completed the steps necessary. Please check the info below. If you would like to change anything, go back to the corresponding step. Once you have looked over your application, check the box below and click submit.</p>
 <ul>
-<li><b>First Name:</b> {{ user.first_name }}</li>
-<li><b>Last Name:</b> {{ user.last_name }}</li>
-<li><b>Address:</b> {{ userprofile.address1 }}</li>
-<li><b>Address 2:</b> {{ userprofile.address2 }}</li>
-<li><b>City:</b> {{ userprofile.city }}</li>
-<li><b>State:</b> {{ userprofile.state }}</li>
-<li><b>Zipcode:</b> {{ userprofile.zipcode }}</li>
-<li><b>Email:</b> {{ user.email }}</li>
-<li><b>Mobile phone:</b> {{ userprofile.mobile_phone }}</li>
-<li><b>Home phone:</b> {{ userprofile.home_phone }}</li>
-<li><b>Current Major:</b> {{ student_profile.major }}</li>
-<li><b>Anticipated Grad Semester:</b> {{ student_profile.grad_date }}</li>
-<li><b>UBUS 310 Completion Semester:</b> {{ student_profile.semester_for_310 }}</li>
-<li><b>UBUS 311 Completion Semester:</b> {{ student_profile.semester_for_311 }}</li>
-<li><b>Graduate Student:</b> {{ student_profile.is_grad_student|yesno:"Yes,No" }}</li>
-<li><b>Honors Student:</b> {{ student_profile.is_honors_student|yesno:"Yes,No" }}</li>
-<li><b>T-shirt Size:</b> {{ userprofile.tshirt_size }}</li>
+<li><b>First Name:</b> <p>{{ user.first_name }}</p></li>
+<li><b>Last Name:</b> <p>{{ user.last_name }}</p></li>
+<li><b>Address:</b> <p>{{ userprofile.address1 }}</p></li>
+<li><b>Address 2:</b> <p>{{ userprofile.address2 }}</p></li>
+<li><b>City:</b> <p>{{ userprofile.city }}</p></li>
+<li><b>State:</b> <p>{{ userprofile.state }}</p></li>
+<li><b>Zipcode:</b> <p>{{ userprofile.zipcode }}</p></li>
+<li><b>Email:</b> <p>{{ user.email }}</p></li>
+<li><b>Mobile phone:</b> <p>{{ userprofile.mobile_phone }}</p></li>
+<li><b>Home phone:</b> <p>{{ userprofile.home_phone }}</p></li>
+<li><b>Current Major:</b> <p>{{ student_profile.major }}</p></li>
+<li><b>Anticipated Grad Semester:</b> <p>{{ student_profile.grad_date }}</p></li>
+<li><b>UBUS 310 Completion Semester:</b> <p>{{ student_profile.semester_for_310 }}</p></li>
+<li><b>UBUS 311 Completion Semester:</b> <p>{{ student_profile.semester_for_311 }}</p></li>
+<li><b>Graduate Student:</b> <p>{{ student_profile.is_grad_student|yesno:"Yes,No" }}</p></li>
+<li><b>Honors Student:</b> <p>{{ student_profile.is_honors_student|yesno:"Yes,No" }}</p></li>
+<li><b>T-shirt Size:</b> <p>{{ userprofile.tshirt_size }}</p></li>
 {% for pi in application.projectinterest_set.all %}
-<li><b>{{ pi.project }}:</b> {%ifequal pi.interest_rating 0 %}Not Interested{% endifequal %}{% ifequal pi.interest_rating 1 %}Interested{% endifequal %}{% ifequal pi.interest_rating 2 %}Very Interested{% endifequal %}</td></li>
-{% endfor %}
+<li><b>{{ pi.project }}:</b> <p>{%ifequal pi.interest_rating 0 %}Not Interested{% endifequal %}{% ifequal pi.interest_rating 1 %}Interested{% endifequal %}{% ifequal pi.interest_rating 2 %}Very Interested{% endifequal %}</td></li>
+{% endfor %}</p>
 <li><b>Cover Letter:</b> {{ application.cover_letter|safe }}</li>
-<li><b>Reference:</b> {{ application.reference.get.first_name }} {{ application.reference.get.last_name }} - {{ application.reference.get.email }}</li>
-<li><b>Resume:</b> <a href="{{ MEDIA_URL }}{{ application.resume.name }}">View here</a>
+<li><b>Reference:</b> <p>{{ application.reference.get.first_name }} {{ application.reference.get.last_name }} - {{ application.reference.get.email }}</p></li>
+<li><b>Resume:</b> <p><a href="{{ MEDIA_URL }}{{ application.resume.name }}">View here</a></p></li>
 </ul>
 <form action="{% url applyform.views.finalize_submission %}" method="post">
 <p>{{ form.understand.as_widget }} {{ form.understand.label }}</p>
