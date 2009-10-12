@@ -278,7 +278,7 @@ class Semester(models.Model):
         ordering = ['-start_date']
     
 class Project(models.Model):
-    project_name = models.CharField(max_length=60)
+    project_name = models.CharField(max_length=255)
     project_purpose = models.TextField(blank=True)
     semester = models.ForeignKey(Semester, related_name='project_set', blank=True, null=True)
     sponsors = models.ManyToManyField(
