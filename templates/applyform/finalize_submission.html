@@ -2,6 +2,7 @@
 
 {% block content %}
 <h1>Submit Application</h1>
+{% if is_complete %}
 <p>You have completed the steps necessary. Please check the info below. If you would like to change anything, go back to the corresponding step. Once you have looked over your application, check the box below and click submit.</p>
 <ul>
 <li><b>First Name:</b> <p>{{ user.first_name }}</p></li>
@@ -37,4 +38,7 @@
 </ul>
 </table>
 </form>
+{% else %}
+<p>You have not completed all the steps necessary to submit your application, please return to the <a href="{% url applyform.views.apply_menu %}">menu</a> to continue your application.</p>
+{% endif %}
 {% endblock %}

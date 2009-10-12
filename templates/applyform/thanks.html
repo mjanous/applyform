@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p>Thank you for applying to the ELC. An email has been sent to the address {{ request }}</p>
+<h1>Application complete</h1>
+<p>Thank you for applying to the ELC. An email has been sent to <b>{{ request.user.email }}</b>, verifying that you have completed the application process. If you do not receive this email within 24 hours please contact Matt Janouskovec at <a href="mailto:mjanous@niu.edu">mjanous@niu.edu</a> or (815)753-4006.</p>
 
 {% endblock %}

@@ -468,6 +468,7 @@ def student_contact_report_by_semester(request):
                 'is_assistant_coach',
                 'tshirt_size',
                 'honors_student',
+                'major',
             ])
             
             for consultant in consultants:
@@ -487,6 +488,7 @@ def student_contact_report_by_semester(request):
                     'False',
                     consultant.student.profile.tshirt_size,
                     consultant.student.is_honors_student,
+                    consultant.student.major.title,
                 ])
                 
             for assistant_coach in assistant_coaches:
@@ -506,6 +508,7 @@ def student_contact_report_by_semester(request):
                     'True',
                     assistant_coach.student.profile.tshirt_size,
                     assistant_coach.student.is_honors_student,
+                    assistant_coach.student.major.title,
                 ])
                 
             return response
@@ -702,24 +705,44 @@ def finalize_submission(request):
     userprofile = user.userprofile_set.get()
     student_profile = userprofile.student_profile.get()
     application = student_profile.applications.get(for_semester=semester_accepting)
-    
-    if request.method == "POST":
-        if request.POST['update'] == "Cancel":
-            return HttpResponseRedirect(reverse('apply_menu'))
-        form = FinalizeSubmissionForm(request.POST)
-        if form.is_valid():
-            understand = form.cleaned_data['understand']
-            if understand:
-                application.is_submitted = True
-                application.save()
-                return HttpResponseRedirect(reverse('thanks'))
-    
+    try:
+        reference = application.get_reference()
+    except Reference.DoesNotExist:
+        reference = None
+        
+    if userprofile.profile_info_completed() and application.is_complete() and \
+       application.cover_letter and reference and application.resume:
+        if request.method == "POST":
+            if request.POST['update'] == "Cancel":
+                return HttpResponseRedirect(reverse('apply_menu'))
+            form = FinalizeSubmissionForm(request.POST)
+            if form.is_valid():
+                understand = form.cleaned_data['understand']
+                if understand:
+                    application.is_submitted = True
+                    application.save()
+                    return HttpResponseRedirect(reverse('thanks'))
+        
+        else:
+            form = FinalizeSubmissionForm()
+            return render_to_response(
+                'applyform/finalize_submission.html',
+                {
+                    'is_complete': True,
+                    'form': form,
+                    'application': application,
+                    'user': request.user,
+                    'userprofile': userprofile,
+                    'student_profile': student_profile,
+                    'request': request,
+                    'MEDIA_URL': settings.MEDIA_URL,
+                }
+            )
     else:
-        form = FinalizeSubmissionForm()
         return render_to_response(
             'applyform/finalize_submission.html',
             {
-                'form': form,
+                'is_complete': False,
                 'application': application,
                 'user': request.user,
                 'userprofile': userprofile,
@@ -727,7 +750,7 @@ def finalize_submission(request):
                 'request': request,
                 'MEDIA_URL': settings.MEDIA_URL,
             }
-        )
+)
     
 def not_accepting(request):
     not_accepting_text = Config.objects.get(name="not_accepting_text").value
@@ -735,6 +758,15 @@ def not_accepting(request):
         'applyform/not_accepting.html',
         {
             'text': not_accepting_text,
+            'MEDIA_URL': settings.MEDIA_URL,
+            'request': request,
+        }
+    )
+
+def thanks(request):
+    return render_to_response(
+        'applyform/thanks.html',
+        {
             'MEDIA_URL': settings.MEDIA_URL,
             'request': request,
         }
