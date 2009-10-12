@@ -333,7 +333,7 @@ class ImplementationType(models.Model):
         return self.implement
     
 class Sponsor(models.Model):
-    sponsor_name = models.CharField(max_length=60)
+    sponsor_name = models.CharField(max_length=255)
     
     def __unicode__(self):
         return self.sponsor_name
