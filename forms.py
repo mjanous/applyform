@@ -131,7 +131,7 @@ class ProjectSelectForm(forms.Form):
 class CoverLetterForm(forms.Form):
     cover_letter = forms.CharField(
         widget=TinyMCE(
-            attrs={'cols': 130, 'rows': 30},
+            attrs={'cols': 75, 'rows': 20},
             mce_attrs={
                 'mode': "textareas",
                 'theme': "advanced",
