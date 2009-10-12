@@ -15,15 +15,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 def index(request):
     try:
         semester_accepting = Semester.accepting_semesters.get()
-        return render_to_response(
-            'applyform/index.html',
-            {
-                'semester_accepting': semester_accepting,
-                'user': request.user,
-                'request': request,
-                'MEDIA_URL': settings.MEDIA_URL,
-            }
-        )
+        return HttpResponseRedirect(reverse('apply_menu'))
     except:
         return HttpResponseRedirect(reverse('not_accepting'))
 
