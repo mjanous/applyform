@@ -722,6 +722,7 @@ Matthew Janouskovec at mjanous@niu.edu or call him at (815)501-4446.
 """
                     m = Mailer(user.email, email_body)
                     application.is_submitted = True
+                    application.date_submitted = datetime.now()
                     application.save()
                     m.mail_it()
                     return HttpResponseRedirect(reverse('thanks'))
