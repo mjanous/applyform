@@ -711,8 +711,19 @@ def finalize_submission(request):
             if form.is_valid():
                 understand = form.cleaned_data['understand']
                 if understand:
+                    from applyform.lib.mailer import Mailer
+                    
+                    email_body = """
+You have successfully submitted your application to the ELC.
+You will be notified of your application's status the week of November 9th.
+
+If you had any difficulties with the online application process, please email
+Matthew Janouskovec at mjanous@niu.edu or call him at (815)501-4446.
+"""
+                    m = Mailer(user.email, email_body)
                     application.is_submitted = True
                     application.save()
+                    m.mail_it()
                     return HttpResponseRedirect(reverse('thanks'))
         
         else:
