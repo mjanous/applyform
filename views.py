@@ -754,20 +754,24 @@ def finalize_submission(request):
     
 def not_accepting(request):
     not_accepting_text = Config.objects.get(name="not_accepting_text").value
+    user = request.user
     return render_to_response(
         'applyform/not_accepting.html',
         {
             'text': not_accepting_text,
             'MEDIA_URL': settings.MEDIA_URL,
             'request': request,
+            'user': user,
         }
     )
 
 def thanks(request):
+    user = request.user
     return render_to_response(
         'applyform/thanks.html',
         {
             'MEDIA_URL': settings.MEDIA_URL,
             'request': request,
+            'user': user,
         }
     )
