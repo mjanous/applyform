@@ -91,6 +91,23 @@ class ApplicationAdmin(admin.ModelAdmin):
         ProjectInterestInline,
         ReferenceRatingInline,
     ]
+    search_fields = [
+        'student__profile__user__first_name',
+        'student__profile__user__last_name',
+        'student__profile__user__username',
+        'for_semester__season',
+        'for_semester__year',
+        'date_submitted',
+    ]
+    
+    list_filter = ('for_semester',)
+    list_display = (
+        '__unicode__',
+        'first_name',
+        'last_name',
+        'date_submitted',
+        'is_submitted',
+    )
 
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'semester', 'implemented_as')

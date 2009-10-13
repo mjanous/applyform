@@ -255,6 +255,14 @@ class Application(models.Model):
             reference = None
         
         return reference
+    
+    def _get_first_name(self):
+        return self.student.profile.user.first_name
+    first_name = property(_get_first_name)
+    
+    def _get_last_name(self):
+        return self.student.profile.user.last_name
+    last_name = property(_get_last_name)
 
     class Meta:
         unique_together = ('student', 'for_semester')
