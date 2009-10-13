@@ -793,7 +793,7 @@ def thanks(request):
 def error_500(request):
     user = request.user
     return render_to_response(
-        'applyform/thanks.html',
+        '500.html',
         {
             'MEDIA_URL': settings.MEDIA_URL,
             'request': request,
