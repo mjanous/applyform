@@ -464,6 +464,11 @@ def student_contact_report_by_semester(request):
             ])
             
             for consultant in consultants:
+                try:
+                    major_title = consultant.student.major.title
+                except AttributeError:
+                    major_title = ""
+                    
                 project = consultant.projects.get(semester=semester)
                 writer.writerow([
                     consultant.student.profile.user.first_name,
@@ -480,10 +485,15 @@ def student_contact_report_by_semester(request):
                     'False',
                     consultant.student.profile.tshirt_size,
                     consultant.student.is_honors_student,
-                    consultant.student.major.title,
+                    major_title,
                 ])
                 
             for assistant_coach in assistant_coaches:
+                try:
+                    major_title = assistant_coach.student.major.title
+                except AttributeError:
+                    major_title = ""
+                    
                 project = assistant_coach.projects.get(semester=semester)
                 writer.writerow([
                     assistant_coach.student.profile.user.first_name,
@@ -500,7 +510,7 @@ def student_contact_report_by_semester(request):
                     'True',
                     assistant_coach.student.profile.tshirt_size,
                     assistant_coach.student.is_honors_student,
-                    assistant_coach.student.major.title,
+                    major_title,
                 ])
                 
             return response
@@ -585,15 +595,15 @@ def student_contact_report_by_project(request):
     else:
         form = ReportProjectForm()
         
-    return render_to_response(
-        'applyform/report_project.html',
-        {
-            'form': form,
-            'user': request.user,
-            'request': request,
-            'MEDIA_URL': settings.MEDIA_URL,
-        }
-    )
+        return render_to_response(
+            'applyform/report_project.html',
+            {
+                'form': form,
+                'user': request.user,
+                'request': request,
+                'MEDIA_URL': settings.MEDIA_URL,
+            }
+        )
 
 @login_required
 @permission_required('is_staff')

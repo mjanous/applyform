@@ -227,12 +227,12 @@ class ReportProjectForm(forms.Form):
                 else:
                     return ' '.join(content[:length+1].split(' ')[0:-1]) + suffix
                 
-            return " - ".join((smart_truncate(obj.sponsors_string, 20), smart_truncate(obj.project_name)))
+            return " - ".join((smart_truncate(obj.sponsors_string, 40), smart_truncate(obj.project_name)))
         
     project = ProjectModelChoiceField(
         required=False,
         label="Project",
-        queryset=sorted(Project.objects.all(), key=lambda a: a.sponsors_string),
+        queryset=Project.objects.order_by("semester")
     )
 
 class ResumeUploadForm(forms.Form):
