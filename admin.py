@@ -105,6 +105,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         '__unicode__',
         'first_name',
         'last_name',
+        'for_semester',
         'date_submitted',
         'is_submitted',
     )
