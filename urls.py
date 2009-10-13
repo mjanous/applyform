@@ -109,3 +109,5 @@ urlpatterns += patterns('',
         name='logout',
     ),
 )
+
+handler500 = 'applyform.views.error_500'

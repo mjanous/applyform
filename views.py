@@ -789,3 +789,15 @@ def thanks(request):
             'user': user,
         }
     )
+
+def error_500(request):
+    user = request.user
+    return render_to_response(
+        'applyform/thanks.html',
+        {
+            'MEDIA_URL': settings.MEDIA_URL,
+            'request': request,
+            'user': user,
+        }
+    )
+    
