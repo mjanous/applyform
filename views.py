@@ -446,6 +446,7 @@ def student_contact_report_by_semester(request):
             response['Content-Disposition'] = 'attachment; filename=report.csv'
             writer = csv.writer(response)
             writer.writerow([
+                'z-id',
                 'first_name',
                 'last_name',
                 'email',
@@ -471,6 +472,7 @@ def student_contact_report_by_semester(request):
                     
                 project = consultant.projects.get(semester=semester)
                 writer.writerow([
+                    consultant.student.profile.user.username,
                     consultant.student.profile.user.first_name,
                     consultant.student.profile.user.last_name,
                     consultant.student.profile.user.email,
@@ -496,6 +498,7 @@ def student_contact_report_by_semester(request):
                     
                 project = assistant_coach.projects.get(semester=semester)
                 writer.writerow([
+                    assistant_coach.student.profile.user.username,
                     assistant_coach.student.profile.user.first_name,
                     assistant_coach.student.profile.user.last_name,
                     assistant_coach.student.profile.user.email,
@@ -544,6 +547,7 @@ def student_contact_report_by_project(request):
             
             writer = csv.writer(response)
             writer.writerow([
+                'z-id',
                 'first_name',
                 'last_name',
                 'email',
@@ -555,11 +559,20 @@ def student_contact_report_by_project(request):
                 'city',
                 'state',
                 'zip',
-                'is_assistant_coach'
+                'is_assistant_coach',
+                'tshirt_size',
+                'honors_student',
+                'major',
             ])
             
             for consultant in consultants:
+                try:
+                    major_title = consultant.student.major.title
+                except AttributeError:
+                    major_title = ""
+                    
                 writer.writerow([
+                    consultant.student.profile.user.username,
                     consultant.student.profile.user.first_name,
                     consultant.student.profile.user.last_name,
                     consultant.student.profile.user.email,
@@ -571,11 +584,20 @@ def student_contact_report_by_project(request):
                     consultant.student.profile.city,
                     consultant.student.profile.state,
                     consultant.student.profile.zipcode,
-                    'False'
+                    'False',
+                    consultant.student.profile.tshirt_size,
+                    consultant.student.is_honors_student,
+                    major_title,
                 ])
                 
             for assistant_coach in assistant_coaches:
+                try:
+                    major_title = assistant_coach.student.major.title
+                except AttributeError:
+                    major_title = ""
+                    
                 writer.writerow([
+                    assistant_coach.student.profile.user.username,
                     assistant_coach.student.profile.user.first_name,
                     assistant_coach.student.profile.user.last_name,
                     assistant_coach.student.profile.user.email,
@@ -587,7 +609,10 @@ def student_contact_report_by_project(request):
                     assistant_coach.student.profile.city,
                     assistant_coach.student.profile.state,
                     assistant_coach.student.profile.zipcode,
-                    'True'
+                    'True',
+                    assistant_coach.student.profile.tshirt_size,
+                    assistant_coach.student.is_honors_student,
+                    major_title,
                 ])
                 
             return response

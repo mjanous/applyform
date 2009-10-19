@@ -256,6 +256,11 @@ class Application(models.Model):
         
         return reference
     
+    def reference_name(self):
+        first_name = self.get_reference().first_name
+        last_name = self.get_reference().last_name
+        return " ".join((first_name, last_name))
+    
     def _get_first_name(self):
         return self.student.profile.user.first_name
     first_name = property(_get_first_name)

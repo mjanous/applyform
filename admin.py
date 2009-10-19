@@ -108,6 +108,8 @@ class ApplicationAdmin(admin.ModelAdmin):
         'for_semester',
         'date_submitted',
         'is_submitted',
+        'get_reference',
+        'reference_name',
     )
 
 class ProjectAdmin(admin.ModelAdmin):
