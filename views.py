@@ -764,12 +764,15 @@ Matthew Janouskovec at mjanous@niu.edu or call him at (815)501-4446.
         
         else:
             form = FinalizeSubmissionForm()
+            from applyform.lib.plaintext2html import plaintext2html
+            cover_letter = plaintext2html(application.cover_letter)
             return render_to_response(
                 'applyform/finalize_submission.html',
                 {
                     'is_complete': True,
                     'form': form,
                     'application': application,
+                    'cover_letter': cover_letter,
                     'user': request.user,
                     'userprofile': userprofile,
                     'student_profile': student_profile,
