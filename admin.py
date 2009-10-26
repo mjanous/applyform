@@ -100,7 +100,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         'date_submitted',
     ]
     
-    list_filter = ('for_semester',)
+    list_filter = ('for_semester', 'is_submitted',)
     list_display = (
         '__unicode__',
         'first_name',
