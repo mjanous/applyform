@@ -204,7 +204,8 @@ def project_select(request):
             'meeting_times': project.meeting_times,
             'sponsors_string': project.sponsors_string,
             'project': project.pk,
-            'interest_rating': interest_rating
+            'interest_rating': interest_rating,
+            'project_coaches': project.coach_set.all(),
         })
 
     from django.forms.formsets import formset_factory

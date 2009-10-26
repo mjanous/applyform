@@ -13,7 +13,20 @@
     <span>{{ form.initial.project_purpose|safe }}</span>
     </a></b>
     <br />
-    <b>Meeting Times:</b> {{ form.initial.meeting_times }}</td>
+    <b>Meeting Times:</b> {{ form.initial.meeting_times }}
+    <br />
+    <b>Coach(es):</b> {% if form.initial.project_coaches %}
+    {% for coach in form.initial.project_coaches %}
+    {% if forloop.first %}
+    {{ coach.profile.user.first_name }} {{ coach.profile.user.last_name }}
+    {% else %}
+    and {{ coach.profile.user.first_name }} {{ coach.profile.user.last_name }}
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    TBD
+    {% endif %}
+    </td>
     <td>{{ form.interest_rating.as_widget }}{{ form.project }}</td>
     </tr>
     <tr>
