@@ -424,10 +424,14 @@ def apps_detail(request, app_id):
     application = Application.objects.get(pk=app_id)
     user = request.user
     
+    from applyform.lib.plaintext2html import plaintext2html
+    cover_letter = plaintext2html(application.cover_letter)
+    
     return render_to_response(
         'applyform/app_detail.html',
         {
             'app': application,
+            'cover_letter': cover_letter,
             'user': user,
             'request': request,
             'MEDIA_URL': settings.MEDIA_URL,

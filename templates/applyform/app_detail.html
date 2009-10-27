@@ -12,7 +12,7 @@
 <li><b>UBUS 310 Semester:</b> {{ app.student.semester_for_310 }}</li>
 </ul>
 <h3>Cover Letter</h3>
-<p>{{ app.cover_letter|safe }}</p>
+<p>{{ cover_letter|safe }}</p>
 <h3>Resume</h3>
 <ul><li><a href="{{ app.resume.url }}">download</a></li></ul>
 {% endblock %}
