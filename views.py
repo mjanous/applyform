@@ -389,9 +389,52 @@ def coach_list_students(request, project_id):
     user=request.user
     userprofile, _ = user.userprofile_set.get_or_create()
     project = Project.objects.get(pk=project_id)
+    
     project_interests = ProjectInterest.objects.filter(
         project=project).filter(
-            interest_rating__isnull=False).filter(application__is_submitted=True)
+            interest_rating__isnull=False).filter(
+                interest_rating__gt=0).filter(application__is_submitted=True)
+    order = ''
+    order_type = ''
+    if request.GET.has_key('o'):
+        order = request.GET['o']
+        if request.GET.has_key('ot'):
+            order_type = request.GET['ot']
+            if order_type == 'asc':
+                if order == '1':
+                    project_interests = project_interests.order_by('application__student__profile__user__last_name')
+                elif order == '2':
+                    project_interests = project_interests.order_by('interest_rating')
+                elif order == '3':
+                    project_interests = project_interests.order_by('application__student__major')
+                elif order == '4':
+                    project_interests = project_interests.order_by('application__student__grad_date')
+                elif order == '5':
+                    project_interests = project_interests.order_by('application__student__semester_for_311')
+                elif order == '6':
+                    project_interests = project_interests.order_by('-application__student__is_grad_student')
+                elif order == '7':
+                    project_interests = project_interests.order_by('-application__student__is_honors_student')
+                else:
+                    pass
+            else:
+                order_type = 'dsc'
+                if order == '1':
+                    project_interests = project_interests.order_by('-application__student__profile__user__last_name')
+                elif order == '2':
+                    project_interests = project_interests.order_by('-interest_rating')
+                elif order == '3':
+                    project_interests = project_interests.order_by('-application__student__major')
+                elif order == '4':
+                    project_interests = project_interests.order_by('-application__student__grad_date')
+                elif order == '5':
+                    project_interests = project_interests.order_by('-application__student__semester_for_311')
+                elif order == '6':
+                    project_interests = project_interests.order_by('application__student__is_grad_student')
+                elif order == '7':
+                    project_interests = project_interests.order_by('application__student__is_honors_student')                    
+                else:
+                    pass
     
     try:
         coach_profile = userprofile.coach_profile.get()
@@ -399,15 +442,15 @@ def coach_list_students(request, project_id):
         # TODO: Make this redirect to a page explaining User is not a coach.
         # Actually... change it to display the error on the page without a
         # redirect
-        return HttpResponseRedirect(reverse('not_accepting'))
+        return HttpResponseRedirect(reverse('login'))
     
     try:
         coach_profile.projects.get(pk=project.pk)
     except Project.DoesNotExist:
         # TODO: Display an error that this coach is not a member of this
         # project instead of redirecting to not_accepting page.
-        return HttpResponseRedirect(reverse('coach_error'))
-    
+        return HttpResponseRedirect(reverse('login'))
+
     return render_to_response(
         'applyform/coach_list_students.html',
         {
@@ -416,6 +459,9 @@ def coach_list_students(request, project_id):
             'user': user,
             'request': request,
             'MEDIA_URL': settings.MEDIA_URL,
+            'project_id': project_id,
+            'ot': order_type,
+            'o': order,
         }
     )
 
@@ -833,4 +879,18 @@ def error_500(request):
             'user': user,
         }
     )
-    
+
+def upcoming_project_list(request):
+    from datetime import datetime
+    now = datetime.now()
+    user = request.user
+    projects = Project.objects.filter(semester__start_date__gt=now)
+    return render_to_response(
+        'applyform/upcoming_project_list.html',
+        {
+            'MEDIA_URL': settings.MEDIA_URL,
+            'request': request,
+            'user': user,
+            'projects': projects,
+        }
+    )

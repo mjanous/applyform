@@ -4,6 +4,7 @@ from applyform.lib.us.models import USStateField
 from applyform.lib.shirts.models import ShirtSizeField
 from django.contrib.auth.models import User
 from django.conf import settings
+from photologue.models import ImageModel
 
 User._meta.ordering = ['last_name', 'first_name']
 
@@ -489,4 +490,7 @@ class Reference(models.Model):
 class Config(models.Model):
     name = models.CharField(max_length=40)
     value = models.TextField()
+    
+class SponsorLogo(ImageModel):
+    sponsor = models.ForeignKey(Sponsor)
     

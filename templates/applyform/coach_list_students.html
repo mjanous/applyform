@@ -4,13 +4,31 @@
 <h1>Student List</h1>
 <h3>{{ project }}</h3>
 <table>
-<th>Name</th>
-<th>Interest</th>
-<th>Major</th>
-<th>Grad Date</th>
-<th>UBUS 311</th>
-<th>G/U?</th>
-<th>Honors?</th>
+<thead>
+<tr>
+    <th>
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=1&ot={% ifequal o '1' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Name</a>
+    </th>
+    <th>    
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=2&ot={% ifequal o '2' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Interest Level</a>
+    </th>
+    <th>    
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=3&ot={% ifequal o '3' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Major</a>
+    </th>
+    <th>    
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=4&ot={% ifequal o '4' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Grad Date</a>
+    </th>
+    <th>    
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=5&ot={% ifequal o '5' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">UBUS 311</a>
+    </th>
+    <th>        
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=6&ot={% ifequal o '6' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Grad?</a>
+    </th>
+    <th>    
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=7&ot={% ifequal o '7' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Honors?</a>
+    </th>
+</tr>
+</thead>
 {% for project_interest in project_interests %}
 <tr class="{% cycle 'odd' 'even' %}">
 <td><a href="{% url apps_detail project_interest.application.pk %}">{{ project_interest.application.student.profile.user.first_name|slice:":1" }}. {{ project_interest.application.student.profile.user.last_name }}</a></td>

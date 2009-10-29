@@ -2,6 +2,10 @@ from applyform.models import *
 from django.contrib.auth.models import User
 from django.contrib import admin
 
+class SponsorLogoInline(admin.StackedInline):
+    model = SponsorLogo
+    extra = 1
+
 class ReferenceRatingInline(admin.StackedInline):
     model = ReferenceRating
     extra = 1
@@ -136,6 +140,7 @@ class SponsorAdmin(admin.ModelAdmin):
     inlines = [
         ProjectSponsorInline,
         SponsorContactInline,
+        SponsorLogoInline,
     ]
     
 class KeycardAdmin(admin.ModelAdmin):
@@ -161,7 +166,11 @@ class ConsultantAdmin(admin.ModelAdmin):
         'projects__semester__season',
         'projects__semester__year',
     ]
+    
+class SponsorLogoAdmin(admin.ModelAdmin):
+    list_display = ['sponsor', 'admin_thumbnail']
 
+admin.site.register(SponsorLogo, SponsorLogoAdmin)
 admin.site.register(Config, BlankAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Student, StudentAdmin)
