@@ -2,8 +2,15 @@
 
 {% block content %}
 <h1>Upcoming Projects</h1>
+<div class="page_navigation">
+<ul>
 {% for project in projects %}
-<h3>{{ project.sponsors_string }}</h3>
+<li><a href="#{{ project.id }}">{{ project.sponsors_string }}</a></li>
+{% endfor %}
+</ul>
+</div>
+{% for project in projects %}
+<h3><a href="#{{ project.id }}" name="{{ project.id }}">{{ project.sponsors_string }}</a></h3>
 <h4>{{ project.project_name }}</h4>
 {{ project.project_purpose|safe }}
 {% endfor %}

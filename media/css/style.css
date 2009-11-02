@@ -639,3 +639,33 @@ table.project_select {
 table.project_select tr.project_item td {
 	background-color:#efead6;
 }
+
+div.page_navigation {
+	background-color:#efead6;
+	padding:10px;
+	padding-right:0px;
+	margin-top:10px;
+	margin-left:10px;
+	margin-right:8px;
+	width:250px;
+	border-width:1px;
+	border-style:solid;
+	float:right;
+}
+
+div.page_navigation ul {
+	margin-left:18px;
+	list-style-position:outside;
+	list-style-type:circle;
+}
+
+div.logo_navigation {
+	background-color:#efead6;
+	padding:10px;
+	padding-right:0px;
+	margin-top:10px;
+	margin-left:10px;
+	width:250px;
+	border-width:1px;
+	border-style:solid;
+}
