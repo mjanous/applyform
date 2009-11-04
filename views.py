@@ -894,3 +894,69 @@ def upcoming_project_list(request):
             'projects': projects,
         }
     )
+
+def applicant_list(request):
+    if request.method == 'POST':
+        form = ApplicantListForm(request.POST)
+        if form.is_valid():
+            semester = form.cleaned_data['semester']
+            applications = Application.objects.filter(for_semester=semester).filter(is_submitted=True)
+            projects = applications[0].projectinterest_set.order_by('id')
+            headers = [
+                'z-id',
+                'first_name',
+                'last_name',
+                'email',
+                'major',
+                'is_grad?',
+                'grad_date',
+                'ref_first_name',
+                'ref_last_name',
+                'ref_email',
+            ]
+            for project in projects:
+                headers.append(project.project.sponsors_string)
+                
+            response = HttpResponse(mimetype='text/csv')
+            response['Content-Disposition'] = 'attachment; filename=report.csv'
+            writer = csv.writer(response)
+            writer.writerow(headers)
+            
+            for application in applications:
+                try:
+                    major_title = application.student.major.title
+                except AttributeError:
+                    major_title = ""
+                    
+                columns = [
+                    application.student.profile.user.username,
+                    application.student.profile.user.first_name,
+                    application.student.profile.user.last_name,
+                    application.student.profile.user.email,
+                    major_title,
+                    application.student.is_grad_student,
+                    application.student.grad_date,
+                    application.get_reference().first_name,
+                    application.get_reference().last_name,
+                    application.get_reference().email,
+                ]
+                
+                projectinterest_set = application.projectinterest_set.order_by('id')
+                for projectinterest in projectinterest_set:
+                    columns.append(projectinterest.interest_rating)
+                    
+                writer.writerow(columns)
+            return response
+            
+    else:
+        form = ApplicantListForm()
+        
+    return render_to_response(
+        'applyform/applicant_list.html',
+        {
+            'form': form,
+            'user': request.user,
+            'request': request,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
+   )

@@ -243,3 +243,10 @@ class FinalizeSubmissionForm(forms.Form):
         label="I understand that once I click submit I can no longer change my application",
     )
     
+class ApplicantListForm(forms.Form):
+    semester = forms.ModelChoiceField(
+        required=False,
+        label="Semester",
+        queryset=Semester.objects.all(),
+    )
+    

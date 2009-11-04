@@ -78,6 +78,10 @@ urlpatterns = patterns('applyform.views',
         view='upcoming_project_list',
         name='upcoming_project_list',
     ),
+    url('applicants/$',
+        view='applicant_list',
+        name='applicant_list',
+    ),
 )
 
 urlpatterns += patterns('django.views.generic.simple',

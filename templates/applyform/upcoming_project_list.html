@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Upcoming Projects</h1>
-<div class="page_navigation">
+<div id="right_column">
 <ul>
 {% for project in projects %}
 <li><a href="#{{ project.id }}">{{ project.sponsors_string }}</a></li>

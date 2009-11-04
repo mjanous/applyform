@@ -640,32 +640,65 @@ table.project_select tr.project_item td {
 	background-color:#efead6;
 }
 
-div.page_navigation {
-	background-color:#efead6;
-	padding:10px;
-	padding-right:0px;
-	margin-top:10px;
-	margin-left:10px;
-	margin-right:8px;
-	width:250px;
-	border-width:1px;
-	border-style:solid;
-	float:right;
+#content #right_column {
+	position: relative;
+	background-color: #EFEAD6;
+	float: right;
+	width: 180px; /*This creates a right column that roughly 30% the content area*/
+	margin: 0px 0px 0px 10px;
 }
 
-div.page_navigation ul {
-	margin-left:18px;
-	list-style-position:outside;
-	list-style-type:circle;
+#content #right_column h3 {
+	font: bold 85% Arial, Helvetica, sans-serif;
+	margin-top: 10px;
+        margin-bottom: 10px;
 }
 
-div.logo_navigation {
-	background-color:#efead6;
-	padding:10px;
-	padding-right:0px;
-	margin-top:10px;
+#content #right_column h4 {
+	font: bold 75% Arial, Helvetica, sans-serif;
+	margin-top: 10px;
+        margin-bottom: 10px;
+}
+
+#wrapper #content_wrapper #content #right_column  H3 a {
+	text-decoration: underline;
+}
+
+#wrapper #content_wrapper #content #right_column  H3 a:hover {
+	text-decoration: none;
+}
+
+#content #right_column p {
+	font-size: 75%;
+	line-height: 125%;
+}
+
+#wrapper #content_wrapper #content #right_column ul {
+	margin-top:0px;
 	margin-left:10px;
-	width:250px;
-	border-width:1px;
-	border-style:solid;
+	padding:0px;
+}
+	
+#wrapper #content_wrapper #content #right_column ul li {
+	font-size: 75%;
+	line-height:150%;
+	margin-left:15px;
+	padding:0px;
+}
+	
+#wrapper #content_wrapper #content #right_column ul li a {
+	list-style-type: none;
+}
+
+#wrapper #content_wrapper #content #right_column .blurb {
+	font-size: 70%;
+}
+
+.right_column_image_left {
+	float: left;
+	margin: 5px 5px 5px 0px;
+}
+.right_column_image_right {
+	float: right;
+	margin: 5px 0px 5px 5px;
 }
