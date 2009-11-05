@@ -953,9 +953,12 @@ def applicant_list(request):
                     reference_email,
                 ]
                 
-                projectinterest_set = application.projectinterest_set.order_by('id')
-                for projectinterest in projectinterest_set:
-                    columns.append(projectinterest.interest_rating)
+                for project in projects:
+                    try:
+                        interest_rating = application.projectinterest_set.filter(project=project)[0].interest_rating
+                    except:
+                        interest_rating = None
+                    columns.append(interest_rating)
                     
                 writer.writerow(columns)
             return response
