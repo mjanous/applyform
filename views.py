@@ -901,7 +901,7 @@ def applicant_list(request):
         if form.is_valid():
             semester = form.cleaned_data['semester']
             applications = Application.objects.filter(for_semester=semester).filter(is_submitted=True)
-            projects = applications[0].projectinterest_set.order_by('id')
+            projects = Project.objects.filter(semester=semester)
             headers = [
                 'z-id',
                 'first_name',
@@ -915,7 +915,7 @@ def applicant_list(request):
                 'ref_email',
             ]
             for project in projects:
-                headers.append(project.project.sponsors_string)
+                headers.append(project.sponsors_string)
                 
             response = HttpResponse(mimetype='text/csv')
             response['Content-Disposition'] = 'attachment; filename=report.csv'
