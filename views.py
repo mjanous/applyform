@@ -927,7 +927,19 @@ def applicant_list(request):
                     major_title = application.student.major.title
                 except AttributeError:
                     major_title = ""
-                    
+                try:
+                    reference_first_name = application.get_reference().first_name
+                except:
+                    reference_first_name = None
+                try:
+                    reference_last_name = application.get_reference().last_name
+                except:
+                    reference_last_name = None
+                try:
+                    reference_email = application.get_reference().email
+                except:
+                    reference_email = None
+
                 columns = [
                     application.student.profile.user.username,
                     application.student.profile.user.first_name,
@@ -936,9 +948,9 @@ def applicant_list(request):
                     major_title,
                     application.student.is_grad_student,
                     application.student.grad_date,
-                    application.get_reference().first_name,
-                    application.get_reference().last_name,
-                    application.get_reference().email,
+                    reference_first_name,
+                    reference_last_name,
+                    reference_email,
                 ]
                 
                 projectinterest_set = application.projectinterest_set.order_by('id')
