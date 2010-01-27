@@ -513,6 +513,7 @@ def student_contact_report_by_semester(request):
                 'tshirt_size',
                 'honors_student',
                 'major',
+                'anticipated_graduation_date',
             ])
             
             for consultant in consultants:
@@ -539,6 +540,7 @@ def student_contact_report_by_semester(request):
                     consultant.student.profile.tshirt_size,
                     consultant.student.is_honors_student,
                     major_title,
+                    consultant.student.grad_date,
                 ])
                 
             for assistant_coach in assistant_coaches:
@@ -565,6 +567,7 @@ def student_contact_report_by_semester(request):
                     assistant_coach.student.profile.tshirt_size,
                     assistant_coach.student.is_honors_student,
                     major_title,
+                    assistant_coach.student.grad_date,
                 ])
                 
             return response
