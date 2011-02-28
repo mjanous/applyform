@@ -804,7 +804,7 @@ def finalize_submission(request):
                     
                     email_body = """
 You have successfully submitted your application to the ELC.
-You will be notified of your application's status the week of November 9th.
+You will be notified of your application's status the week of November 1st.
 
 If you had any difficulties with the online application process, please email
 Matthew Janouskovec at mjanous@niu.edu or call him at (815)501-4446.
