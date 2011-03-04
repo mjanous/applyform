@@ -31,7 +31,7 @@
 </thead>
 {% for project_interest in project_interests %}
 <tr class="{% cycle 'odd' 'even' %}">
-<td><a href="{% url apps_detail project_interest.application.pk %}">{{ project_interest.application.student.profile.user.first_name|slice:":1" }}. {{ project_interest.application.student.profile.user.last_name }}</a></td>
+<td><a href="{% url apps_detail project_interest.application.pk %}">{{ project_interest.application.student.profile.user.first_name }}. {{ project_interest.application.student.profile.user.last_name }}</a></td>
 <td>{% ifequal project_interest.interest_rating 1 %}Interested{% endifequal %}
     {% ifequal project_interest.interest_rating 2 %}Very Interested{% endifequal %}</td>
 <td>{{ project_interest.application.student.major }}</td>
