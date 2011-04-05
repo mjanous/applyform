@@ -10,6 +10,7 @@
 <li><b>Grad Date:</b> {{ app.student.grad_date }}</li>
 <li><b>UBUS 311 Semester:</b> {{ app.student.semester_for_311 }}</li>
 <li><b>UBUS 310 Semester:</b> {{ app.student.semester_for_310 }}</li>
+<li><b>Reference:</b> {% for reference in app.reference.all %}<a href="mailto:{{ reference.email }}">{{ reference.first_name }} {{ reference.last_name }}</a>{% endfor %}</li>
 </ul>
 <h3>Cover Letter</h3>
 <p>{{ cover_letter|safe }}</p>

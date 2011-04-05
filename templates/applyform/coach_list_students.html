@@ -27,6 +27,7 @@
     <th>    
         <a href="{% url applyform.views.coach_list_students project_id %}?o=7&ot={% ifequal o '7' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Honors?</a>
     </th>
+    <th>Reference</th>
 </tr>
 </thead>
 {% for project_interest in project_interests %}
@@ -39,6 +40,7 @@
 <td>{{ project_interest.application.student.semester_for_311 }}</td>
 <td>{{ project_interest.application.student.is_grad_student }}</td>
 <td>{{ project_interest.application.student.is_honors_student }}</td>
+<td>{% for reference in project_interest.application.reference.all %}<a href="mailto:{{ reference.email }}">{{ reference.first_name }} {{ reference.last_name }}</a>{% endfor %}</td>
 {% endfor %}
 </table>
 
