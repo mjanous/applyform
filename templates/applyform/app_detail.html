@@ -16,8 +16,7 @@
 <li><b>Name:</b> {% for reference in app.reference.all %}{{ reference.first_name }} {{ reference.last_name }}{% endfor %}</li>
 <li><b>Organization/Department:</b></br> {{ app.get_reference_rating.department }}</li>
 <li><b>What capacity have you known student?</b></br> {{ app.get_reference_rating.q_how_known }}</li>
-<li><b>What strengths of the student would contribute to a successful project outcome?</b></br> {{ app.get_reference_rating.q_strengths }}</li>
-<li><b>Please give an example of a situation when the student has demonstrated one or more of these strengths. </b></br> {{ app.get_reference_rating.q_strength_example }}</li>
+<li><b>Please list a strength of the student and provide an example of this strength.</b></br> {{ app.get_reference_rating.q_strength_example }}</li>
 <li><b>What is an area of weakness for the student?</b></br> {{ app.get_reference_rating.q_weakness }}</li>
 <li><b>How will being a member of an ELC team help the student address this weakness?</b></br> {{ app.get_reference_rating.q_weakness_improve }}</li>
 <li><b>On a scale from 1-10 (10 being the highest), rate the ability of this student to work in a self-directed, team focused project.</b></br> {{ app.get_reference_rating.ability_rating }}</li>
