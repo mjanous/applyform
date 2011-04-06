@@ -5,31 +5,32 @@
 <h3>{{ project }}</h3>
 <table>
 <thead>
-<tr>
+    <tr>
     <th>
-        <a href="{% url applyform.views.coach_list_students project_id %}?o=1&ot={% ifequal o '1' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Name</a>
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=1&amp;ot={% ifequal o '1' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Name</a>
     </th>
     <th>    
-        <a href="{% url applyform.views.coach_list_students project_id %}?o=2&ot={% ifequal o '2' %}{% ifequal ot 'dsc' %}asc{% else %}dsc{% endifequal %}{% else %}dsc{% endifequal %}">Interest Level</a>
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=2&amp;ot={% ifequal o '2' %}{% ifequal ot 'dsc' %}asc{% else %}dsc{% endifequal %}{% else %}dsc{% endifequal %}">Interest Level</a>
     </th>
     <th>    
-        <a href="{% url applyform.views.coach_list_students project_id %}?o=3&ot={% ifequal o '3' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Major</a>
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=3&amp;ot={% ifequal o '3' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Major</a>
     </th>
     <th>    
-        <a href="{% url applyform.views.coach_list_students project_id %}?o=4&ot={% ifequal o '4' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Grad Date</a>
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=4&amp;ot={% ifequal o '4' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Grad Date</a>
     </th>
     <th>    
-        <a href="{% url applyform.views.coach_list_students project_id %}?o=5&ot={% ifequal o '5' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">UBUS 311</a>
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=5&amp;ot={% ifequal o '5' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">UBUS 311</a>
     </th>
     <th>        
-        <a href="{% url applyform.views.coach_list_students project_id %}?o=6&ot={% ifequal o '6' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Grad?</a>
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=6&amp;ot={% ifequal o '6' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Grad?</a>
     </th>
     <th>    
-        <a href="{% url applyform.views.coach_list_students project_id %}?o=7&ot={% ifequal o '7' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Honors?</a>
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=7&amp;ot={% ifequal o '7' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Honors?</a>
     </th>
     <th>Reference</th>
-</tr>
+    </tr>
 </thead>
+<tbody>
 {% for project_interest in project_interests %}
 <tr class="{% cycle 'odd' 'even' %}">
 <td><a href="{% url apps_detail project_interest.application.pk %}">{{ project_interest.application.student.profile.user.first_name }} {{ project_interest.application.student.profile.user.last_name }}</a></td>
@@ -41,7 +42,9 @@
 <td>{{ project_interest.application.student.is_grad_student }}</td>
 <td>{{ project_interest.application.student.is_honors_student }}</td>
 <td>{% for reference in project_interest.application.reference.all %}{{ reference.first_name }} {{ reference.last_name }}{% endfor %}</td>
+</tr>
 {% endfor %}
+</tbody>
 </table>
 
 {% endblock %}
