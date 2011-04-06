@@ -40,7 +40,7 @@
 <td>{{ project_interest.application.student.semester_for_311 }}</td>
 <td>{{ project_interest.application.student.is_grad_student }}</td>
 <td>{{ project_interest.application.student.is_honors_student }}</td>
-<td>{% for reference in project_interest.application.reference.all %}<a href="mailto:{{ reference.email }}">{{ reference.first_name }} {{ reference.last_name }}</a>{% endfor %}</td>
+<td>{% for reference in project_interest.application.reference.all %}{{ reference.first_name }} {{ reference.last_name }}{% endfor %}</td>
 {% endfor %}
 </table>
 

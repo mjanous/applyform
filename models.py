@@ -257,6 +257,21 @@ class Application(models.Model):
         
         return reference
     
+    def get_reference_rating(self):
+        """Return ReferenceRating object or None if None
+        
+        Get the ReferenceRating object that is listed on the Application
+        
+        """
+        try:
+            reference = self.referencerating_set.get()
+        except ReferenceRating.DoesNotExist:
+            reference = None
+        except ReferenceRating.MultipleObjectsReturned:
+            reference = None
+        
+        return reference
+    
     def reference_name(self):
         first_name = self.get_reference().first_name
         last_name = self.get_reference().last_name
