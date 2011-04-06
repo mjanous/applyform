@@ -10,7 +10,7 @@
         <a href="{% url applyform.views.coach_list_students project_id %}?o=1&ot={% ifequal o '1' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Name</a>
     </th>
     <th>    
-        <a href="{% url applyform.views.coach_list_students project_id %}?o=2&ot={% ifequal o '2' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Interest Level</a>
+        <a href="{% url applyform.views.coach_list_students project_id %}?o=2&ot={% ifequal o '2' %}{% ifequal ot 'dsc' %}asc{% else %}dsc{% endifequal %}{% else %}dsc{% endifequal %}">Interest Level</a>
     </th>
     <th>    
         <a href="{% url applyform.views.coach_list_students project_id %}?o=3&ot={% ifequal o '3' %}{% ifequal ot 'asc' %}dsc{% else %}asc{% endifequal %}{% else %}asc{% endifequal %}">Major</a>
