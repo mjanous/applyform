@@ -508,4 +508,38 @@ class Config(models.Model):
     
 class SponsorLogo(ImageModel):
     sponsor = models.ForeignKey(Sponsor)
+
+class JobPlacement(models.Model):
+    profile = models.ForeignKey(UserProfile)
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    company = models.ForeignKey(Sponsor)
+    title = models.CharField(max_length=40, blank=True)
+    phone_number = PhoneNumberField(blank=True)
+    company_email = models.EmailField(blank=True, null=True)
+    due_to_elc = models.BooleanField(default=False, verbose_name='Due to ELC affiliation?')
+    notes = models.TextField(blank=True)
+    
+    def __unicode__(self):
+        return ' - '.join((
+            self.full_name,
+            self.company.sponsor_name,
+        ))
+    
+    def _get_first_name(self):
+        return self.profile.user.first_name
+    first_name = property(_get_first_name)
+    
+    def _get_last_name(self):
+        return self.profile.user.last_name
+    last_name = property(_get_last_name)
+    
+    def _get_full_name(self):
+        return ' '.join((
+            self.first_name,
+            self.last_name
+        ))
+    full_name = property(_get_full_name)
+    
+    
     

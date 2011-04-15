@@ -64,6 +64,10 @@ class ProjectCoachInline(admin.TabularInline):
     model = ProjectCoach
     extra = 1
     
+class JobPlacementInline(admin.StackedInline):
+    model = JobPlacement
+    extra = 1
+    
 class BlankAdmin(admin.ModelAdmin):
     pass
 
@@ -86,6 +90,7 @@ class UserProfileAdmin(admin.ModelAdmin):
         StudentInline,
         CoachInline,
         AssignedKeycardInline,
+        JobPlacementInline,
     ]
     search_fields = ['user__first_name', 'user__last_name', 'user__username']
     list_display = ('user', 'first_name', 'last_name')
@@ -169,6 +174,14 @@ class ConsultantAdmin(admin.ModelAdmin):
     
 class SponsorLogoAdmin(admin.ModelAdmin):
     list_display = ['sponsor', 'admin_thumbnail']
+    
+class JobPlacementAdmin(admin.ModelAdmin):
+    list_display = [
+        'first_name',
+        'last_name',
+        'company',
+    ]
+        
 
 admin.site.register(SponsorLogo, SponsorLogoAdmin)
 admin.site.register(Config, BlankAdmin)
@@ -189,3 +202,4 @@ admin.site.register(College, BlankAdmin)
 admin.site.register(ReferenceRating, BlankAdmin)
 admin.site.register(ImplementationType, BlankAdmin)
 admin.site.register(Reference, BlankAdmin)
+admin.site.register(JobPlacement, JobPlacementAdmin)
