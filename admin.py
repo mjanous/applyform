@@ -66,7 +66,7 @@ class ProjectCoachInline(admin.TabularInline):
     
 class ProjectConsultantInline(admin.TabularInline):
     model = ProjectConsultant
-    extra = 1
+    extra = 6
     
 class JobPlacementInline(admin.StackedInline):
     model = JobPlacement
