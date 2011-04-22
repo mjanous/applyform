@@ -77,7 +77,6 @@ class BlankAdmin(admin.ModelAdmin):
 
 class StudentAdmin(admin.ModelAdmin):
     inlines = [
-        ConsultantInline,
         AssistantCoachInline,
         ApplicationInline,
     ]
@@ -167,6 +166,9 @@ class AssistantCoachAdmin(admin.ModelAdmin):
     filter_vertical = ['projects']
     
 class ConsultantAdmin(admin.ModelAdmin):
+    inlines = [
+        ProjectConsultantInline,
+    ]
     filter_vertical = ['projects']
     search_fields = [
         'student__profile__user__first_name',
