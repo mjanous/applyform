@@ -168,13 +168,17 @@ class Consultant(models.Model):
     student = models.ForeignKey(
         Student, related_name='consultant_profile', unique=True)
     projects = models.ManyToManyField(
-        'Project', related_name='consultants')
+        'Project', related_name='consultants', through="ProjectConsultant")
     
     def __unicode__(self):
         return self.student.profile.__unicode__()
     
     class Meta:
         ordering = ['student']
+        
+class ProjectConsultant(models.Model):
+    consultant = models.ForeignKey(Consultant)
+    project = models.ForeignKey("Project")
     
 class AssistantCoach(models.Model):
     student = models.ForeignKey(

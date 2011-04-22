@@ -64,6 +64,10 @@ class ProjectCoachInline(admin.TabularInline):
     model = ProjectCoach
     extra = 1
     
+class ProjectConsultantInline(admin.TabularInline):
+    model = ProjectConsultant
+    extra = 1
+    
 class JobPlacementInline(admin.StackedInline):
     model = JobPlacement
     extra = 1
@@ -128,6 +132,7 @@ class ProjectAdmin(admin.ModelAdmin):
         ProjectContactInline,
         ProjectSponsorInline,
         ProjectCoachInline,
+        ProjectConsultantInline,
     ]
     search_fields = [
         'project_name',
