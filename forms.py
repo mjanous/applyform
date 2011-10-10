@@ -111,7 +111,7 @@ class ProjectSelectForm(forms.Form):
         ('', '--------'),
         ('0', 'Not Interested'),
         ('1', 'Interested'),
-        ('2', 'Very Interested'),
+        #('2', 'Very Interested'),
     )
     
     project = forms.IntegerField(
